@@ -1,0 +1,24 @@
+[Blue]
+0xD5F2A = MegaBuster, Cannon
+0xD6A80 = Shockwave
+0xDC354 = Fishy2 and FishyΩ Fire Trail
+0xD694E = Swordy Slashes, Mushy Spores
+0xD9DCA = Ratty Ratton
+0xE3884 = Jelly Wave
+0xD85AA = Shrimpy Bubbler
+0xD840A = Spikey Fireball
+0xD72FE = Bunny ZapRing
+0xD8782 = Puffball
+0xDCEBE = Yort
+0xE6988 = Scutz Fire Pillars
+0xD7BF0 = Scuttle Ice Blocks
+0xE7046 = Scuttler Bolt
+0xE6BF4 = Scuttlest Laser
+0xDADA4 = Beetle Minibomb
+0xD6F02 = Metrid Meteor
+0xD91CA = Wind/SnowBlow Wind
+0xE15AA = SnowBlow Attack?
+0xE1580 = Tornado?
+0xE6F7C = Killer Eye Attack?
+
+[White]

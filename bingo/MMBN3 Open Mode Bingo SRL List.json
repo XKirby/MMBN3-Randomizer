@@ -1,0 +1,108 @@
+var bingoList = [];
+bingoList[1] = [
+ {name: "Hold 150+ Battle Chips.", types: ["chips","pack"]},
+ {name: "Obtain a Battle Rank of S.", types: ["battle","rank"]},
+ {name: "Have a base HP of 200+.", types: ["hp","mysterydata","shop"]},
+];
+bingoList[2] = [
+ {name: "Hold 10+ NaviCustomizer Programs.", types: ["navicust","pack"]},
+ {name: "Unlock a Purple Mystery Data.", types: ["subchips","mysterydata"]},
+ {name: "Obtain a new Style Change.", types: ["style"]},
+];
+bingoList[3] = [
+ {name: "Use a Battle Chip Trader 10+ times.", types: ["trade","gacha"]},
+ {name: "Defeat any Navi while Mega Man is Bugged.", types: ["battle","navi","bug"]},
+ {name: "Hold 10+ Mega Chips.", types: ["chips","pack","mega"]},
+];
+bingoList[4] = [
+ {name: "Purchase the Modtools", types: ["shop","modtools"]},
+ {name: "Purchase a Mega Chip from Higsby's Chip Order service.", types: ["shop","mega"]},
+];
+bingoList[5] = [
+ {name: "Win a Virus encounter in less than 5 seconds.", types: ["battle","time","virus"]},
+ {name: "Trade a Battle Chip to a Non-player Character.", types: ["trade","npc"]},
+ {name: "Obtain something from the NumberMan Trader.", types: ["trade","gacha"]},
+];
+bingoList[6] = [
+ {name: "Win a Navi encounter in less than 30 seconds.", types: ["battle","time","navi"]},
+ {name: "Use the 10-Chip Battle Chip Trader.", types: ["trade","gacha"]},
+ {name: "Obtain 3+ BugFrags from any battle.", types: ["battle","rank","bugfrags"]},
+];
+bingoList[7] = [
+ {name: "Hold 20+ BugFrags at once.", types: ["bugfrags","pack"]},
+ {name: "Hold 10000+ Zennys at once.", types: ["zennys","pack"]},
+];
+bingoList[8] = [
+ {name: "Perform a Program Advance.", types: ["battle","pa"]},
+ {name: "Clear any Job from the Job BBS.", types: ["npc","job"]},
+];
+bingoList[9] = [
+ {name: "Win an encounter containing a Beta-level or higher Virus.", types: ["battle","beta","virus"]},
+ {name: "Win a Virus Encounter in less than 2 seconds.", types: ["battle","time","virus"]},
+];
+bingoList[10] = [
+ {name: "Empty out an entire shop's stock.", types: ["shop"]},
+ {name: "Capture any of the tamable Viruses.", types: ["battle","virus","tame"]},
+ {name: "Fix an Error Code with ModTools.", types: ["navicust","modtools"]},
+];
+bingoList[11] = [
+ {name: "Win a Navi Encounter in less than 5 seconds.", types: ["battle","time","navi"]},
+ {name: "Win at least once at a Gambling Minigame.", types: ["minigame","gamble"]},
+ {name: "Have a base Regular Memory of 15+.", types: ["regmem","mysterydata"]},
+];
+bingoList[12] = [
+ {name: "Win at least once at the 30 Button Button-pressing Minigame.", types: ["minigame","input"]},
+ {name: "Clear 5+ Jobs from the Job BBS.", types: ["npc","job"]},
+ {name: "Have a base HP of at least 420+.", types: ["hp","mysterydata","shop"]},
+];
+bingoList[13] = [
+ {name: "Use a ModTool code to give Mega Man 1200+ HP.", types: ["hp","modtools"]},
+ {name: "Win at least once at the 60 Button Button-pressing Minigame.", types: ["minigame","input"]},
+];
+bingoList[14] = [
+ {name: "Netbattle and win at least once against one of Lan's friends' Navis.", types: ["npc","battle","navi"]},
+ {name: "Feed the tamable Viruses 10+ BugFrags.", types: ["virus","tame","bugfrags"]},
+];
+bingoList[15] = [
+ {name: "Capture 5+ of the tamable Viruses.", types: ["battle","virus","tame"]},
+ {name: "Win an encounter containing a Beta-level or higher Navi.", types: ["battle","beta","navi"]},
+];
+bingoList[16] = [
+ {name: "Obtain all 9 SpinNCP Items.", types: ["spin","npc","gacha","mysterydata"]},
+ {name: "Win all of the Quizzes from the Quizmasters.", types: ["npc"]},
+];
+bingoList[17] = [
+ {name: "Netbattle and win at least once against each of Lan's friends' Navis.", types: ["npc","battle","navi"]},
+ {name: "Obtain a Battle Rank of S and win the encounter in less than 5 seconds.", types: ["battle","rank","time"]},
+];
+bingoList[18] = [
+ {name: "Obtain Bug Style.", types: ["style","bug"]},
+ {name: "Deal 400+ damage in a single turn of battle without using your MegaBuster.", types: ["battle","damage","chips"]},
+];
+bingoList[19] = [
+ {name: "Win at least once at the 99 Button Button-pressing Minigame.", types: ["minigame","input"]},
+ {name: "Never purchase the Modtools", types: ["avoid","modtools"]},
+];
+bingoList[20] = [
+ {name: "Netbattle and win against one of Lan's friends' Beta-level Navis.", types: ["npc","battle","beta","navi"]},
+ {name: "Never install Undershirt.", types: ["avoid","navicust"]},
+];
+bingoList[21] = [
+ {name: "Defeat Alpha.", types: ["battle","finalboss"]},
+];
+bingoList[22] = [
+ {name: "Win an encounter containing a Beta-level or higher Navi without Undershirt installed.", types: ["battle","beta","navi","avoid","navicust"]},
+ {name: "Never purchase Subchips.", types: ["avoid","shop","subchips"]},
+];
+bingoList[23] = [
+ {name: "Never Style Change from Normal Style.", types: ["avoid","style"]},
+ {name: "Never use Subchips.", types: ["avoid","input","subchips"]},
+];
+bingoList[24] = [
+ {name: "Hold 20+ Mega Chips.", types: ["chips","pack","mega"]},
+ {name: "Obtain a Giga Chip.", types: ["chips","pack","giga"]},
+];
+bingoList[25] = [
+ {name: "Tell a joke with Humor installed (Modtools or NCP).", types: ["navicust","modtools","input"]},
+];
+$(function() { srl.bingo(bingoList, 5); });

@@ -1,0 +1,20 @@
+Battlefield Offset: 0xBFDC to 0xCBDB
+
+Format:
+00 ?? ?? ?? ?? ?? ?? 00
+00 ?? ?? ?? ?? ?? ?? 00
+00 ?? ?? ?? ?? ?? ?? 00
+
+Panels:
+00: Empty Panel
+01: Cracked Open Panel
+02: Normal Panel
+03: Cracked Closed Panel
+04: Poison Panel
+05: Metal Panel
+06: Grass Panel
+07: Ice Panel
+08: Lava Panel
+09: Holy Panel
+0A: Sand Panel
+0B or higher: Glitchy Mess/Potential Crashing

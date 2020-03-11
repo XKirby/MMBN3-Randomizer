@@ -1,0 +1,99 @@
+[ROM Offsets]
+0x45EA - Initial Area and Subarea Values (At Start of Game, and it's a single command.)
+0x45F2 - Initial Progress Value (At Start of Game)
+0xFE7E0 - Intro Script Value (Blue)
+0xFE6F0 - Intro Script Value (White)
+0xFE9FC - Intro Script Offset (Blue)
+0xFE90C - Intro Script Offset (White)
+0xFEB02 - After Tutorial Progress Value (Blue)
+0xFEA12 - After Tutorial Progress Value (White)
+0x37146, 0x37152 - Status Screen Values (Blue) (Set both to 0x2 to enable NaviCust and Style Change! :D)
+0x3715E, 0x37170 - Status Screen Values (White)
+
+0x469c - Starting HP
+0x2b0f8 - Blue: HPMemory Value
+0x2b10f - White: HPMemory Value
+
+0x2dc62 - White: Set this to 0x05 to prevent Folder Editing with Multiple Folders.
+0x2b8c6 - Blue, 0x2b8de - White: Main Pause Menu Up Scroll Comparison, set to 1 to prevent scrolling into Chip Folder Menu.
+0x2b8dA - Blue, 0x2b8f2 - White: Moves Main Pause Menu Selector Position back to 0, set to 1 to prevent scrolling into Chip Folder Menu.
+
+[RAM Offsets]
+0x2034060-0x2034068 (2 Bytes each): Chips currently above Mega Man's Head (Chip Attack)
+0x200f862-0x200f86a (2 Bytes each): Chips currently above Mega Man's Head (Chip Read Location? Not sure)
+0x203406C-0x2030702 (2 Bytes each): Chips currently above Mega Man's Head (Chip Main Damage)
+0x2034078-0x2034080 (2 Bytes each): Chips currently above Mega Man's Head (Chip Extra Damage)
+0x203728a (1 Byte): Current Chip in Slot for Attacking (Counter, counts down by 1)
+0x20384d8 (1 Byte): Current Chip in Slot for Attacking (Counter, counts up by 2)
+0x2001889 (1 Byte): In-Battle Pause Check (1 = Paused)
+0x20018f4 (4 Bytes): Zenny
+0x20018f8 (2 Bytes): BugFrags
+0x2037294 (2 Bytes): Current HP (in Battle)
+0x2037296 (2 Bytes): Maximum HP (in Battle)
+0x20018A0 (2 Bytes): Current HP (in Overworld)
+0x20018A2 (2 Bytes): Maximum HP (in Overworld)
+0x2001894 (1 Byte): Current Stored Style
+0x2001881 (1 Byte): Current Active Style (Affects Normal Mega Man as well! :D)
+0x20018ac (4 Bytes): Encounter Formation Offset (Set to 0x200f8c8 to hijack encounters! :D)
+0x2006d0c (4 Bytes): Encounter Formation Offset (Set to 0x200f8c8 to hijack encounters! :D)
+0x200f8c8 (4 Bytes): FIXED Encounter Formation Offset
+0x2001ddc (2 or 4 Bytes): Step Counter (Set to 0x0000FFFF to force an encounter maybe! :D)
+0x2006CAC (1 Byte): Full Meter Check (Set to 0x1 to enable access to Custom Screen! :D)
+0x2006CAE (1 Byte): Custom Screen Chip Count (Set to 0x0A to fill the Custom Screen! :D)
+0x2006CCC (2 Bytes): Custom Meter Counter (Set to 0x4000 to fill the Custom Meter! :D)
+0x2000150 (1 Byte): HP Memory Value?
+0x2001A20 (1 Byte): Battle Escape Level (Based on aquired HP Memories, set to 0x0 to prevent escaping! :D)
+0x2001f60 (18*312 Bytes): Battlechip Pack Counts (The first 6 out of 18 Bytes per Chip are used.)
+> 0x2001f72 (18 Bytes): Cannon's Pack Counts
+0x2001410 (4*30 Bytes): Folder 1's Data
+0x2001500 (4*30 Bytes): Folder 2's Data
+0x2001488 (4*30 Bytes): Locked Folder's Data
+0x200F47E (8*3 Bytes): Current Battlefield Setup
+0x200A30A (2 Bytes): Stars on Title Screen (Bitflags from left to right, 0xFE = All 7)
+0x2001886 (1 Byte): Game Progress Value (Set to 0x79 for Final Scene Status)
+0x20050A8 (1 Byte): ??? (Gets set to 0x1 after end credits, but 0x3 DURING end credits)
+0x20097A5 (1 Byte): New Jobs Total
+0x20097BA (1 Byte): Job BBS Job Total
+0x2009480 (1 Byte): Interact Byte (0x1 = On)
+0x2009481 (1 Byte): Interact Script Value
+0x20094AC (4 Bytes): Interaction Script Offset
+0x200F5A0 (24*16 Bytes): In-Battle Panel Data (I have no idea what most of this stuff does.)
+
+[VRAM Offsets]
+0x6017540-0x60177BF (0x80 Bytes): Chip Icons above Mega Man's Head
+
+[Style Values]
+08 - NormGuts
+09 - ElecGuts
+0A - HeatGuts
+0B - AquaGuts
+0C - WoodGuts
+10 - NormCust
+11 - ElecCust
+12 - HeatCust
+13 - AquaCust
+14 - WoodCust
+18 - NormTeam
+19 - ElecTeam
+1A - HeatTeam
+1B - AquaTeam
+1C - WoodTeam
+20 - NormShld
+21 - ElecShld
+22 - HeatShld
+23 - AquaShld
+24 - WoodShld
+28 - NormGrnd
+29 - ElecGrnd
+2A - HeatGrnd
+2B - AquaGrnd
+2C - WoodGrnd
+31 - ElecShdw
+32 - HeatShdw
+33 - AquaShdw
+34 - WoodShdw
+38 - NormBug
+39 - ElecBug
+3A - HeatBug
+3B - AquaBug
+3C - WoodBug
