@@ -55,7 +55,7 @@ def main():
         parser.add_argument("-rm", "--regmem", help="RegMem Randomizer, integer. (1-99 for randomized)", type=int, default=0)
         parser.add_argument("-navi", "--randomnavi", help="Randomize Navi Encounters, integer.", type=int, choices=[0,1], default=0)
         parser.add_argument("-bf", "--battlefields", help="Randomize Battlefield Stages, integer.", type=int, choices=[0,1,2], default=0)
-        parser.add_argument("-fl", "--folderlock", help="Folder Lock Mode, integer.", type=int, choices=[0,1,2,3], default=0)
+        parser.add_argument("-fl", "--folderlock", help="Folder Lock Mode, integer.", type=int, choices=[0,1,2,3,4], default=0)
         parser.add_argument("-tut", "--tutorial", help="Skip Tutorial Randomization, boolean.", type=int, choices=[0,1], default=1)
         parser.add_argument("-fs", "--fillshops", help="Fill Shops, boolean.", type=int, choices=[0,1], default=1)
         parser.add_argument("-bo", "--battleobjects", help="Randomize Battle Objects, boolean.", type=int, choices=[0,1], default=0)
@@ -122,7 +122,7 @@ def main():
                 BF_PANELRANDOMIZER = int(raw_input("Randomize Battlefield Stages? [0-2]> ")) % 3
                 ELEMENT_MODE = int(raw_input("Randomize Elements? [0-3]> ")) % 4
                 RANDOM_NAVIS = int(raw_input("Randomize Navis? [0-1]> ")) % 2
-                FOLDER_MODE = int(raw_input("Enable Folder Lock Mode? [0-3]> ")) % 4
+                FOLDER_MODE = int(raw_input("Enable Folder Lock Mode? [0-4]> ")) % 5
                 OMEGA_MODE = int(raw_input("Enable Omega Mode? [0-3]> ")) % 4
                 REGMEM_MODE = int(raw_input("Randomize Regular Memory Values? [0-99]> ")) % 100
                 HELL_MODE = int(raw_input("Enable Hell Mode? [0-2]> ")) % 3

@@ -1855,7 +1855,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         OMEGA_MODE = random.choice([0,0,0,0,0,1])
         RANDOM_NAVIS = random.choice([0,0,0,1])
         RANDOM_OBSTACLES = random.choice([0,0,0,0,0,0,1])
-        FOLDER_MODE = random.choice([0,0,0,0,1,1,2,3])
+        FOLDER_MODE = random.choice([0,0,0,0,1,1,2,3,3,4])
         IGNORE_LIMITS = 0
     random.seed(SEED)
     
@@ -1894,13 +1894,16 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         randomize_virus_drops()
     if ALLOW_FOLDERS == 1:
         randomize_folders()
-        #if FOLDER_MODE >= 2:
-        #   if ROMVERSION == "b":
-        #       write_data(chr(1), 0x2b8c6)
-        #       write_data(chr(1), 0x2b8da)
-        #   if ROMVERSION == "w":
-        #       write_data(chr(1), 0x2b8de)
-        #       write_data(chr(1), 0x2b8f2)
+    if FOLDER_MODE > 0:
+        setintro = "\x0A\x00\x34\x00\x38\x00\x3C\x00\x40\x00\xFB\x34\x01\xFB\x34\x0A\xED\x01\xF1\x00\x10\x33\x30\x28\x29\x36\x00\x16\x33\x27\x2F\x00\x0B\x27\x38\x2D\x3A\x29\x4D\xE8\x11\x33\x33\x28\x00\x30\x39\x27\x2F\x47\xEB\xE7\xF5\x00\x02\xE7\xF5\x00\x03\xE7\xF5\x00\x04\xE7\xED\x01\xF1\x00\x1A\x36\x29\x37\x37\x00\x1D\x38\x25\x36\x38\x4D\xEB\xE7"
+        for i in range(0, len(setintro)-1):
+            write_data(setintro[i], 0x235180 + i)
+        if ROMVERSION == "b":
+            write_data(struct.pack("<I", 0x8235180), 0xFE9FC)
+            write_data(chr(5), 0x2DC4A)
+        else:
+            write_data(struct.pack("<I", 0x8235180), 0xFE90C)
+            write_data(chr(5), 0x2DC62)
     if ALLOW_GMD == 1:
         randomize_gmds()
     if ALLOW_BMD == 1 or ALLOW_TRADES == 1:
@@ -1915,7 +1918,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     
     # I don't suggest doing this if you're new.
     if HELL_MODE >= 1:
-        write_data(chr(100), 0x469c)
+        # write_data(chr(100), 0x469c)
         hpups = 0x2b16a
         hpmems = 0x2b110
         if ROMVERSION == "b":
