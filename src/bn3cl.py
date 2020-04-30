@@ -61,7 +61,7 @@ def main():
         parser.add_argument("-bo", "--battleobjects", help="Randomize Battle Objects, boolean.", type=int, choices=[0,1], default=0)
         parser.add_argument("--allowfolder", help="Allow Folder Randomization, boolean.", type=int, choices=[0,1], default=1)
         parser.add_argument("--allowgmd", help="Allow Green Mystery Data Randomization, boolean.", type=int, choices=[0,1], default=1)
-        parser.add_argument("--allowbmd", help="Allow Blue Mystery Data Randomization, boolean.", type=int, choices=[0,1], default=0)
+        parser.add_argument("--allowbmd", help="Allow Blue Mystery Data Randomization, boolean.", type=int, choices=[0,1], default=1)
         parser.add_argument("--allowshop", help="Allow Shop Randomization, boolean.", type=int, choices=[0,1], default=1)
         parser.add_argument("--allowchip", help="Allow Battle Chip Randomization, boolean.", type=int, choices=[0,1], default=1)
         parser.add_argument("--allowvirus", help="Allow Enemy Navi/Virus Randomization, boolean.", type=int, choices=[0,1], default=1)

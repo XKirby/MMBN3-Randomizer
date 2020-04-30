@@ -80,7 +80,7 @@ def set_Tk_var():
     allowGMD.set("1")
     global allowBMD
     allowBMD = StringVar()
-    allowBMD.set("0")
+    allowBMD.set("1")
     global allowFolder
     allowFolder = StringVar()
     allowFolder.set("1")

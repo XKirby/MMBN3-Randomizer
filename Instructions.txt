@@ -16,8 +16,19 @@ access to most of the game's areas from the get-go.
 5) Once the program says it's "Done!", close it. You should now see a file named similarly to the "Output File" setting.
 This is your randomized rom! Open it with an emulator of your choice.
 
+[Randomizer Toggles]
+The program allows for many things to be randomized. Here are the list of toggleable randomizer functions.
+
+Starting/Extra Folder Randomization
+Shop/Number Trader Randomization
+Green Mystery Data Randomization
+Battle Chip Data Randomization
+Blue/Purple Mystery Data Randomization
+Navi/Virus/Battle Prize Randomization
+NPC Chip Trade Requirement Randomization
+
 [Randomizer Modifiers]
-The program comes with many options. Here's a short description of each option and what they do.
+The program has a lot of options to further change each run of the game. Here's a short description of each option and what they do.
 
 "Power Multiplier" is for Battle Chips and Program Advances. (0.25 to 3.0)
 "Power Variance" is also for Battle Chips and Program Advances. (0.0 to 0.9)
