@@ -754,6 +754,8 @@ def mmbn3_text_parse(char):
 
 def write_data(str, offset):
     global randomized_data
+    while offset + len(str) - len(randomized_data) > 0:
+        randomized_data.append(chr(0xFF))
     for i in range(len(str)):
         randomized_data[offset + i] = str[i]
 
@@ -936,6 +938,7 @@ def randomize_bmds_trades():
     pattern_list = []
     tradechiplist = []
     bmdchiplist = []
+    free_space = 0x800000
     if ROMVERSION == "b":
         base_offset = 0x28854
         pattern_list.append(0x2664c)
@@ -1015,18 +1018,18 @@ def randomize_bmds_trades():
                 #print "Zenny found at", hex(script_addr), "!"
                 changelog_bmd.append(["zenny", list(struct.unpack('<I', match.groups()[0]))[0], zennys[0]])
                 
-            # for match in bmdchiptext_regex.finditer(script_data):
-                # match_offset = match.start()
-                # old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
-                # old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
-                # for i in range(len(bmdchiplist)):
-                    # if old_chip == bmdchiplist[i][0] and old_code == bmdchiplist[i][1]:
-                        # new_chip = bmdchiplist[i][2]
-                        # new_code = bmdchiplist[i][3]
+            for match in bmdchiptext_regex.finditer(script_data):
+                match_offset = match.start()
+                old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
+                old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
+                for i in range(len(bmdchiplist)):
+                    if old_chip == bmdchiplist[i][0] and old_code == bmdchiplist[i][1]:
+                        new_chip = bmdchiplist[i][2]
+                        new_code = bmdchiplist[i][3]
                         
-                        # new_data[match.start(1)] = new_chip % 256
-                        # new_data[match.start(1)+1] = int(new_chip / 256) + 1
-                        # new_data[match.start(2)] = new_code
+                        new_data[match.start(1)] = new_chip % 256
+                        new_data[match.start(1)+1] = int(new_chip / 256) + 1
+                        new_data[match.start(2)] = new_code
         
         if ALLOW_TRADES == 1:
             for match in tradechipcheck_regex.finditer(script_data):
@@ -1087,7 +1090,10 @@ def randomize_bmds_trades():
         script_ptr = new_scripts[i][0]
         script_data = new_scripts[i][1]
         start_addr = read_word(script_ptr) - 0x08000000
-        write_data(script_data, start_addr)
+        write_data(script_data, free_space)
+        write_data(struct.pack('<I', free_space + 0x08000000), script_ptr)
+        free_space += len(script_data)
+        free_space += (4 - free_space) % 4
     rom_data = old_data
     if ALLOW_BMD == 1:
         print 'randomized bmds'
