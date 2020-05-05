@@ -19,12 +19,11 @@ Features
 - Lots of text files. They hold a bunch of data that you can mess around with to some extent. Just be sure to back things up in case something goes wrong.
 - Various modifiers are asked of you right off the bat when opening the script. These include Battle Chip Damage and Enemy HP Multipliers and Variance Values, as well as a Custom Run seed and a "Chip Code Roulette" Mode!
 - If a Run Seed is not supplied, it will generate one based on the current time.
-- More details can be found in the included NOTES.txt (which is the same thing as the Instructions.txt, though might be slightly outdated).
+- More details can be found in the included NOTES.txt.
 
 Known Issues/Caveats
 ============
 - The rom must be a clean US copy of Mega Man Battle Network 3.
-- Blue/Purple Mystery Data Randomization is a bit weird sometimes. Use with caution.
 - Messing with the text files in ways you probably shouldn't mess with can lead to errors, crashing, corrupt ROMs, etc. I take no responsibility for any of this. Make sure you read the NOTES.txt!
 
 ROM Checksums
@@ -78,6 +77,6 @@ Changes from the original
 - Addition of Virus Difficulty Levels.
 - Addition of Randomized Blue Mystery Datas. (It's not perfect, but it's there.)
 - Addition of Randomized NPC Trade Requirements. (Again, not perfect.)
-- Addition of a much more difficult Hell Mode. Original Hell Mode also included.
+- Addition of more difficult Hell Mode Settings. Original Hell Mode also included.
 - Compiled the program into an executable for people who don't have Python 2.7.
 - Support for both the included Open Mode and HP Unlimiter Patches, even if used on the same rom. (Patch before randomizing!)

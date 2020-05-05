@@ -62,8 +62,9 @@ a specific Virus level.
 	2) Beta+
 	3) Omega
 "Regular Memory Values" can be 0-99. To randomize RegMem Values, use a number between the range of 1 to 99.
-"Hell Mode" can be 0-2. 0 is default. 1 disables the ability to increase your Maximum HP with HP Memories.
+"Hell Mode" can be 0-3. 0 is default. 1 disables the ability to increase your Maximum HP with HP Memories.
 2 disables HP Memories completely, adding the disabling of Run Rate increases and gaining Current HP.
+3 Sets your Maximum HP to 5 on top of everything else. Good luck with this one.
 The "Seed" can be anything you want (or nothing for the current time)
 
 Multiplier is applied first, then Variance. Multiplier straight up multiplies the value by the number specified in the line. Can be between 0.25 and 3. Variance multiplies again, but can work in both directions and is between 0.0 and 0.9.

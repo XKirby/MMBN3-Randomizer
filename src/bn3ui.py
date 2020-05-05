@@ -689,7 +689,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.TCombobox4_1 = ttk.Combobox(self.Labelframe4)
         self.TCombobox4_1.place(relx=0.78, rely=0.64, relheight=0.27
                 , relwidth=0.19, y=-12, h=6)
-        self.value_list = ['No','Yes','Extreme',]
+        self.value_list = ['Normal','Hell','Insane','Masochist',]
         self.TCombobox4_1.configure(values=self.value_list)
         self.TCombobox4_1.configure(textvariable=bn3ui_support.comboHellMode)
         self.TCombobox4_1.configure(takefocus="")

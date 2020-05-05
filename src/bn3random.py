@@ -1883,7 +1883,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         BF_PANELRANDOMIZER = random.choice([0,0,0,0,0,0,1,2])
         ELEMENT_MODE = random.choice([0,0,0,0,1,1,2,2,3])
         REGMEM_MODE = random.choice([0,0,0,30,30,60,99])
-        HELL_MODE = random.choice([0,0,0,0,0,1])
+        HELL_MODE = 0
         OMEGA_MODE = random.choice([0,0,0,0,0,1])
         RANDOM_NAVIS = random.choice([0,0,0,1])
         RANDOM_OBSTACLES = random.choice([0,0,0,0,0,0,1])
@@ -1950,16 +1950,21 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     
     # I don't suggest doing this if you're new.
     if HELL_MODE >= 1:
-        # write_data(chr(100), 0x469c)
         hpups = 0x2b16a
-        hpmems = 0x2b110
+        hpmem1 = 0x2b110
+        hpmem2 = 0x473c8
         if ROMVERSION == "b":
             hpups = 0x2b152
-            hpmems = 0x2b0f8
+            hpmem1 = 0x2b0f8
+            hpmem2 = 0x473b0
         write_data(struct.pack('<I', 0x2164), hpups)
         # Trying this one? Your funeral.
-        if HELL_MODE == 2:
-            write_data(chr(0), hpmems)
+        if HELL_MODE >= 2:
+            write_data(chr(0), hpmem1)
+        # If you can beat the game with this on, you're too good.
+        if HELL_MODE >= 3:
+            write_data(chr(5), 0x469c)
+            write_data(struct.pack("<I", 0x2201), hpmem2)
             
     # Write hash at specific offset based on ROM version
     random.seed(SEED + "_" + str(ALLOW_DAILY) + str(ALLOW_GMD) + str(ALLOW_BMD) + str(ALLOW_CHIPS) + str(ALLOW_FOLDERS) + str(ALLOW_SHOPS) + str(ALLOW_TRADES) + str(ALLOW_VIRUSES) + str(RANDOM_OBSTACLES) + str(FILL_SHOPS) + str(TUTORIAL_SKIP) + str(P_MULTIPLIER) + str(P_VARIANCE) + str(V_MULTIPLIER) + str(VH_VARIANCE) + str(RANDOM_NAVIS) + str(CP_NAMERANDOMIZER) + str(VN_NAMERANDOMIZER) + str(C_ALLSTARMODE) + str(NC_SHAPERANDOMIZER) + str(BF_PANELRANDOMIZER) + str(ELEMENT_MODE) + str(REGMEM_MODE) + str(OMEGA_MODE) + str(HELL_MODE) + str(FOLDER_MODE) + str(IGNORE_LIMITS))

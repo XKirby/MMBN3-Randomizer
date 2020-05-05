@@ -11,14 +11,16 @@
 0x3715E, 0x37170 - Status Screen Values (White)
 
 0x469c - Starting HP
+0x473B0 - Blue, 0x473C8 - White: Max HP Comparison Set (Max HP/5)
 0x2b0f8 - Blue: HPMemory Value
 0x2b10f - White: HPMemory Value
 
-0x2dc62 - White: Set this to 0x05 to prevent Folder Editing with Multiple Folders.
+0x2dc4a - Blue, 0x2dc62 - White: Set this to 0x05 to prevent Folder Editing with Multiple Folders.
 0x2b8c6 - Blue, 0x2b8de - White: Main Pause Menu Up Scroll Comparison, set to 1 to prevent scrolling into Chip Folder Menu.
-0x2b8dA - Blue, 0x2b8f2 - White: Moves Main Pause Menu Selector Position back to 0, set to 1 to prevent scrolling into Chip Folder Menu.
+0x2b8da - Blue, 0x2b8f2 - White: Moves Main Pause Menu Selector Position back to 0, set to 1 to prevent scrolling into Chip Folder Menu.
 
 [RAM Offsets]
+0x2000040 (1 Bit [0x10]): Folder Swapping Disable Flag
 0x2034060-0x2034068 (2 Bytes each): Chips currently above Mega Man's Head (Chip Attack)
 0x200f862-0x200f86a (2 Bytes each): Chips currently above Mega Man's Head (Chip Read Location? Not sure)
 0x203406C-0x2030702 (2 Bytes each): Chips currently above Mega Man's Head (Chip Main Damage)
@@ -32,12 +34,13 @@
 0x2037296 (2 Bytes): Maximum HP (in Battle)
 0x20018A0 (2 Bytes): Current HP (in Overworld)
 0x20018A2 (2 Bytes): Maximum HP (in Overworld)
+0x200579C (1 Byte): Maximum HP Check for HP Memory (Max HP/5)
 0x2001894 (1 Byte): Current Stored Style
 0x2001881 (1 Byte): Current Active Style (Affects Normal Mega Man as well! :D)
 0x20018ac (4 Bytes): Encounter Formation Offset (Set to 0x200f8c8 to hijack encounters! :D)
 0x2006d0c (4 Bytes): Encounter Formation Offset (Set to 0x200f8c8 to hijack encounters! :D)
 0x200f8c8 (4 Bytes): FIXED Encounter Formation Offset
-0x2001ddc (2 or 4 Bytes): Step Counter (Set to 0x0000FFFF to force an encounter maybe! :D)
+0x2001ddc (2 or 4 Bytes): Step Counter (Set to 0x0000FFFF to force an encounter! :D)
 0x2006CAC (1 Byte): Full Meter Check (Set to 0x1 to enable access to Custom Screen! :D)
 0x2006CAE (1 Byte): Custom Screen Chip Count (Set to 0x0A to fill the Custom Screen! :D)
 0x2006CCC (2 Bytes): Custom Meter Counter (Set to 0x4000 to fill the Custom Meter! :D)

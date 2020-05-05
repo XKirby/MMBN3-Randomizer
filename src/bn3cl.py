@@ -51,7 +51,7 @@ def main():
         parser.add_argument("-ncp", "--progshapes", help="NCP Shape Randomizer, boolean.", type=int, choices=[0,1], default=0)
         parser.add_argument("-elem", "--elements", help="Element Randomizer, integer.", type=int, choices=[0,1,2,3], default=0)
         parser.add_argument("-om", "--omegamode", help="Omega Mode, integer.", type=int, choices=[0,1,2,3], default=0)
-        parser.add_argument("-hm", "--hellmode", help="Hell Mode, integer.", type=int, choices=[0,1,2], default=0)
+        parser.add_argument("-hm", "--hellmode", help="Hell Mode, integer.", type=int, choices=[0,1,2,3], default=0)
         parser.add_argument("-rm", "--regmem", help="RegMem Randomizer, integer. (1-99 for randomized)", type=int, default=0)
         parser.add_argument("-navi", "--randomnavi", help="Randomize Navi Encounters, integer.", type=int, choices=[0,1], default=0)
         parser.add_argument("-bf", "--battlefields", help="Randomize Battlefield Stages, integer.", type=int, choices=[0,1,2], default=0)
@@ -125,7 +125,7 @@ def main():
                 FOLDER_MODE = int(raw_input("Enable Folder Lock Mode? [0-4]> ")) % 5
                 OMEGA_MODE = int(raw_input("Enable Omega Mode? [0-3]> ")) % 4
                 REGMEM_MODE = int(raw_input("Randomize Regular Memory Values? [0-99]> ")) % 100
-                HELL_MODE = int(raw_input("Enable Hell Mode? [0-2]> ")) % 3
+                HELL_MODE = int(raw_input("Enable Hell Mode? [0-3]> ")) % 4
                 TUTORIAL_SKIP = int(raw_input("Disable Tutorial Randomization? [0-1]> ")) % 2
                 FILL_SHOPS = int(raw_input("Fill Shops? [0-1]> ")) % 2
                 RANDOM_OBSTACLES = int(raw_input("Randomized Battle Objects? [0-1]> ")) % 2
