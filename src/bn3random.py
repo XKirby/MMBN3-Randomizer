@@ -491,6 +491,8 @@ def init_chip_data():
     global chip_names
     global allcodes
     chip_data = []
+    sequence_pas = [1,2,3,13,14,15,16,17,18,19,38,39,40,47,48,49,69,70,71,99,133,134,135]
+    specific_pas = [[14,15,16],[17,18,19],[30,31,32],[33,34,35,36],[39,207,40],[58,59,60],[104,105,106],[108,109,204],[190,191,202],[173,174,175],[128,178,219,220,221],[53,118,222,223,224,225],[38,37,43,227,228,229,230],[273,274,275,276]]
     allcodes = [[255 for x in range(6)] for y in range(N_CHIPS)]
 
     # Load in chip ranks from file
@@ -555,21 +557,16 @@ def init_chip_data():
                     else:
                         purecodes[j] = allcodes[i][j]
                 allcodes[i] = purecodes
-                #Write new Chip Codes
-                write_data(chr(allcodes[i][0]), s)
-                write_data(chr(allcodes[i][1]), s+1)
-                write_data(chr(allcodes[i][2]), s+2)
-                write_data(chr(allcodes[i][3]), s+3)
-                write_data(chr(allcodes[i][4]), s+4)
-                write_data(chr(allcodes[i][5]), s+5)
             #Simplified Mode
             if C_ALLSTARMODE == int(2):
                 #codes = filter(lambda x : x != 255, [0,1,2,3,4,26])
                 allcodes[i] = [0,1,2,3,4,26]
-                if num == 61:
-                    allcodes[i][4] = 6
-                if num == 26:
-                    allcodes[i][4] = 12
+                # Make sure Trades are kept in-tact
+                if ALLOW_TRADES == 0:
+                    if num == 61:
+                        allcodes[i][4] = 6
+                    if num == 26:
+                        allcodes[i][4] = 12
                 if num > 200:
                     allcodes[i][0] = 26
                 #Reorganize Codes
@@ -581,26 +578,44 @@ def init_chip_data():
                     else:
                         purecodes[j] = allcodes[i][j]
                 allcodes[i] = purecodes
-                #Write new Chip Codes
-                write_data(chr(allcodes[i][0]), s)
-                write_data(chr(allcodes[i][1]), s+1)
-                write_data(chr(allcodes[i][2]), s+2)
-                write_data(chr(allcodes[i][3]), s+3)
-                write_data(chr(allcodes[i][4]), s+4)
-                write_data(chr(allcodes[i][5]), s+5)
-            #Random Mode
+            #Chaos Mode
             if C_ALLSTARMODE == int(3):
-                allcodes[i] = [random.randint(0,5),random.randint(6,10),random.randint(11,15),random.randint(16,20),random.randint(21,25),26]
-                if num == 70:
-                    allcodes[i][0] = 2
-                if num == 33:
-                    allcodes[i][0] = 4
-                if num == 61:
-                    allcodes[i][1] = 6
-                if num == 26:
-                    allcodes[i][2] = 12
+                # Make SURE no 2 codes are the same.
+                newcodes = []
+                while len(newcodes) < 6:
+                    c = random.randint(0,25)
+                    if c in newcodes:
+                        continue
+                    newcodes.append(c)
+                    if len(newcodes) == 5:
+                        newcodes.append(26)
+                allcodes[i] = newcodes
+                # Make sure trades are kept in-tact.
+                if ALLOW_TRADES == 0:
+                    if num == 70:
+                        allcodes[i][0] = 2
+                    if num == 33:
+                        allcodes[i][0] = 4
+                    if num == 61:
+                        allcodes[i][1] = 6
+                    if num == 26:
+                        allcodes[i][2] = 12
                 if num > 200:
                     allcodes[i][0] = random.randint(0,26)
+                # Fix Program Advances
+                # Also makes certain chip combos more difficult
+                if i in sequence_pas:
+                    code = random.randint(0,21)
+                    for j in range(len(allcodes[i])-1):
+                        allcodes[i][j] = code+j
+                for j in specific_pas:
+                    for k in j:
+                        if i > k:
+                            if i > 200:
+                                allcodes[i][0] = allcodes[k][0]
+                            else:
+                                allcodes[i] = allcodes[k]
+                            break
                 #Reorganize Codes
                 for j in range(len(purecodes)):
                     if purecodes[j] == 26:
@@ -610,13 +625,14 @@ def init_chip_data():
                     else:
                         purecodes[j] = allcodes[i][j]
                 allcodes[i] = purecodes
-                #Write new Chip Codes
-                write_data(chr(allcodes[i][0]), s)
-                write_data(chr(allcodes[i][1]), s+1)
-                write_data(chr(allcodes[i][2]), s+2)
-                write_data(chr(allcodes[i][3]), s+3)
-                write_data(chr(allcodes[i][4]), s+4)
-                write_data(chr(allcodes[i][5]), s+5)
+            
+            #Write new Chip Codes
+            write_data(chr(allcodes[i][0]), s)
+            write_data(chr(allcodes[i][1]), s+1)
+            write_data(chr(allcodes[i][2]), s+2)
+            write_data(chr(allcodes[i][3]), s+3)
+            write_data(chr(allcodes[i][4]), s+4)
+            write_data(chr(allcodes[i][5]), s+5)
             # Fix the list, for some reason having all 6 codes for some chips breaks something later.
             allcodes[i] = filter(lambda x : x != 255, allcodes[i])
             
@@ -938,6 +954,13 @@ def randomize_bmds_trades():
     pattern_list = []
     tradechiplist = []
     bmdchiplist = []
+    
+    available_chips = []
+    for i in range(1,301):
+        if i == 279:
+            continue
+        available_chips.append(i)
+    
     free_space = 0x800000
     if ROMVERSION == "b":
         base_offset = 0x28854
@@ -986,6 +1009,8 @@ def randomize_bmds_trades():
                 old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
                 chip_map = generate_chip_permutation(allow_conditional_attacks = True)
                 new_chip = chip_map[old_chip]
+                while new_chip == 279:
+                    new_chip = random.choice(available_chips)
                 new_code = random.choice(allcodes[new_chip-1])
                 if len(bmdchiplist) > 0:
                     for i in range(len(bmdchiplist)):
@@ -1036,11 +1061,17 @@ def randomize_bmds_trades():
                 match_offset = match.start()
                 old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
                 old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
-                if [old_chip, old_code] in skip_these:
-                    continue
+                # if [old_chip, old_code] in skip_these:
+                    # continue
                 chip_map = generate_chip_permutation(allow_conditional_attacks = True)
                 new_chip = chip_map[old_chip]
+                while new_chip == 279:
+                    new_chip = random.choice(available_chips)
                 new_code = random.choice(allcodes[new_chip-1])
+                # KEEP THESE TRADES IN-TACT. Just update the code to match the Chip Code Roulette mode.
+                if [old_chip, old_code] in skip_these:
+                    new_chip = old_chip
+                    new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(old_code)]
                 if len(tradechiplist) > 0:
                     for i in range(len(tradechiplist)):
                         if old_chip == tradechiplist[i][0] and old_code == tradechiplist[i][1]:
@@ -1149,9 +1180,9 @@ def virus_replace(ind):
             # Bass, ignore swap-out mechanic
             if ind in [238, 239, 240, 241]:
                 return ind
-            # Alpha, force Alpha[omega] regardless of difficulty (HAVE FUN FOLKS)
+            # Alpha, ignore swap-out mechanic
             elif ind in [196, 197]:
-                return 197
+                return ind
             # Serenade, ignore swap-out mechanic
             elif ind in [236,237,238,239]:
                 return ind
@@ -1288,6 +1319,7 @@ def randomize_viruses():
             virus_namestart, returned_name = randomize_name(virus_namestart, virus_name, virus_randnames)
         # Make a Hard Cap so that things don't get out of hand.
         if IGNORE_LIMITS == 1:
+            # ... Unless you want it to, then go ahead, be my guest ;)
             if ELEMENT_MODE == 1 or ELEMENT_MODE == 3:
                 write_data(chr(random.randint(1,4)), 0x680020+((navi_offset - 0x19618) / 8))
             write_data(chr(virus_hp % 256)+chr(virus_hp // (2**8) % 256), navi_offset)
@@ -1526,38 +1558,38 @@ def randomize_shops():
                 if new_chip > 200:
                     stock = 1
                     if new_chip in gigachips:
-                        price = random.randint(150,500)
+                        price = random.randint(100,250)
                     else:
-                        price = random.randint(50,150)
+                        price = random.randint(50,100)
                 # Force Chips in ACDC 1 Shop to be Story Progression Chips
                 if item_offset == item_data_offset + 0x10:
                     new_chip = 0x20
-                    #new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(4)]
-                    new_code = 4
+                    new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(4)]
+                    #new_code = 4
                     stock = 1
                     price = 1
                 if item_offset == item_data_offset + 0x18:
                     new_chip = 0x8f
-                    #new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(26)]
-                    new_code = 26
+                    new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(26)]
+                    #new_code = 26
                     stock = 1
                     price = 1
                 if item_offset == item_data_offset + 0x20:
                     new_chip = 0x45
-                    #new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(6)]
-                    new_code = 6
+                    new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(6)]
+                    #new_code = 6
                     stock = 1
                     price = 1
                 if item_offset == item_data_offset + 0x28:
                     new_chip = 0x19
-                    #new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(12)]
-                    new_code = 12
+                    new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(12)]
+                    #new_code = 12
                     stock = 1
                     price = 1
                 if item_offset == item_data_offset + 0x30:
                     new_chip = 0x3a
-                    #new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(2)]
-                    new_code = 2
+                    new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(2)]
+                    #new_code = 2
                     stock = 1
                     price = 1
                 # Fix Giga Chip in Secret Area Shop to be version-exclusive chip
