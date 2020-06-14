@@ -544,7 +544,7 @@ def init_chip_data():
             
             #All Stars Mode
             if C_ALLSTARMODE == int(0):
-                allcodes[i] = codes
+                allcodes[i] = purecodes
             if C_ALLSTARMODE == int(1):
                 #codes = filter(lambda x : x != 255, [26,26,26,26,26,26])
                 allcodes[i] = [26,26,26,26,26,26]
