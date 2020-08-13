@@ -69,7 +69,7 @@ def main():
         parser.add_argument("--daily", help="Perform today's Daily Run, integer.", type=int, choices=[0,1], default=0)
         parser.add_argument("--seed", help="Game Seed, string.", default="")
         parser.add_argument("--log", help="Output Log, boolean. Turn on for expanded seed info.", type=int, choices=[0,1], default=0)
-        parser.add_argument("-lb", "--limitbreak", help="(Requires Patch) Uncaps Multipliers and checks for Higher HP Cap, boolean.", type=int, choices=[0,1], default=0)
+        parser.add_argument("-lb", "--limitbreak", help="Uncaps Multipliers on HP and Damage, boolean.", type=int, choices=[0,1], default=0)
         args = parser.parse_args()
         
         #Variable Defaults based on Arguments
@@ -139,7 +139,7 @@ def main():
                 ALLOW_DAILY = int(raw_input("Is this a Daily Run? [0-1]> ")) % 2
                 SEED = str(raw_input("Input Seed?> "))
                 OUTPUTLOG = int(raw_input("Enable Output Log? [0-1]> ")) % 2
-                IGNORE_LIMIT = int(raw_input("Ignore Multipler and HP Limits? (Requires a Patch) [0-1]> ")) % 2
+                IGNORE_LIMIT = int(raw_input("Ignore HP/Damage Multiplier Limits? [0-1]> ")) % 2
         if len(ROMVERSION) != 1:
                 return
         ROMVERSION = ROMVERSION.lower()

@@ -1952,6 +1952,28 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     init_custom_folders()
     init_chip_data()
     init_pa_data()
+    # Ignore Limits code
+    if IGNORE_LIMITS == 1:
+        # Relink Enemy Table Read
+        write_data(struct.pack("<BBBBBBBBBBBB",0x84,0x46,0x13,0xF0,0x8A,0xFD,0x0A,0x1C,0xE0,0xF2,0x23,0xFF), 0x5AEE)
+        
+        # Ignore Element Byte in HP so it can be used AS HP
+        write_data(struct.pack("<BBBB",0x00,0x23,0x00,0x23), 0x5AFE)
+        write_data(struct.pack("<BBBB",0x00,0x23,0x00,0x23), 0x147BC)
+        
+        # Call to and from new Element Table
+        write_data(struct.pack("<II", 0xF39946F0, 0x46C7FB5D), 0x2E6940)
+        
+        # Read Element Table
+        write_data(struct.pack("<BBBBBBBBBBBBBB",0x07,0xA3,0x62,0x46,0x9B,0x18,0x0A,0x1C,0x1C,0x78,0xEC,0x75,0xF7,0x46),0x680000)
+        
+        # Write Element Table from Virus and Navi table
+        elemtable = 0x680020
+        for enemy in range(0, 244):
+            element = read_byte(0x19618 + (enemy*8) + 1) >> 4
+            write_data(chr(0), 0x19618 + (enemy*8) + 1)
+            write_data(chr(element),0x680020 + (enemy))
+    
     if ALLOW_VIRUSES == 1:
         init_virus_data()
         randomize_viruses()
@@ -2034,7 +2056,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     #Spoiler Info
     open("mmbn3" + ROMVERSION + "_seedinfo - " + seed_hash + ".txt", 'w').write("Seed: " + str(SEED) + "\nHash: " + seed_hash + "\n\nChip Damage Multiplier: " + str(P_MULTIPLIER) + "\nChip Damage Variance: " + str(P_VARIANCE) + "\nEnemy HP Multiplier: " + str(V_MULTIPLIER) + "\nEnemy HP Variance: " + str(VH_VARIANCE) + "\nChip Codes Mode: " + str(C_ALLSTARMODE) + "\nRandomized Chip Names?: " + str(bool(CP_NAMERANDOMIZER)) + "\nRandomized Enemy Names?: " + str(bool(VN_NAMERANDOMIZER)) + "\nRandomized NaviCust Shapes?: " + str(bool(NC_SHAPERANDOMIZER)) + "\nRandom Battlefield Mode: " + str(int(BF_PANELRANDOMIZER)) + "\nRandom Element Mode: " + str(int(ELEMENT_MODE))+ "\nRandomize Navis?: " + str(bool(RANDOM_NAVIS))+ "\nFolder Lock Mode: " + str(FOLDER_MODE)+ "\nOMEGA Mode: " + str(OMEGA_MODE)+ "\nRegMem Max Range: " + str(int(REGMEM_MODE))+ "\nHELL Mode: " + str(HELL_MODE))
     open("mmbn3" + ROMVERSION + "_seedinfo - " + seed_hash + ".txt", 'a').write("\n\nAllow Folders?: "+str(bool(ALLOW_FOLDERS))+"\nAllow Blue Mystery Data?: "+str(bool(ALLOW_BMD))+"\nAllow Green Mystery Data?: "+str(bool(ALLOW_GMD))+"\nAllow Shops?: "+str(bool(ALLOW_SHOPS))+"\nAllow Battle Chips?: "+str(bool(ALLOW_CHIPS))+"\nAllow Viruses?: "+str(bool(ALLOW_VIRUSES))+"\nAllow NPC Trades?: "+str(bool(ALLOW_TRADES)))
-    open("mmbn3" + ROMVERSION + "_seedinfo - " + seed_hash + ".txt", 'a').write("\n\nAllow Easy Tutorial?: "+str(bool(TUTORIAL_SKIP))+"\nRandomize Battle Objects?: "+str(bool(RANDOM_OBSTACLES))+"\nFill Shops?: "+str(bool(FILL_SHOPS))+"\nIgnore Damage/HP Limiters (Requires Patch)?: "+str(bool(IGNORE_LIMITS)))
+    open("mmbn3" + ROMVERSION + "_seedinfo - " + seed_hash + ".txt", 'a').write("\n\nAllow Easy Tutorial?: "+str(bool(TUTORIAL_SKIP))+"\nRandomize Battle Objects?: "+str(bool(RANDOM_OBSTACLES))+"\nFill Shops?: "+str(bool(FILL_SHOPS))+"\nIgnore HP/Damage Limiters?: "+str(bool(IGNORE_LIMITS)))
     if OUTPUTLOG == 1:
         open("mmbn3" + ROMVERSION + "_seedinfo - " + seed_hash + ".txt", 'a').write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n!!!!!!!!!!!!!!\n!!!SPOILERS!!!\n!!!!!!!!!!!!!!\n\n")
         print "!!NOTE!! Writing detailed log to seedinfo.txt, this will take a few..."

@@ -653,8 +653,8 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton5.configure(variable=bn3ui_support.randomOutputLog)
         
         self.Checkbutton6 = Checkbutton(self.Labelframe4)
-        self.Checkbutton6.place(relx=0.01, rely=0.78, relheight=0.32
-                , relwidth=0.40, y=-12, h=6)
+        self.Checkbutton6.place(relx=0.02, rely=0.78, relheight=0.32
+                , relwidth=0.35, y=-12, h=6)
         self.Checkbutton6.configure(activebackground="#d9d9d9")
         self.Checkbutton6.configure(activeforeground="#000000")
         self.Checkbutton6.configure(background="#d9d9d9")
@@ -663,7 +663,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton6.configure(highlightbackground="#d9d9d9")
         self.Checkbutton6.configure(highlightcolor="black")
         self.Checkbutton6.configure(justify=LEFT)
-        self.Checkbutton6.configure(text='''Ignore Limits (Requires Patch)''')
+        self.Checkbutton6.configure(text='''Ignore HP/Damage Limiters''')
         self.Checkbutton6.configure(variable=bn3ui_support.bIgnoreLimits)
 
         self.TCombobox4 = ttk.Combobox(self.Labelframe4)
@@ -689,7 +689,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.TCombobox4_1 = ttk.Combobox(self.Labelframe4)
         self.TCombobox4_1.place(relx=0.78, rely=0.64, relheight=0.27
                 , relwidth=0.19, y=-12, h=6)
-        self.value_list = ['Normal','Hell','Insane','Masochist',]
+        self.value_list = ['Normal','Hell','Insane','Death Wish',]
         self.TCombobox4_1.configure(values=self.value_list)
         self.TCombobox4_1.configure(textvariable=bn3ui_support.comboHellMode)
         self.TCombobox4_1.configure(takefocus="")

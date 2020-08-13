@@ -60,6 +60,8 @@ These patches break the internal HP limit of Navis and Viruses from 4096 to 6553
 - You may rebalance the game's Chips and HP values with the included Text Files that store their stats! (Again, don't go overboard. And don't change anything you don't understand.)
 - Chip Damage is capped at 9999, or at least close to it. At 10000+, the damage value is set to "????" visually and will no longer be randomized properly.
 
+These patches are no longer required due to a recent update allowing the "Ignore HP/Damage Limiters" Setting in the randomizer to apply the patch's features directly.
+
 Changes from the original
 ============
 - Removal of the VarSwrd power decrease by default.
@@ -79,4 +81,4 @@ Changes from the original
 - Addition of Randomized NPC Trade Requirements. (Again, not perfect.)
 - Addition of more difficult Hell Mode Settings. Original Hell Mode also included.
 - Compiled the program into an executable for people who don't have Python 2.7.
-- Support for both the included Open Mode and HP Unlimiter Patches, even if used on the same rom. (Patch before randomizing!)
+- Support for the included Open Mode Patch, even when using the "Ignore HP/Damage Limiters" option. (Patch before randomizing!)
