@@ -31,3 +31,5 @@
 !roulettestage: Any user on Extreme difficulty only. Randomizes the Battlefield Panels every 10 frames disregarding any and all order.
 
 !chipplz: Any user on Any difficulty. Gives the player a Battle Chip with a random code out of the available codes for that Battle Chip. They can find the chip in their Backpack.
+
+!queuevirus <targetID>,<x>,<y>: Any user on Extreme difficulty only. Queues a custom encounter with the specific enemy on a specific position of the battlefield. Up to 3 Enemies allowed per battle. Use "!fightme -1" to trigger the encounter.

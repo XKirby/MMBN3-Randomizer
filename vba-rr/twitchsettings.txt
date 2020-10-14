@@ -57,3 +57,6 @@ BanList.fights = {}
 
 -- Insert Encounter IDs here to ban !stylechange choices. Nothing is banned by default.
 BanList.styles = {}
+
+-- Insert Virus/Navi IDs here to ban !queuevirus choices. Invincible Bass and some broken enemies are banned by default.
+BanList.viruses = {0, 198, 199, 240}

@@ -50,5 +50,5 @@ Twitch Bot Known Issues
 Most of these bugs are due to handling Battle Chips manually with the script during combat.
 - Battle Chips can get eaten without activating during combat if you press A during movement or time stop.
 - If you die, the bot has a tendency to disconnect. Restarting the bot fixes this.
-- If no one's talking to using commands, the bot has a tendency to disconnect. Restarting the bot fixes this.
+- If no one's talking or using commands, the bot has a tendency to disconnect. Restarting the bot fixes this.
 - If the bot produces an error, it stops. Just restart it.
