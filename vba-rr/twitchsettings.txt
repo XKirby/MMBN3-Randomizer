@@ -16,9 +16,9 @@ Difficulty = 1 -- 1 = Easy, 2 = Normal, 3 = Hard, 4 = Extreme
 
 -- Delay Options
 ChipCooldownDelay[0] = 0 -- Normal Chips Cooldown in Frames
-ChipCooldownDelay[1] = 20*60 -- Mega Chips Cooldown in Frames
-ChipCooldownDelay[2] = 40*60 -- Giga Chips Cooldown in Frames
-ChipCooldownDelay[3] = 50*60 -- Program Advances Cooldown in Frames
+ChipCooldownDelay[1] = 10*60 -- Mega Chips Cooldown in Frames
+ChipCooldownDelay[2] = 20*60 -- Giga Chips Cooldown in Frames
+ChipCooldownDelay[3] = 40*60 -- Program Advances Cooldown in Frames
 RouletteDelays = {
 	30*60, -- !roulettehand Timer in Frames
 	30*60  -- !roulettestage Timer in Frames
@@ -36,14 +36,14 @@ CommandTimerDelays = {
 	10*60, -- !setstage Cooldown in Frames
 	150*60, -- !roulettehand Cooldown in Frames
 	150*60, -- !roulettestage Cooldown in Frames
-	1*60 -- !chipplz Cooldown in Frames
+	10*60 -- !chipplz Cooldown in Frames
 	}
 
 -- Resource Randomness Tables
 -- Add or remove options from these tables at your leisure. Just always keep them with at least one listing.
-RandomValues.zennys = {1000,500,200,200,100,100,50,50,20,20,-10,-15,-25,-40,-75,-100,-150,-250,-500,-1000}
-RandomValues.frags = {10,8,5,5,3,3,2,1,1,0,0,-1,-2,-2,-3,-3,-5,-5,-8,-10}
-RandomValues.hp = {50,50,40,40,35,30,25,20,15,10,-10,-10,-20,-20,-30,-30,-40,-40,-50,-50}
+RandomValues.zennys = {1000,500,200,200,100,100,50,50,50,0,0,-50,-50,-50,-100,-100,-200,-200,-500,-1000}
+RandomValues.frags = {10,5,5,3,3,2,2,1,1,0,0,-1,-1,-2,-2,-3,-3,-5,-5,-10}
+RandomValues.hp = {50,50,40,40,30,30,20,20,10,10,-10,-10,-20,-20,-30,-30,-40,-40,-50,-50}
 
 -- Banlists
 -- Insert Battlechip IDs here to ban !slotin choices. Some choices are hard-coded.

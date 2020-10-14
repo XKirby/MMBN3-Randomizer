@@ -65,9 +65,9 @@ DamageBoosts = {
 ChipCooldowns = {}
 ChipCooldownDelay = {}
 ChipCooldownDelay[0] = 0
-ChipCooldownDelay[1] = 20*60
-ChipCooldownDelay[2] = 40*60
-ChipCooldownDelay[3] = 50*60
+ChipCooldownDelay[1] = 10*60
+ChipCooldownDelay[2] = 20*60
+ChipCooldownDelay[3] = 40*60
 for i=0,3 do
 	table.insert(ChipCooldowns, i, 0)
 end
@@ -83,18 +83,17 @@ TwitchBotVars = {
 	Client = nil
 }
 CommandTimers = {0,0,0,0,0,0,0,0,0,0,0,0,0}
-CommandTimerDelays = {2*60,5*60,5*60,5*60,8*60,5*60,10*60,60*60,30*60,10*60,150*60,150*60,10*60}
 RouletteDelays = {30*60,30*60}
+CommandTimerDelays = {2*60,5*60,5*60,5*60,8*60,5*60,10*60,60*60,30*60,10*60,150*60,150*60,10*60}
 RandomValues = {}
-RandomValues.zennys = {1000,500,200,200,100,100,50,50,20,20,-10,-15,-25,-40,-75,-100,-150,-250,-500,-1000}
-RandomValues.frags = {10,8,5,5,3,3,2,1,1,0,0,-1,-2,-2,-3,-3,-5,-5,-8,-10}
-RandomValues.hp = {50,50,40,40,35,30,25,20,15,10,-10,-10,-20,-20,-30,-30,-40,-40,-50,-50}
-BanList = {}
-BanList.chips = {}
+RandomValues.zennys = {1000,500,200,200,100,100,50,50,50,0,0,-50,-50,-50,-100,-100,-200,-200,-500,-1000}
+RandomValues.frags = {10,5,5,3,3,2,2,1,1,0,0,-1,-1,-2,-2,-3,-3,-5,-5,-10}
+RandomValues.hp = {50,50,40,40,30,30,20,20,10,10,-10,-10,-20,-20,-30,-30,-40,-40,-50,-50}
+BanList.chips = {179,214,215,216,217,218,273,274,275,276}
 BanList.stages = {0,1,8}
 BanList.fights = {}
 BanList.styles = {}
-BanList.viruses = {0,198,199,240}
+BanList.viruses = {0, 198, 199, 240}
 loadfile("twitchsettings.txt")()
 
 socket = require("socket.core")
@@ -704,42 +703,44 @@ function twitchbot_commands()
 			end
 			
 			-- Over/Underflow Check
-			if c < 1 or c > 311 then
-				--TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." : Chip not found. \r\n")
-			else
-				-- Find Code
-				local codeVal = 0xFF
-				local codeSlot = 0
-				repeat
-					codeSlot = math.random(0,5)
-					codeVal = memory.readbyte(0x08011510 + (c*32) + codeSlot)
-				until codeVal < 0xFF
-				
-				-- Massive If Statement that checks Chip ID, Chip Code, and Version-Exclusive Chips.
-				if (codeVal >= 0 and codeVal <= 26 and c >= 0 and c <= 312) or ((memory.readbyte(0x080000AA) == 0x42 and ((c >= 302 and c <= 303) or (c >= 309 and c <= 311))) or (memory.readbyte(0x080000AA) == 0x57 and (c >= 304 and c <= 308))) then
-					-- If your Backpack is full with that chip.
-					local checkSlots = 0
-					local emptySlots = {}
-					repeat
-						if memory.readbyte(0x02001F60 + (c*18) + checkSlots) >= 99 then
-							if checkSlots == codeSlot and #emptySlots >= 1 then
-								codeSlot = emptySlots[math.random(1,#emptySlots)]
-							end
-						elseif memory.readbyte(0x08011510 + (c*32) + checkSlots) < 0xFF then
-							emptySlots[#emptySlots+1] = checkSlots
-						end
-						if memory.readbyte(0x02001F60 + (c*18) + codeSlot) < 99 then
-							if checkSlots == codeSlot then
-								CommandTimers[13] = CommandTimerDelays[13]
-								memory.writebyte(0x02001F60 + (c*18) + codeSlot, memory.readbyte(0x02001F60 + (c*18) + codeSlot)+1)
-								TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." : "..chiplist.names[c].. " "..chiplist.codes[codeVal].." added to Pack! \r\n")
-								break
-							end
-						end
-						checkSlots = checkSlots + 1
-					until checkSlots == 6
+			if type(c) == "number" then
+				if c < 1 or c > 311 then
+					--TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." : Chip not found. \r\n")
 				else
-					--TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." : Chip not found. (Might be version-exclusive?) \r\n")
+					-- Find Code
+					local codeVal = 0xFF
+					local codeSlot = 0
+					repeat
+						codeSlot = math.random(0,5)
+						codeVal = memory.readbyte(0x08011510 + (c*32) + codeSlot)
+					until codeVal < 0xFF
+					
+					-- Massive If Statement that checks Chip ID, Chip Code, and Version-Exclusive Chips.
+					if (codeVal >= 0 and codeVal <= 26 and c >= 0 and c <= 312) or ((memory.readbyte(0x080000AA) == 0x42 and ((c >= 302 and c <= 303) or (c >= 309 and c <= 311))) or (memory.readbyte(0x080000AA) == 0x57 and (c >= 304 and c <= 308))) then
+						-- If your Backpack is full with that chip.
+						local checkSlots = 0
+						local emptySlots = {}
+						repeat
+							if memory.readbyte(0x02001F60 + (c*18) + checkSlots) >= 99 then
+								if checkSlots == codeSlot and #emptySlots >= 1 then
+									codeSlot = emptySlots[math.random(1,#emptySlots)]
+								end
+							elseif memory.readbyte(0x08011510 + (c*32) + checkSlots) < 0xFF then
+								emptySlots[#emptySlots+1] = checkSlots
+							end
+							if memory.readbyte(0x02001F60 + (c*18) + codeSlot) < 99 then
+								if checkSlots == codeSlot then
+									CommandTimers[13] = CommandTimerDelays[13]
+									memory.writebyte(0x02001F60 + (c*18) + codeSlot, memory.readbyte(0x02001F60 + (c*18) + codeSlot)+1)
+									TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." : "..chiplist.names[c].. " "..chiplist.codes[codeVal].." added to Pack! \r\n")
+									break
+								end
+							end
+							checkSlots = checkSlots + 1
+						until checkSlots == 6
+					else
+						--TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." : Chip not found. (Might be version-exclusive?) \r\n")
+					end
 				end
 			end
 		end
