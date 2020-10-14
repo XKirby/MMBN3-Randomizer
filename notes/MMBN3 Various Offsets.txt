@@ -100,3 +100,17 @@
 3A - HeatBug
 3B - AquaBug
 3C - WoodBug
+
+[Battle Data]
+BB ?? RR M? XX XX XX XX
+B = Battlefield Index
+R = Run Rate by HP
+M = Music Value
+X = Offset to Character/Obstactle Instances
+
+CC XX YY TT [FF 00 00 00]
+C = Character Index
+X = X Position on Battlefield
+Y = Y Position on Battlefield
+T = Character Type
+[FF 00 00 00] Appears after all Character Instances have been defined.

@@ -556,7 +556,7 @@ function twitchbot_commands()
 				add_chip(c)
 				TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Slot-In "..chiplist.names[c].."! \r\n")
 			else
-				TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Chip not Found. \r\n")
+				--TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Chip not Found. \r\n")
 			end
 		end
 		
@@ -608,7 +608,7 @@ function twitchbot_commands()
 				elseif type(choice) == "number" and choice < 0 then
 					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Lost "..tostring(choice).." Zenny! \r\n")
 				elseif choice == "empty" then
-					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :We're broke now! \r\n")
+					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Empty on Zenny! \r\n")
 				end
 			end
 		end
@@ -651,11 +651,11 @@ function twitchbot_commands()
 				TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Nothing Happened. \r\n")
 			else
 				if type(choice) == "number" and choice > 0 then
-					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Gained "..tostring(choice).." Max Health! \r\n")
+					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Gained "..tostring(choice).." Max HP! \r\n")
 				elseif type(choice) == "number" and choice < 0 then
-					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Lost "..tostring(choice).." Max Health! \r\n")
+					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Lost "..tostring(choice).." Max HP! \r\n")
 				elseif choice == "lethal" then
-					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :WELL YOU'RE DEAD PERMANENTLY NOW \r\n")
+					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Empty on Max HP! \r\n")
 				end
 			end
 		end
@@ -672,11 +672,11 @@ function twitchbot_commands()
 				TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Nothing Happened. \r\n")
 			else
 				if type(choice) == "number" and choice > 0 then
-					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Healed "..tostring(choice).." Health! \r\n")
+					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Gained "..tostring(choice).." HP! \r\n")
 				elseif type(choice) == "number" and choice < 0 then
-					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Took "..tostring(choice).." Damage! \r\n")
+					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Lost "..tostring(choice).." HP! \r\n")
 				elseif choice == "lethal" then
-					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :You're dead! \r\n")
+					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Empty on HP! \r\n")
 				end
 			end
 		end
@@ -705,7 +705,7 @@ function twitchbot_commands()
 			
 			-- Over/Underflow Check
 			if c < 1 or c > 311 then
-				TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." : Chip not found. \r\n")
+				--TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." : Chip not found. \r\n")
 			else
 				-- Find Code
 				local codeVal = 0xFF
@@ -739,7 +739,7 @@ function twitchbot_commands()
 						checkSlots = checkSlots + 1
 					until checkSlots == 6
 				else
-					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." : Chip not found. (Might be version-exclusive?) \r\n")
+					--TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." : Chip not found. (Might be version-exclusive?) \r\n")
 				end
 			end
 		end
@@ -772,7 +772,7 @@ function twitchbot_commands()
 			if type(c) == "number" and (c >= 0 and c < 0x40) then
 				if table.find(compareValue(c), BanList.styles) then
 					CommandTimers[6] = 0
-					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Style not changed. (This Style has been banned.) \r\n")
+					--TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Style not changed. (This Style has been banned.) \r\n")
 				else
 					print("Style Change! "..stylelist[c].."!")
 					CurrentStyle = c
@@ -781,7 +781,7 @@ function twitchbot_commands()
 				end
 			else
 				CommandTimers[6] = 0
-				TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Style not Found. \r\n")
+				--TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Style not Found. \r\n")
 			end
 		end
 		
@@ -803,7 +803,7 @@ function twitchbot_commands()
 			if type(c) == "number" then
 				if c == 92 or (c >= 247 and c <= 252) or (c >= 1124 and c <= 1163) or table.find(compareValue(c), BanList.fights) then
 					CommandTimers[8] = 0
-					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Encounter not added. (This fight is banned.) \r\n")
+					--TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Encounter not added. (This fight is banned.) \r\n")
 				elseif (c >= -1 and c < 1124) then
 					print("Incoming Viruses! Encounter #"..c.." Loaded!")
 					ForceNextEncounter = c
@@ -811,7 +811,7 @@ function twitchbot_commands()
 					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Forcing next Encounter to #"..c.."! \r\n")
 				else
 					CommandTimers[8] = 0
-					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Encounter not found. \r\n")
+					--TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Encounter not found. \r\n")
 				end
 			end
 		end
@@ -854,7 +854,7 @@ function twitchbot_commands()
 			if type(c) == "number" and (c >= 0 and c <= 10) then
 				if table.find(compareValue(c), BanList.stages) then
 					CommandTimers[9] = 0
-					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Stage not changed. (This Stage has been banned.) \r\n")
+					--TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Stage not changed. (This Stage has been banned.) \r\n")
 				else
 					print("Stage set to "..panellist[c].."!")
 					force_setstage(c)
@@ -862,7 +862,7 @@ function twitchbot_commands()
 				end
 			else
 				CommandTimers[9] = 0
-				TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Stage not Found. \r\n")
+				--TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :Stage not Found. \r\n")
 			end
 		end
 		
@@ -903,7 +903,7 @@ function twitchbot_commands()
 			local Y = string.sub(X, string.find(X, ",")+1, string.len(X))
 			X = string.sub(X, 0, string.find(X, ",")-1)
 			
-			-- Find Panel Type
+			-- Find Enemy
 			for i = 0,#viruslist do
 				if viruslist[i] then
 					if string.lower(viruslist[i]) == ID:lower() then
@@ -912,12 +912,25 @@ function twitchbot_commands()
 					end
 				end
 			end
+			
+			-- Adjust values
 			if type(tonumber(ID)) == "number" then
 				ID = tonumber(ID)
 				ID = math.floor(ID)
 			end
+			if type(tonumber(X)) == "number" then
+				X = tonumber(X)
+				X = math.floor(X)
+				if X < 4 or X > 6 then X = nil end
+			end
+			if type(tonumber(Y)) == "number" then
+				Y = tonumber(Y)
+				Y = math.floor(Y)
+				if Y < 1 or Y > 3 then Y = nil end
+			end
 			
-			if type(ID) == "number" and (ID >= 0 and ID <= #viruslist) then
+			-- Queue Enemy
+			if type(X) == "number" and type(Y) == "number" and type(ID) == "number" and (ID >= 0 and ID <= #viruslist) then
 				if not table.find(compareValue(ID), BanList.viruses) and #QueuedEncounter < 3 then
 					table.insert(QueuedEncounter, {v_id = ID, v_x = X, v_y = Y})
 					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :"..viruslist[ID].." Queued up! \r\n")
@@ -1059,7 +1072,7 @@ function force_encounter(encounter)
 		-- Force Encounter
 		memory.writeword(0x2001ddc, 0xFFF0)
 		memory.writeword(0x2001de0, 0x0000)
-		memory.writedword(0x2001600, 0xC0002000)
+		memory.writedword(0x2001600, 0x00002000)
 		memory.writedword(0x2001604, 0x02001608)
 		memory.writedword(0x20018AC, 0x02001600)
 		memory.writedword(0x2006d0c, 0x02001600)
