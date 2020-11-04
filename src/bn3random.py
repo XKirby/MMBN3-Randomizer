@@ -17,12 +17,10 @@ obstacles = ["Mega Man", "Virus", "Rock", "RockCube", "MetalCube", "IceCube", "G
 # Chip Codes List
 chip_codes = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "*"]
 
-# Shadows, Twinners, mushy, N.O
-banned_viruses = [0x3d, 0x3e, 0x3f, 0x40, 0x97, 0x98, 0x99, 0x9a, 0x31, 0x32, 0x33, 0x34, 135, 136, 137, 138]
-# Punk = airshot? anticheat pls
+# Shadows, Twinners, mushy, N.O, coldhead, windbox, yort1, and scuttles
+banned_viruses = [70, 71, 72, 73, 74, 75, 61, 62, 63, 64, 151, 152, 153, 154, 49, 50, 51, 52, 135, 136, 137, 138]
 
 # Navi Lists for Navi Randomizations
-allowed_navis = [0,4,8,12,16,20,24,32,36,40,44,48,52,56,60,64]
 weak_navis = [0,4,32,40]
 mid_navis = [8,20,48,52,56]
 strong_navis = [12,16,24,44]
@@ -1139,7 +1137,7 @@ def virus_replace(ind):
     if ind >= 168:
         # Randomize Navi Battles
         if RANDOM_NAVIS == 1:
-            if ind not in [196, 197, 198, 199, 236, 237, 238, 239, 240, 241, 242, 243]:
+            if ind not in [196, 197, 198, 199, 220, 221, 222, 223, 224, 225, 226, 227, 236, 237, 238, 239, 240, 241, 242, 243]:
                 # Navi List - Empty to start
                 
                 # Easy Navis
@@ -1151,7 +1149,7 @@ def virus_replace(ind):
                     weak_navis.remove(chosen_navis[ind-168])
                 
                 # Middle Navis
-                if ind-168 in [8, 20, 48, 52, 56] and chosen_navis[ind-168] < 0:
+                if ind-168 in [8, 20, 48] and chosen_navis[ind-168] < 0:
                     chosen_navis[ind-168] = random.choice(mid_navis)
                     chosen_navis[ind-168+1] = chosen_navis[ind-168]
                     chosen_navis[ind-168+2] = chosen_navis[ind-168]
@@ -1175,7 +1173,7 @@ def virus_replace(ind):
                     post_navis.remove(chosen_navis[ind-168])
                 
                 new_ind = chosen_navis[ind-168] + 168
-                ind = new_ind + (virus_level(ind) - 1)
+                ind = new_ind + virus_level(ind) - 1
         if OMEGA_MODE >= 1:
             # Bass, ignore swap-out mechanic
             if ind in [238, 239, 240, 241]:
@@ -1193,9 +1191,6 @@ def virus_replace(ind):
                     return ind + OMEGA_MODE
         else:
             return ind
-    # Also ignore coldhead, windbox, yort1, and scuttles
-    if ind in [70, 71, 72, 73, 74, 75]:
-        return ind
     old_hp, old_attack, old_name = virus_data[ind]
     old_hp = int(old_hp)
     if old_hp == -1:
@@ -1218,7 +1213,8 @@ def virus_replace(ind):
                     candidates.append(i + OMEGA_MODE)
             else:
                 candidates.append(i)
-    return random.choice(candidates)
+    v = random.choice(candidates)
+    return v
 
 def randomize_viruses():
     battle_regex = re.compile('(?s)\x00[\x01-\x03][\x01-\x03]\x00(?:.[\x01-\x06][\x01-\x03].)+\xff\x00\x00\x00')
@@ -1242,12 +1238,12 @@ def randomize_viruses():
                     changelog_battles.append(["navi", n_battles, virus_ind-168, new_ind-168])
                 elif virus_ind > 0 and virus_ind < 168:
                     #open('fights.txt','a').write(virus_data[ord(rom_data[i])][2] + "(" + str(ord(rom_data[i+1])) + "," + str(ord(rom_data[i+2])) + "), ")
-                    changelog_battles.append(["virus", n_battles, virus_ind-1, new_ind-1])
+                    changelog_battles.append(["virus", n_battles, virus_ind, new_ind])
             elif ord(rom_data[i + 3]) in [2, 3, 4, 5, 6, 7, 11] and RANDOM_OBSTACLES == 1:
                 old_obst = ord(rom_data[i + 3])
                 new_obst = random.choice([2,3,4,5,6,7,11])
                 write_data(chr(new_obst), i + 3)
-                changelog_battles.append(["obstacle", n_battles, old_obst-1, new_obst-1])
+                changelog_battles.append(["obstacle", n_battles, old_obst, new_obst])
                 #open('fights.txt','a').write(obstacles[ord(rom_data[i + 3])] + "(" + str(ord(rom_data[i+1])) + "," + str(ord(rom_data[i+2])) + "), ")
                 
     #open('fights.txt','a').write("\n")
@@ -1797,6 +1793,15 @@ def randomize_battlefields():
         print "randomized stage ids"
 
 def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fVirusMult = 1.0, fVirusVar = 0.0, iChipCode = 0, bChipNames = 0, bVirusNames = 0, bRandomBosses = 0, iRandomElements = 0, iRegularMemory = 0, bNCP = 0, iOmegaMode = 0, iHellMode = 0, iBattlefields = 0, iFolderMode = 0, bLog = 0, bRandomObjects = 0, bFillShops = 1, allowFolder = 1, allowGMD = 1, allowBMD = 1, allowShop = 1, allowChip = 1, allowVirus = 1, allowTrade = 1, allowDaily = 0, allowEasyTutorial = 1, ignoreLimits = 0):
+    global weak_navis
+    weak_navis = [0,4,32,40]
+    global mid_navis
+    mid_navis = [8,20,48]
+    global strong_navis
+    strong_navis = [12,16,24,44]
+    global post_navis
+    post_navis = [36,60,64]
+    
     global P_MULTIPLIER
     global P_VARIANCE
     global V_MULTIPLIER
