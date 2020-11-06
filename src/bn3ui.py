@@ -336,7 +336,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Scale1.configure(variable=bn3ui_support.randomRegMemory)
 
         self.Checkbutton3 = Checkbutton(self.Labelframe3)
-        self.Checkbutton3.place(relx=0.0, rely=0.52, relheight=0.08
+        self.Checkbutton3.place(relx=0.0, rely=0.44, relheight=0.08
                 , relwidth=0.35, y=-12, h=6)
         self.Checkbutton3.configure(activebackground="#d9d9d9")
         self.Checkbutton3.configure(activeforeground="#000000")
@@ -349,6 +349,22 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton3.configure(justify=LEFT)
         self.Checkbutton3.configure(text='''Fill Shops''')
         self.Checkbutton3.configure(variable=bn3ui_support.bFillShops)
+        self.Checkbutton3.configure(width=155)
+        
+        self.Checkbutton3 = Checkbutton(self.Labelframe3)
+        self.Checkbutton3.place(relx=0.0, rely=0.52, relheight=0.08
+                , relwidth=0.35, y=-12, h=6)
+        self.Checkbutton3.configure(activebackground="#d9d9d9")
+        self.Checkbutton3.configure(activeforeground="#000000")
+        self.Checkbutton3.configure(anchor=W)
+        self.Checkbutton3.configure(background="#d9d9d9")
+        self.Checkbutton3.configure(disabledforeground="#a3a3a3")
+        self.Checkbutton3.configure(foreground="#000000")
+        self.Checkbutton3.configure(highlightbackground="#d9d9d9")
+        self.Checkbutton3.configure(highlightcolor="black")
+        self.Checkbutton3.configure(justify=LEFT)
+        self.Checkbutton3.configure(text='''Free Chips in Shops''')
+        self.Checkbutton3.configure(variable=bn3ui_support.bFreeShops)
         self.Checkbutton3.configure(width=155)
 
         self.Checkbutton3 = Checkbutton(self.Labelframe3)
@@ -411,7 +427,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton3.configure(highlightbackground="#d9d9d9")
         self.Checkbutton3.configure(highlightcolor="black")
         self.Checkbutton3.configure(justify=LEFT)
-        self.Checkbutton3.configure(text='''Skip Tutorial''')
+        self.Checkbutton3.configure(text='''Normal Tutorial''')
         self.Checkbutton3.configure(variable=bn3ui_support.allowEasyTutorial)
         self.Checkbutton3.configure(width=155)
         

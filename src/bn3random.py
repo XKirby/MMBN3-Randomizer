@@ -507,6 +507,8 @@ def init_chip_data():
     
     chip_attack = open('chip_attackpower.txt', 'r').read().strip()
     chip_attack = chip_attack.split('\n')
+    
+    chip_reg = open('regmem.txt','r').read().strip().split('\n')
 
     chip_data.append({})
     for i in range(N_CHIPS):
@@ -538,6 +540,9 @@ def init_chip_data():
             #RegMem Randomizer
             if REGMEM_MODE >= 1:
                 regsize = random.randint(1, REGMEM_MODE)
+                write_data(chr(regsize), s+10)
+            else:
+                regsize = int(chip_reg[i])
                 write_data(chr(regsize), s+10)
             
             #All Stars Mode
@@ -657,10 +662,10 @@ def init_chip_data():
             textcodes = []
             for j in purecodes:
                 if j > 26:
-                    textcodes.append(" ")
+                    textcodes.append("-")
                     continue
                 textcodes.append(chip_codes[j])
-            changelog_chip.append([name, final_name, old_power, power, str(textcodes)])
+            changelog_chip.append([name, final_name, old_power, power, str(textcodes), regsize])
 
             #if name == 'VarSwrd':
             #   power = 60
@@ -740,7 +745,7 @@ def init_pa_data():
             final_name = name
             if CP_NAMERANDOMIZER == 1:
                 nameoffset, final_name = randomize_name(nameoffset, name, chip_randnames)
-            changelog_chip.append([name, final_name, old_power, power, "N/A"])
+            changelog_chip.append([name, final_name, old_power, power, "N/A", "N/A"])
             
         # Conditional attacks
         is_conditional = name in ['Spice1', 'Spice2', 'Spice3', 'BlkBomb1', 'BlkBomb2', 'BlkBomb3', 'GrabBack', 'GrabRvng', 'Snake', 'Team1', 'Slasher', 'NoBeam1', 'NoBeam2', 'NoBeam3']
@@ -959,7 +964,7 @@ def randomize_bmds_trades():
             continue
         available_chips.append(i)
     
-    free_space = 0x800000
+    free_space = len(old_data)
     if ROMVERSION == "b":
         base_offset = 0x28854
         pattern_list.append(0x2664c)
@@ -1510,6 +1515,24 @@ def randomize_shops():
     if ROMVERSION == "b":
         item_data_offset = 0x44bb0
     
+    chip_order_offset = 0x45148
+    if ROMVERSION == "b":
+        chip_order_offset = 0x45130
+    
+    # Chip Order Randomization
+    if ALLOW_SHOPS == 1:
+        while True:
+            item_type, stock, chip, code, filler, price = struct.unpack('<BBHBBH', rom_data[chip_order_offset: chip_order_offset + 8])
+            if item_type == 0:
+                break
+            code = random.choice(allcodes[chip-1])
+            if FREE_SHOPS == 1:
+                price = 0
+            new_item = struct.pack('<BBHBBH', item_type, stock, chip, code, filler, price)
+            write_data(new_item, chip_order_offset)
+            chip_order_offset += 8
+            changelog_shops.append([n_shops, chip, code, price*100])
+    
     first_shop = None
     for match in shop_regex.finditer(rom_data):
         shop_offset = match.start()
@@ -1598,6 +1621,9 @@ def randomize_shops():
                         price = random.randint(100,350)
                     stock = 1
                     new_code = random.choice(allcodes[new_chip-1])
+                # Free Shops check
+                if FREE_SHOPS == 1:
+                    price = 0
                 new_item = struct.pack('<BBHBBH', item_type, stock, new_chip, new_code, filler, price)
                 write_data(new_item, item_offset)
                 changelog_shops.append([n_shops, chip_hex.keys()[chip_hex.values().index(new_chip)], new_code, price*100])
@@ -1792,7 +1818,7 @@ def randomize_battlefields():
                 changelog_fields.append(["id", str(stage_offset + i), str(character)])
         print "randomized stage ids"
 
-def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fVirusMult = 1.0, fVirusVar = 0.0, iChipCode = 0, bChipNames = 0, bVirusNames = 0, bRandomBosses = 0, iRandomElements = 0, iRegularMemory = 0, bNCP = 0, iOmegaMode = 0, iHellMode = 0, iBattlefields = 0, iFolderMode = 0, bLog = 0, bRandomObjects = 0, bFillShops = 1, allowFolder = 1, allowGMD = 1, allowBMD = 1, allowShop = 1, allowChip = 1, allowVirus = 1, allowTrade = 1, allowDaily = 0, allowEasyTutorial = 1, ignoreLimits = 0):
+def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fVirusMult = 1.0, fVirusVar = 0.0, iChipCode = 0, bChipNames = 0, bVirusNames = 0, bRandomBosses = 0, iRandomElements = 0, iRegularMemory = 0, bNCP = 0, iOmegaMode = 0, iHellMode = 0, iBattlefields = 0, iFolderMode = 0, bLog = 0, bRandomObjects = 0, bFillShops = 1, bFreeShops = 0, allowFolder = 1, allowGMD = 1, allowBMD = 1, allowShop = 1, allowChip = 1, allowVirus = 1, allowTrade = 1, allowDaily = 0, allowEasyTutorial = 1, ignoreLimits = 0):
     global weak_navis
     weak_navis = [0,4,32,40]
     global mid_navis
@@ -1828,6 +1854,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     global TUTORIAL_SKIP
     global RANDOM_OBSTACLES
     global FILL_SHOPS
+    global FREE_SHOPS
     global OUTPUTLOG
     global IGNORE_LIMITS
     
@@ -1890,6 +1917,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     ALLOW_DAILY = allowDaily
     TUTORIAL_SKIP = allowEasyTutorial
     FILL_SHOPS = bFillShops
+    FREE_SHOPS = bFreeShops
     OUTPUTLOG = bLog
     IGNORE_LIMITS = ignoreLimits
     
@@ -1910,6 +1938,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         ALLOW_FOLDERS = 1
         TUTORIAL_SKIP = 1
         FILL_SHOPS = 1
+        FREE_SHOPS = 0
         random.seed(SEED)
         P_MULTIPLIER = float(random.randint(15,30)*5)/100
         P_VARIANCE = float(random.randint(0,15)*5)/100
@@ -1919,7 +1948,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         NC_SHAPERANDOMIZER = random.choice([0,0,0,0,0,1])
         BF_PANELRANDOMIZER = random.choice([0,0,0,0,0,0,1,2])
         ELEMENT_MODE = random.choice([0,0,0,0,1,1,2,2,3])
-        REGMEM_MODE = random.choice([0,0,0,30,30,60,99])
+        REGMEM_MODE = random.choice([0,0,0,random.randint(1,20),random.randint(1,20),random.randint(1,35),random.randint(1,55)])
         HELL_MODE = 0
         OMEGA_MODE = random.choice([0,0,0,0,0,1])
         RANDOM_NAVIS = random.choice([0,0,0,1])
@@ -2066,7 +2095,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         open("mmbn3" + ROMVERSION + "_seedinfo - " + seed_hash + ".txt", 'a').write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n!!!!!!!!!!!!!!\n!!!SPOILERS!!!\n!!!!!!!!!!!!!!\n\n")
         print "!!NOTE!! Writing detailed log to seedinfo.txt, this will take a few..."
         for i in range(len(changelog_chip)):
-            open("mmbn3" + ROMVERSION + "_seedinfo - " + seed_hash + ".txt", 'a').write(changelog_chip[i][0] + " -> " + changelog_chip[i][1] + ", Power: " + str(changelog_chip[i][2]) + " -> " + str(changelog_chip[i][3]) + ", Codes: " + changelog_chip[i][4] + "\n")
+            open("mmbn3" + ROMVERSION + "_seedinfo - " + seed_hash + ".txt", 'a').write(changelog_chip[i][0] + " -> " + changelog_chip[i][1] + ", Power: " + str(changelog_chip[i][2]) + " -> " + str(changelog_chip[i][3]) + ", Codes: " + changelog_chip[i][4] + ", RegMem: " + str(changelog_chip[i][5]) + "\n")
         for i in range(0, len(changelog_battles)-1):
             name1 = ""
             name2 = ""

@@ -30,6 +30,7 @@ def main():
         global TUTORIAL_SKIP
         global RANDOM_OBSTACLES
         global FILL_SHOPS
+        global FREE_SHOPS
         global IGNORE_LIMITS
         
         global INPUT_FILE
@@ -58,6 +59,7 @@ def main():
         parser.add_argument("-fl", "--folderlock", help="Folder Lock Mode, integer.", type=int, choices=[0,1,2,3,4], default=0)
         parser.add_argument("-tut", "--tutorial", help="Skip Tutorial Randomization, boolean.", type=int, choices=[0,1], default=1)
         parser.add_argument("-fs", "--fillshops", help="Fill Shops, boolean.", type=int, choices=[0,1], default=1)
+        parser.add_argument("-fc", "--freechips", help="Free Chips in Shops, boolean.", type=int, choices=[0,1], default=1)
         parser.add_argument("-bo", "--battleobjects", help="Randomize Battle Objects, boolean.", type=int, choices=[0,1], default=0)
         parser.add_argument("--allowfolder", help="Allow Folder Randomization, boolean.", type=int, choices=[0,1], default=1)
         parser.add_argument("--allowgmd", help="Allow Green Mystery Data Randomization, boolean.", type=int, choices=[0,1], default=1)
@@ -128,6 +130,7 @@ def main():
                 HELL_MODE = int(raw_input("Enable Hell Mode? [0-3]> ")) % 4
                 TUTORIAL_SKIP = int(raw_input("Disable Tutorial Randomization? [0-1]> ")) % 2
                 FILL_SHOPS = int(raw_input("Fill Shops? [0-1]> ")) % 2
+                FILL_SHOPS = int(raw_input("Free Shops? [0-1]> ")) % 2
                 RANDOM_OBSTACLES = int(raw_input("Randomized Battle Objects? [0-1]> ")) % 2
                 ALLOW_FOLDERS = int(raw_input("Allow Folder Randomization? [0-1]> ")) % 2
                 ALLOW_GMD = int(raw_input("Allow GMD Randomization? [0-1]> ")) % 2
@@ -148,7 +151,7 @@ def main():
         if len(INPUT_FILE) < 1 or len(OUTPUT_FILE) < 1:
                 return
         import bn3random
-        bn3random.randomizerom(INPUT_FILE, OUTPUT_FILE, ROMVERSION, SEED, P_MULTIPLIER, P_VARIANCE, V_MULTIPLIER, VH_VARIANCE, C_ALLSTARMODE, CP_NAMERANDOMIZER, VN_NAMERANDOMIZER, RANDOM_NAVIS, ELEMENT_MODE, REGMEM_MODE, NC_SHAPERANDOMIZER, OMEGA_MODE, HELL_MODE, BF_PANELRANDOMIZER, FOLDER_MODE, OUTPUTLOG, RANDOM_OBSTACLES, FILL_SHOPS, ALLOW_FOLDERS, ALLOW_GMD, ALLOW_BMD, ALLOW_SHOPS, ALLOW_CHIPS, ALLOW_VIRUSES, ALLOW_TRADES, ALLOW_DAILY, TUTORIAL_SKIP, IGNORE_LIMITS)
+        bn3random.randomizerom(INPUT_FILE, OUTPUT_FILE, ROMVERSION, SEED, P_MULTIPLIER, P_VARIANCE, V_MULTIPLIER, VH_VARIANCE, C_ALLSTARMODE, CP_NAMERANDOMIZER, VN_NAMERANDOMIZER, RANDOM_NAVIS, ELEMENT_MODE, REGMEM_MODE, NC_SHAPERANDOMIZER, OMEGA_MODE, HELL_MODE, BF_PANELRANDOMIZER, FOLDER_MODE, OUTPUTLOG, RANDOM_OBSTACLES, FILL_SHOPS, FREE_SHOPS, ALLOW_FOLDERS, ALLOW_GMD, ALLOW_BMD, ALLOW_SHOPS, ALLOW_CHIPS, ALLOW_VIRUSES, ALLOW_TRADES, ALLOW_DAILY, TUTORIAL_SKIP, IGNORE_LIMITS)
 
 if __name__ == '__main__':
         main()
