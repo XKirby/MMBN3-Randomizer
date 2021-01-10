@@ -21,7 +21,8 @@ chip_codes = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "
 banned_viruses = [70, 71, 72, 73, 74, 75, 61, 62, 63, 64, 151, 152, 153, 154, 49, 50, 51, 52, 135, 136, 137, 138]
 
 # Potentially Required NPC Trades
-required_trades = [[0x20, 4], [0x3a, 2], [136, 10], [46, 21], [99, 13], [103, 0], [122, 26], [163, 26]]
+required_trades = [[0x20, 4], [0x3a, 2], [136, 10], [46, 21], [99, 13], [103, 0], [122, 26], [163, 26], [0x8f, 26], [0x45, 6], [0x19, 12]]
+tradechiplist = []
 
 # Navi Lists for Navi Randomizations
 weak_navis = [0,4,32,40]
@@ -877,6 +878,7 @@ def randomize_gmds():
     zenny_regex = re.compile('(?s)\xf1\x00\xfb\x00\x0f(.{64})')
     earliest_script = 999999999
     end_addr = -1
+    chip_map = generate_chip_permutation()
     
     for area, subareas in map_data.iteritems():
         for subarea in subareas:
@@ -892,7 +894,6 @@ def randomize_gmds():
                 match_offset = match.start() + 5
                 x = map(lambda x : ord(x), list(match.groups()[0]))
                 for i in range(0, len(x), 2):
-                    chip_map = generate_chip_permutation()
                     old_chip = x[i]
                     new_chip = chip_map[old_chip]
                     new_code = random.choice(allcodes[new_chip-1])
@@ -943,11 +944,12 @@ def randomize_gmds():
             # Pad up to multiple of 4
             free_space += (4 - free_space) % 4
             
-    print 'randomized gmds'
+    print('randomized gmds')
 
 def randomize_bmds_trades():
     global rom_data
     global randomized_data
+    global tradechiplist
     old_data = rom_data
     rom_data = ''.join(randomized_data)
     
@@ -984,6 +986,7 @@ def randomize_bmds_trades():
     tradechiptext_regex = re.compile(r'(?s)\xF9[\x00-\xFF]([\s\S][\x01-\x02])\x00\xF9[\x00-\xFF]([\x00-\x1A])\x03')
     earliest_script = 0x10000000
     end_addr = -1
+    chip_map = generate_chip_permutation(True)
     
     while ptr <= 0x24C:
         pattern_list.append(base_offset + ptr)
@@ -1012,7 +1015,6 @@ def randomize_bmds_trades():
                 match_offset = match.start()
                 old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
                 old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
-                chip_map = generate_chip_permutation(allow_conditional_attacks = True)
                 new_chip = chip_map[old_chip]
                 while new_chip == 279:
                     new_chip = random.choice(available_chips)
@@ -1083,9 +1085,6 @@ def randomize_bmds_trades():
                 match_offset = match.start()
                 old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
                 old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
-                # if [old_chip, old_code] in skip_these:
-                    # continue
-                chip_map = generate_chip_permutation(allow_conditional_attacks = True)
                 new_chip = chip_map[old_chip]
                 while new_chip == 279:
                     new_chip = random.choice(available_chips)
@@ -1102,10 +1101,6 @@ def randomize_bmds_trades():
                             new_chip = tradechiplist[i][2]
                             new_code = tradechiplist[i][3]
                             break
-                # Skip these Chips
-                if [old_chip, old_code] in [[0x8f, 26], [0x45, 6], [0x19, 12]]:
-                    new_chip = old_chip
-                    new_code = allcodes[new_chip][chip_data[new_chip]['codes'].index(old_code)]
                 new_data[match.start(1)] = new_chip % 256
                 new_data[match.start(1)+1] = int(new_chip / 256)
                 new_data[match.start(2)] = new_code
@@ -1156,9 +1151,9 @@ def randomize_bmds_trades():
         free_space += (4 - free_space) % 4
     rom_data = old_data
     if ALLOW_BMD == 1:
-        print 'randomized bmds'
+        print('randomized bmds')
     if ALLOW_TRADES == 1:
-        print 'randomized trades'
+        print('randomized trades')
 
 def virus_replace(ind):
     # Safety precaution
@@ -1278,7 +1273,7 @@ def randomize_viruses():
                 #open('fights.txt','a').write(obstacles[ord(rom_data[i + 3])] + "(" + str(ord(rom_data[i+1])) + "," + str(ord(rom_data[i+2])) + "), ")
                 
     #open('fights.txt','a').write("\n")
-    print 'randomized %d battles' % n_battles
+    print('randomized %d battles' % n_battles)
     
     virus_start = 0x19618
     
@@ -1370,7 +1365,7 @@ def randomize_viruses():
         #print 'Navi HP: ', virus_hp
         changelog_virus.append([virus_name, returned_name, virus_hp])
     
-    print 'randomized virus and navi HP'
+    print('randomized virus and navi HP')
 
 def generate_chip_permutation(allow_conditional_attacks = False):
     all_chips = defaultdict(list)
@@ -1467,12 +1462,11 @@ def randomize_folders():
             f = random.randint(0, len(folder_data)-1)
             if n_folders >= 11 and n_folders <= 13:
                 f = first
-    print 'randomized %d folders' % n_folders
+    print('randomized %d folders' % n_folders)
 
 def randomize_virus_drops():
     offset = 0x160a8
-    # Iceball M, Yoyo1 G, Wind *
-    special_chips = []#[(25, 12), (69, 6), (143, 26), (103, 0)]
+    chip_map = generate_chip_permutation(allow_conditional_attacks = True)
     for virus_ind in range(244):
         zenny_queue = []
         last_chip = None
@@ -1491,20 +1485,14 @@ def randomize_virus_drops():
                 last_chip = (old_chip, old_code)
 
                 # Randomize the chip
-                if (old_chip, old_code) in special_chips:
-                    new_code = old_code
-                    new_chip = old_chip
-                else:
-                    chip_map = generate_chip_permutation(allow_conditional_attacks = True)
-                    new_chip = chip_map[old_chip]
-                    new_code = get_new_code(old_chip, old_code, new_chip)
+                new_chip = chip_map[old_chip]
+                new_code = get_new_code(old_chip, old_code, new_chip)
                 new_reward = new_chip + (new_code << 9)
                 changelog_drops.append([virus_ind, old_chip, old_code, new_chip, new_code])
                 write_data(struct.pack('<H', new_reward), offset)
 
                 # Discharge the queue
                 for old_offset in zenny_queue:
-                    chip_map = generate_chip_permutation(allow_conditional_attacks = True)
                     new_chip = chip_map[old_chip]
                     new_code = get_new_code(old_chip, old_code, new_chip)
                     new_reward = new_chip + (new_code << 9)
@@ -1520,7 +1508,6 @@ def randomize_virus_drops():
                         zenny_queue.append( (offset) )
                     else:
                         old_chip, old_code = last_chip
-                        chip_map = generate_chip_permutation(allow_conditional_attacks = True)
                         new_chip = chip_map[old_chip]
                         new_code = get_new_code(old_chip, old_code, new_chip)
                         new_reward = new_chip + (new_code << 9)
@@ -1528,7 +1515,7 @@ def randomize_virus_drops():
                         write_data(struct.pack('<H', new_reward), offset)
 
             offset += 2
-    print 'randomized virus drops'
+    print('randomized virus drops')
 
 def randomize_shops():
     shop_regex = re.compile('(?s)[\x00-\x01]\x00\x00\x00...\x08...\x02.\x00\x00\x00')
@@ -1543,6 +1530,9 @@ def randomize_shops():
     chip_order_offset = 0x45148
     if ROMVERSION == "b":
         chip_order_offset = 0x45130
+    
+    global tradechiplist
+    chip_map = generate_chip_permutation()
     
     # Chip Order Randomization
     if ALLOW_SHOPS == 1:
@@ -1592,7 +1582,6 @@ def randomize_shops():
                         item_offset += 8
                         n_items -= 1
                         continue
-                chip_map = generate_chip_permutation()
                 new_chip = chip_map[old_chip]
                 while new_chip == 279:
                     new_chip = random.choice(available_chips)
@@ -1608,23 +1597,41 @@ def randomize_shops():
                 # Force Chips in ACDC 1 Shop to be Story Progression Chips
                 if item_offset == item_data_offset + 0x10:
                     new_chip = 0x8f
-                    new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(26)]
+                    new_code = allcodes[new_chip][chip_data[new_chip]['codes'].index(26)]
+                    if ALLOW_TRADES == 1 and [new_chip, 26] in required_trades:
+                        for i in range(len(tradechiplist)):
+                            if new_chip == tradechiplist[i][0] and 26 == tradechiplist[i][1]:
+                                new_chip = tradechiplist[i][2]
+                                new_code = tradechiplist[i][3]
+                                break
                     #new_code = 26
-                    stock = 1
+                    stock = 2
                     price = 1
                 if item_offset == item_data_offset + 0x18:
                     new_chip = 0x45
-                    new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(6)]
+                    new_code = allcodes[new_chip][chip_data[new_chip]['codes'].index(6)]
+                    if ALLOW_TRADES == 1 and [new_chip, 6] in required_trades:
+                        for i in range(len(tradechiplist)):
+                            if new_chip == tradechiplist[i][0] and 6 == tradechiplist[i][1]:
+                                new_chip = tradechiplist[i][2]
+                                new_code = tradechiplist[i][3]
+                                break
                     #new_code = 6
-                    stock = 1
+                    stock = 2
                     price = 1
                 if item_offset == item_data_offset + 0x20:
                     new_chip = 0x19
-                    new_code = allcodes[new_chip-1][chip_data[new_chip]['codes'].index(12)]
+                    new_code = allcodes[new_chip][chip_data[new_chip]['codes'].index(12)]
+                    if ALLOW_TRADES == 1 and [new_chip, 12] in required_trades:
+                        for i in range(len(tradechiplist)):
+                            if new_chip == tradechiplist[i][0] and 12 == tradechiplist[i][1]:
+                                new_chip = tradechiplist[i][2]
+                                new_code = tradechiplist[i][3]
+                                break
                     #new_code = 12
-                    stock = 1
+                    stock = 2
                     price = 1
-                # Fix Giga Chip in Secret Area Shop to be version-exclusive chip
+                # Fix Giga Chip in Secret Area Shop to be non-version-exclusive chip
                 if item_offset == item_data_offset + 0x2a8:
                     if ROMVERSION == "w":
                         new_chip = random.choice(gigachips)
@@ -1646,7 +1653,7 @@ def randomize_shops():
         if ALLOW_SHOPS == 0 and n_shops >= 1:
             break
 
-    print 'randomized %d shop(s)' % n_shops
+    print('randomized %d shop(s)' % n_shops)
 
 def randomize_number_trader():
     # 3e 45 cc 86 90 18 4f 09 61 e9
@@ -1668,7 +1675,7 @@ def randomize_number_trader():
             changelog_numbertrader.append([new_chip, new_code])
         reward_offset += 12
         n_rewards += 1
-    print 'randomized %d number trader rewards' % n_rewards
+    print('randomized %d number trader rewards' % n_rewards)
 
 def randomize_navicust():
     # White: 0x3A109
@@ -1719,7 +1726,7 @@ def randomize_navicust():
                     n2 = n2 + str(write_pattern[i])
             changelog_ncp.append([ncp_programs[(ncp_offset - basencpoffset) / 64], n1, n2])
         ncp_offset += 64
-    print 'randomized %d NaviCust Program Shapes' % ncp_total
+    print('randomized %d NaviCust Program Shapes' % ncp_total)
 
 def randomize_name(nameoffset, name, randnames):
     foundfit = 0
@@ -1780,7 +1787,7 @@ def randomize_battlefields():
                 continue
             write_data(chr(new_field[j]), base_offset + (i * 24) + j)
         changelog_fields.append(["data", i+1, str(old_field), str(new_field)])
-    print "randomized stage data"
+    print("randomized stage data")
     # Heavily Randomize Stages
     if BF_PANELRANDOMIZER == 2:
         # Fixed Stages 1
@@ -1829,7 +1836,7 @@ def randomize_battlefields():
                 character = random.randint(0, 127)
                 write_data(chr(character), stage_offset + i)
                 changelog_fields.append(["id", str(stage_offset + i), str(character)])
-        print "randomized stage ids"
+        print("randomized stage ids")
 
 def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fVirusMult = 1.0, fVirusVar = 0.0, iChipCode = 0, bChipNames = 0, bVirusNames = 0, bRandomBosses = 0, iRandomElements = 0, iRegularMemory = 0, bNCP = 0, iOmegaMode = 0, iHellMode = 0, iBattlefields = 0, iFolderMode = 0, bLog = 0, bRandomObjects = 0, bFillShops = 1, bFreeShops = 0, allowFolder = 1, allowGMD = 1, allowBMD = 1, allowShop = 1, allowChip = 1, allowVirus = 1, allowTrade = 1, allowDaily = 0, allowEasyTutorial = 1, ignoreLimits = 0):
     global weak_navis
@@ -2099,9 +2106,9 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     
     # Output Rom
     open(output_path, 'wb').write(''.join(randomized_data))
-    print "seed:", SEED
-    print "hash:", seed_hash
-    print "ROM Output: \"" + output_path + "\"."
+    print("Seed: " + str(SEED))
+    print("Hash: " + seed_hash)
+    print("ROM Output: \"" + output_path + "\".")
     
     #Spoiler Info
     open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'w').write("Seed: " + str(SEED) + "\nHash: " + seed_hash + "\n\nChip Damage Multiplier: " + str(P_MULTIPLIER) + "\nChip Damage Variance: " + str(P_VARIANCE) + "\nEnemy HP Multiplier: " + str(V_MULTIPLIER) + "\nEnemy HP Variance: " + str(VH_VARIANCE) + "\nChip Codes Mode: " + str(C_ALLSTARMODE) + "\nRandomized Chip Names?: " + str(bool(CP_NAMERANDOMIZER)) + "\nRandomized Enemy Names?: " + str(bool(VN_NAMERANDOMIZER)) + "\nRandomized NaviCust Shapes?: " + str(bool(NC_SHAPERANDOMIZER)) + "\nRandom Battlefield Mode: " + str(int(BF_PANELRANDOMIZER)) + "\nRandom Element Mode: " + str(int(ELEMENT_MODE))+ "\nRandomize Navis?: " + str(bool(RANDOM_NAVIS))+ "\nFolder Lock Mode: " + str(FOLDER_MODE)+ "\nOMEGA Mode: " + str(OMEGA_MODE)+ "\nRegMem Max Range: " + str(int(REGMEM_MODE))+ "\nHELL Mode: " + str(HELL_MODE))
@@ -2109,7 +2116,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("\n\nAllow Easy Tutorial?: "+str(bool(TUTORIAL_SKIP))+"\nRandomize Battle Objects?: "+str(bool(RANDOM_OBSTACLES))+"\nFree BattleChips in Shops?: "+str(bool(FREE_SHOPS))+"\nFill Shops?: "+str(bool(FILL_SHOPS))+"\nIgnore HP/Damage Limiters?: "+str(bool(IGNORE_LIMITS)))
     if OUTPUTLOG == 1:
         open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n!!!!!!!!!!!!!!\n!!!SPOILERS!!!\n!!!!!!!!!!!!!!\n\n")
-        print "!!NOTE!! Writing detailed log to seedinfo.txt, this will take a few..."
+        print("!!NOTE!! Writing detailed log to seedinfo.txt, this will take a few...")
         for i in range(len(changelog_chip)):
             open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write(changelog_chip[i][0] + " -> " + changelog_chip[i][1] + ", Power: " + str(changelog_chip[i][2]) + " -> " + str(changelog_chip[i][3]) + ", Codes: " + changelog_chip[i][4] + ", RegMem: " + str(changelog_chip[i][5]) + "\n")
         for i in range(0, len(changelog_battles)-1):
@@ -2156,8 +2163,8 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
             open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("NumberTrader Chip #" + str(i) + ": " + chip_names[changelog_numbertrader[i][0]-1] + " (" + str(changelog_numbertrader[i][0]) + ") " + chip_codes[changelog_numbertrader[i][1]] + "\n")
         for i in range(len(changelog_trades)):
             open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("Trade #" + str(i) + " Requirement: " + chip_names[changelog_trades[i][1]-1] + " (" + str(changelog_trades[i][1]) + ") " + chip_codes[changelog_trades[i][2]] + " -> " + chip_names[changelog_trades[i][3]-1] + " (" + str(changelog_trades[i][3]) + ") " + chip_codes[changelog_trades[i][4]] + "\n")
-        print "Output Log:", "mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt" 
-    print "### Done! Enjoy your game!"
+        print("Output Log:", "mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt")
+    print("### Done! Enjoy your game!")
     if ALLOW_DAILY == 1:
-        print "\n!!NOTE!! Be sure to read this daily run's base output info!"
+        print("\n!!NOTE!! Be sure to read this daily run's base output info!")
     #raw_input("Done! Press Enter to exit.")

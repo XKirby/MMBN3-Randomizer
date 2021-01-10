@@ -99,7 +99,7 @@ def set_Tk_var():
     fOutputPath = StringVar()
     global comboFolderMode
     comboFolderMode = StringVar()
-    comboFolderMode.set("Normal")
+    comboFolderMode.set("None")
     global allowDaily
     allowDaily = StringVar()
     allowDaily.set("0")

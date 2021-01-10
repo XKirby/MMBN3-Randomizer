@@ -87,7 +87,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Labelframe1.configure(width=80)
 
         self.Radiobutton1 = Radiobutton(self.Labelframe1)
-        self.Radiobutton1.place(relx=0.13, rely=0.32, relheight=0.33
+        self.Radiobutton1.place(relx=0.13, rely=0.24, relheight=0.33
                 , relwidth=0.74, y=-12, h=6)
         self.Radiobutton1.configure(activebackground="#d9d9d9")
         self.Radiobutton1.configure(activeforeground="#000000")
@@ -104,7 +104,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Radiobutton1.configure(variable=bn3ui_support.versionValue)
 
         self.Radiobutton2 = Radiobutton(self.Labelframe1)
-        self.Radiobutton2.place(relx=0.13, rely=0.63, relheight=0.33
+        self.Radiobutton2.place(relx=0.13, rely=0.64, relheight=0.33
                 , relwidth=0.64, y=-12, h=6)
         self.Radiobutton2.configure(activebackground="#d9d9d9")
         self.Radiobutton2.configure(activeforeground="#000000")
@@ -136,7 +136,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Labelframe2.configure(width=580)
 
         self.Entry1 = Entry(self.Labelframe2)
-        self.Entry1.place(relx=0.02, rely=0.14,height=24, relwidth=0.59)
+        self.Entry1.place(relx=0.02, rely=0.14,height=20, relwidth=0.59)
         self.Entry1.configure(background="white")
         self.Entry1.configure(disabledforeground="#a3a3a3")
         self.Entry1.configure(font="TkFixedFont")
@@ -152,7 +152,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
 
         self.Button1 = Button(self.Labelframe2)
         self.Button1.place(relx=0.78, rely=0.47, height=24, width=117, y=-12
-                , h=6)
+                , h=20)
         self.Button1.configure(activebackground="#d9d9d9")
         self.Button1.configure(activeforeground="#000000")
         self.Button1.configure(background="#d9d9d9")
@@ -220,7 +220,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Entry3.configure(validate="focusout")
 
         self.Label1 = Label(self.Labelframe3)
-        self.Label1.place(relx=0.02, rely=0.07, height=21, width=134, y=-12, h=6)
+        self.Label1.place(relx=0.02, rely=0.07, height=21, width=134, y=-12, h=20)
 
         self.Label1.configure(activebackground="#f9f9f9")
         self.Label1.configure(activeforeground="black")
@@ -233,7 +233,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label1.configure(text='''Chip Damage Multiplier''')
 
         self.Label2 = Label(self.Labelframe3)
-        self.Label2.place(relx=0.02, rely=0.17, height=21, width=134, y=-12, h=6)
+        self.Label2.place(relx=0.02, rely=0.17, height=21, width=134, y=-12, h=20)
 
         self.Label2.configure(activebackground="#f9f9f9")
         self.Label2.configure(activeforeground="black")
@@ -260,7 +260,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Entry4.configure(validate="focusout")
 
         self.Label3 = Label(self.Labelframe3)
-        self.Label3.place(relx=0.02, rely=0.26, height=21, width=134, y=-12, h=6)
+        self.Label3.place(relx=0.02, rely=0.26, height=21, width=134, y=-12, h=20)
 
         self.Label3.configure(activebackground="#f9f9f9")
         self.Label3.configure(activeforeground="black")
@@ -286,7 +286,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Entry5.configure(textvariable=bn3ui_support.multVirusVar)
 
         self.Label4 = Label(self.Labelframe3)
-        self.Label4.place(relx=0.02, rely=0.36, height=21, width=134, y=-12, h=6)
+        self.Label4.place(relx=0.02, rely=0.36, height=21, width=134, y=-12, h=20)
 
         self.Label4.configure(activebackground="#f9f9f9")
         self.Label4.configure(activeforeground="black")
@@ -307,7 +307,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.TCombobox1.configure(takefocus="")
 
         self.Label5 = Label(self.Labelframe3)
-        self.Label5.place(relx=0.36, rely=0.07, height=21, width=154, y=-12, h=6)
+        self.Label5.place(relx=0.36, rely=0.07, height=21, width=154, y=-12, h=20)
 
         self.Label5.configure(activebackground="#f9f9f9")
         self.Label5.configure(activeforeground="black")
@@ -456,7 +456,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.TCombobox2.configure(takefocus="")
 
         self.Label6 = Label(self.Labelframe3)
-        self.Label6.place(relx=0.36, rely=0.17, height=21, width=154, y=-12, h=6)
+        self.Label6.place(relx=0.36, rely=0.17, height=21, width=154, y=-12, h=20)
 
         self.Label6.configure(activebackground="#f9f9f9")
         self.Label6.configure(activeforeground="black")
@@ -476,7 +476,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.TCombobox3.configure(takefocus="")
 
         self.Label7 = Label(self.Labelframe3)
-        self.Label7.place(relx=0.36, rely=0.26, height=21, width=154, y=-12, h=6)
+        self.Label7.place(relx=0.36, rely=0.26, height=21, width=154, y=-12, h=20)
 
         self.Label7.configure(activebackground="#f9f9f9")
         self.Label7.configure(activeforeground="black")
@@ -488,7 +488,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label7.configure(text='''Set Virus Level Mode''')
 
         self.Label8 = Label(self.Labelframe3)
-        self.Label8.place(relx=0.285, rely=0.50, height=24, width=120, y=-12, h=6)
+        self.Label8.place(relx=0.285, rely=0.50, height=24, width=120, y=-12, h=20)
 
         self.Label8.configure(activebackground="#f9f9f9")
         self.Label8.configure(activeforeground="black")
@@ -611,7 +611,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
 
         self.Label7_1 = Label(self.Labelframe3)
         self.Label7_1.place(relx=0.36, rely=0.36, height=21, width=154, y=-12
-                , h=6)
+                , h=20)
         self.Label7_1.configure(activebackground="#f9f9f9")
         self.Label7_1.configure(activeforeground="black")
         self.Label7_1.configure(background="#d9d9d9")
@@ -641,8 +641,8 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Labelframe4.configure(width=490)
 
         self.Checkbutton4 = Checkbutton(self.Labelframe4)
-        self.Checkbutton4.place(relx=0.02, rely=0.14, relheight=0.32
-                , relwidth=0.31, y=-12, h=6)
+        self.Checkbutton4.place(relx=0.000, rely=0.14, relheight=0.32
+                , relwidth=0.35, y=-12, h=6)
         self.Checkbutton4.configure(activebackground="#d9d9d9")
         self.Checkbutton4.configure(activeforeground="#000000")
         self.Checkbutton4.configure(background="#d9d9d9")
@@ -655,7 +655,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton4.configure(variable=bn3ui_support.randomNCPShapes)
 
         self.Checkbutton5 = Checkbutton(self.Labelframe4)
-        self.Checkbutton5.place(relx=0.02, rely=0.46, relheight=0.32
+        self.Checkbutton5.place(relx=0.019, rely=0.46, relheight=0.32
                 , relwidth=0.35, y=-12, h=6)
         self.Checkbutton5.configure(activebackground="#d9d9d9")
         self.Checkbutton5.configure(activeforeground="#000000")
@@ -683,7 +683,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton6.configure(variable=bn3ui_support.bIgnoreLimits)
 
         self.TCombobox4 = ttk.Combobox(self.Labelframe4)
-        self.TCombobox4.place(relx=0.78, rely=0.30, relheight=0.27, relwidth=0.19
+        self.TCombobox4.place(relx=0.78, rely=0.20, relheight=0.27, relwidth=0.19
                 , y=-12, h=6)
         self.value_list = ['Normal','Semi-random','Super-random',]
         self.TCombobox4.configure(values=self.value_list)
@@ -691,7 +691,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.TCombobox4.configure(takefocus="")
 
         self.Label9 = Label(self.Labelframe4)
-        self.Label9.place(relx=0.51, rely=0.32, height=21, width=124, y=-12, h=6)
+        self.Label9.place(relx=0.51, rely=0.24, height=21, width=124, y=-12, h=20)
 
         self.Label9.configure(activebackground="#f9f9f9")
         self.Label9.configure(activeforeground="black")
@@ -711,8 +711,8 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.TCombobox4_1.configure(takefocus="")
 
         self.Label10 = Label(self.Labelframe4)
-        self.Label10.place(relx=0.51, rely=0.63, height=21, width=124, y=-12
-                , h=6)
+        self.Label10.place(relx=0.51, rely=0.68, height=21, width=124, y=-12
+                , h=20)
         self.Label10.configure(activebackground="#f9f9f9")
         self.Label10.configure(activeforeground="black")
         self.Label10.configure(background="#d9d9d9")
@@ -760,7 +760,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Entry7.configure(textvariable=bn3ui_support.fOutputPath)
 
         self.Label11 = Label(self.Labelframe5)
-        self.Label11.place(relx=0.02, rely=0.27, height=21, width=65, y=-12, h=6)
+        self.Label11.place(relx=0.02, rely=0.27, height=21, width=65, y=-10, h=21)
 
         self.Label11.configure(activebackground="#f9f9f9")
         self.Label11.configure(activeforeground="black")
@@ -772,7 +772,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label11.configure(text='''Input File''')
 
         self.Label12 = Label(self.Labelframe5)
-        self.Label12.place(relx=0.02, rely=0.68, height=21, width=64, y=-12, h=6)
+        self.Label12.place(relx=0.02, rely=0.68, height=21, width=64, y=-10, h=21)
 
         self.Label12.configure(activebackground="#f9f9f9")
         self.Label12.configure(activeforeground="black")
