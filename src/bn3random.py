@@ -17,8 +17,12 @@ obstacles = ["Mega Man", "Virus", "Rock", "RockCube", "MetalCube", "IceCube", "G
 # Chip Codes List
 chip_codes = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "*"]
 
-# Shadows, Twinners, mushy, N.O, and scuttles
-banned_viruses = [70, 71, 72, 73, 74, 75, 61, 62, 63, 64, 151, 152, 153, 154, 49, 50, 51, 52, 135, 136, 137, 138]
+# Virus Lists
+weak_viruses = [1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,16, 29,30,31,32, 33,34,35,36, 123,124,125,126, 131,132,133,134]
+med_viruses = [17,18,19,20, 21,22,23,24, 37,38,39,40, 41,42,43,44, 75,76,77,78, 79,80,81,82, 91,92,93,94, 103,104,105,106, 111,112,113,114, 129,140,141,142, 147,148,149,150, 155,156,157,158]
+strong_viruses = [25,26,27,28, 45,46,47,48, 49,50,51,52, 53,54,55,56, 57,58,59,60, 65,66,67,68, 83,84,85,86, 87,88,89,90, 95,96,97,98, 99,100,101,102, 107,108,109,110, 115,116,117,118, 119,120,121,122, 143,144,145,146]
+bad_viruses = [61,62,63,64, 127,128,129,130, 135,136,137,138]
+banned_viruses = [69,70,71,72,73,74, 151,152,153,154, 159,160,161, 162,163,164, 165,166,167]
 
 # Potentially Required NPC Trades
 required_trades = [[0x20, 4], [0x3a, 2], [136, 10], [46, 21], [99, 13], [103, 0], [122, 26], [163, 26], [0x8f, 26], [0x45, 6], [0x19, 12]]
@@ -1157,15 +1161,13 @@ def randomize_bmds_trades():
 
 def virus_replace(ind):
     # Safety precaution
-    if ind == 0:
+    if ind == 0 or ind in banned_viruses:
         return ind
     # Ignore navis by default.
     if ind >= 168:
         # Randomize Navi Battles
         if RANDOM_NAVIS == 1:
             if ind not in [196, 197, 198, 199, 220, 221, 222, 223, 224, 225, 226, 227, 236, 237, 238, 239, 240, 241, 242, 243]:
-                # Navi List - Empty to start
-                
                 # Easy Navis
                 if ind-168 in [0, 4, 32, 40] and chosen_navis[ind-168] < 0:
                     chosen_navis[ind-168] = random.choice(weak_navis)
@@ -1222,31 +1224,38 @@ def virus_replace(ind):
     if old_hp == -1:
         return ind
 
-    candidates = []
-    for i in range(len(virus_data)):
-        virus_hp, virus_attack, virus_name = virus_data[i]
-        virus_hp = int(virus_hp)
-        if virus_hp == -1:
-            continue
-        # Special case for "Megaman" Virus
-        if i == 0:
-            continue
-        if virus_level(i) == virus_level(ind) and i not in banned_viruses:
-            if OMEGA_MODE > 0:
-                if virus_level(i) > virus_level(i + OMEGA_MODE):
-                    candidates.append(i)
-                else:
-                    candidates.append(i + OMEGA_MODE)
+    new_ind = -1
+    if ind in weak_viruses:
+        new_ind = weak_viruses[random.randint(0,(len(weak_viruses)-1))]
+        new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
+    if ind in med_viruses:
+        new_ind = med_viruses[random.randint(0,(len(med_viruses)-1))]
+        new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
+    if ind in strong_viruses:
+        new_ind = strong_viruses[random.randint(0,(len(strong_viruses)-1))]
+        new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
+    if ind in bad_viruses:
+        new_ind = bad_viruses[random.randint(0,(len(bad_viruses)-1))]
+        new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
+    if new_ind not in banned_viruses:
+        if OMEGA_MODE > 0:
+            if virus_level(new_ind) > virus_level(new_ind + OMEGA_MODE):
+                return new_ind
             else:
-                candidates.append(i)
-    v = random.choice(candidates)
-    return v
+                return new_ind + OMEGA_MODE
+        else:
+            return new_ind
+    return new_ind
 
 def randomize_viruses():
     battle_regex = re.compile('(?s)\x00[\x01-\x03][\x01-\x03]\x00(?:.[\x01-\x06][\x01-\x03].)+\xff\x00\x00\x00')
     
     n_battles = 0
     #open('fights.txt','w').write("")
+    newviruslist = []
+    for i in range(0,244):
+        newviruslist.append(virus_replace(i))
+    
     for match in battle_regex.finditer(rom_data):
         # Sanity check
         if match.start() >= 0x22000:
@@ -1257,7 +1266,9 @@ def randomize_viruses():
         for i in range(match.start(), match.end(), 4):
             if ord(rom_data[i + 3]) == 1:
                 virus_ind = ord(rom_data[i])
-                new_ind = virus_replace(virus_ind)
+                new_ind = newviruslist[virus_ind]
+                if new_ind == -1:
+                    new_ind = virus_ind
                 write_data(chr(new_ind), i)         
                 if virus_ind >= 168 and virus_ind < 244:
                     #open('fights.txt','a').write(navi_data[ord(rom_data[i])-168][2] + "(" + str(ord(rom_data[i+1])) + "," + str(ord(rom_data[i+2])) + "), ")
@@ -1661,12 +1672,12 @@ def randomize_number_trader():
     if ROMVERSION == "b":
         reward_offset = 0x478f8
     n_rewards = 0
+    chip_map = generate_chip_permutation()
     while True:
         reward_type, old_code, old_chip, encrypted_number = struct.unpack('<BBH8s', rom_data[reward_offset : reward_offset + 12])
         if reward_type == 0xff:
             break
         if reward_type == 0:
-            chip_map = generate_chip_permutation()
             new_chip = chip_map[old_chip]
             new_code = get_new_code(old_chip, old_code, new_chip)
             new_reward = struct.pack('<BBH8s', reward_type, new_code, new_chip, encrypted_number)
@@ -1681,7 +1692,7 @@ def randomize_navicust():
     # White: 0x3A109
     #  Blue: 0x3A0F1
     
-    banned_programs = ["Press", "EnergyChange", "AlphaScope", "BlackMind", "UnderShirt", "Reg+5", "WeaponLevel+1", "Attack+1", "Speed+1", "Charge+1"]
+    banned_programs = ["Press", "EnergyChange", "AlphaScope", "BlackMind", "UnderShirt", "Attack+1", "Speed+1", "Charge+1"]
     ncp_programs = ["SuperArmor", "BreakBuster", "BreakCharge", "SetGreen", "SetIce", "SetLava", "SetSand", "SetMetal", "SetHoly", "Custom1", "Custom2", "MegaFolder1", "MegaFolder2", "Block", "Shield", "Reflect", "ShadowShoes", "FloatShoes", "AntiDamage", "Press", "EnergyChange", "AlphaScope", "SneakRun", "OilBody", "Fish", "Battery", "Jungle", "Collect", "AirShoes", "UnderShirt", "FastGauge", "Rush", "Beat", "Tango", "WeaponLevel+1", "HP+100", "HP+200", "HP+300", "HP+500", "Reg+5", "Attack+1", "Speed+1", "Charge+1", "BugStopper", "Humor", "BlackMind", "BusterMax", "GigaFolder1", "HubBatch", "DarkLicense"];
     
     ncp_data = open("ncp_patterns.txt", "r").read().strip()
@@ -1847,6 +1858,17 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     strong_navis = [12,16,24,44]
     global post_navis
     post_navis = [36,60,64]
+    
+    global weak_viruses
+    weak_viruses = [1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,16, 29,30,31,32, 33,34,35,36, 123,124,125,126, 131,132,133,134]
+    global med_viruses
+    med_viruses = [17,18,19,20, 21,22,23,24, 37,38,39,40, 41,42,43,44, 75,76,77,78, 79,80,81,82, 103,104,105,106, 111,112,113,114, 129,140,141,142, 147,148,149,150, 155,156,157,158]
+    global strong_viruses
+    strong_viruses = [25,26,27,28, 45,46,47,48, 53,54,55,56, 57,58,59,60, 65,66,67,68, 83,84,85,86, 87,88,89,90, 95,96,97,98, 99,100,101,102, 115,116,117,118, 119,120,121,122, 143,144,145,146]
+    global bad_viruses
+    bad_viruses = [49,50,51,52, 61,62,63,64, 91,92,93,94, 107,108,109,110, 127,128,129,130, 135,136,137,138, 151,152,153,154]
+    global banned_viruses
+    banned_viruses = [69,70,71,72,73,74, 159,160,161, 162,163,164, 165,166,167]
     
     global P_MULTIPLIER
     global P_VARIANCE
