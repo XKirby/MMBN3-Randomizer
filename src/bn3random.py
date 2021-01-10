@@ -2056,16 +2056,6 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         randomize_virus_drops()
     if ALLOW_FOLDERS == 1:
         randomize_folders()
-    if FOLDER_MODE > 0:
-        setintro = "\x02\x00\xFB\x34\x01\xFB\x34\x0A\xED\x01\xF1\x00\x10\x33\x30\x28\x29\x36\x00\x16\x33\x27\x2F\x00\x0B\x27\x38\x2D\x3A\x29\x4D\xE8\x11\x33\x33\x28\x00\x30\x39\x27\x2F\x47\xEB\xE9\xF1\x01\xE7\x00"
-        for i in range(0, len(setintro)-1):
-            write_data(setintro[i], 0x778A40 + i)
-        if ROMVERSION == "b":
-            write_data(struct.pack("<I", 0x8778A40), 0xFECA4)
-            write_data(chr(5), 0x2DC4A)
-        else:
-            write_data(struct.pack("<I", 0x8778A40), 0xFEBB4)
-            write_data(chr(5), 0x2DC62)
     if ALLOW_GMD == 1:
         randomize_gmds()
     if ALLOW_BMD == 1 or ALLOW_TRADES == 1:
@@ -2101,7 +2091,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     finalhash = ""
     seed_hash = ""
     i = 0
-    textbox_string1 = "This seed's Hash:   "
+    textbox_string1 = "This seed's Hash:"
     for i in range(0,len(textbox_string1)-1):
         finalhash = finalhash + chr(mmchars.index(textbox_string1[i]))
     finalhash = finalhash + chr(0xe8)
@@ -2116,15 +2106,23 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
                 seed_hash = seed_hash + " "
             finalhash = finalhash + chr(hashchar)
     finalhash = finalhash + chr(0xe8)
-    textbox_string3 = "         Good Luck! "
-    for i in range(0,len(textbox_string3)-1):
+    textbox_string3 = "Good Luck!"
+    for i in range(0,len(textbox_string3)):
         finalhash = finalhash + chr(mmchars.index(textbox_string3[i]))
+    setintro = "\x02\x00\xED\x01\xF1\x00" + finalhash + "\xEB\xE9"
+    if FOLDER_MODE > 0:
+        setintro = setintro + "\xFB\x34\x01\xFB\x34\x0A\x10\x33\x30\x28\x29\x36\x00\x16\x33\x27\x2F\x00\x0B\x27\x38\x2D\x3A\x29\x4D\xE8\x11\x33\x33\x28\x00\x30\x39\x27\x2F\x47\xEB\xE9"
+        if ROMVERSION == "b":
+            write_data(chr(5), 0x2DC4A)
+        else:
+            write_data(chr(5), 0x2DC62)
+    setintro = setintro + "\xF2\x00\x92\x01\xF2\x00\x63\x01\xF2\x00\x64\x01\xF2\x00\x65\x01\xF2\x00\x66\x01\xF1\x01\xE7\x00"
+    for i in range(0, len(setintro)-1):
+        write_data(setintro[i], 0x778A40 + i)
     if ROMVERSION == "b":
-        for i in range(0,len(finalhash)-1):
-            write_data(finalhash[i], 0x719112 + i + 5)
+        write_data(struct.pack("<I", 0x8778A40), 0xFECA4)
     else:
-        for i in range(0,len(finalhash)-1):
-            write_data(finalhash[i], 0x719726 + i + 5)
+        write_data(struct.pack("<I", 0x8778A40), 0xFEBB4)
     
     # Output Rom
     open(output_path, 'wb').write(''.join(randomized_data))
