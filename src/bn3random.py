@@ -1449,11 +1449,11 @@ def randomize_folders():
             new_code = get_new_code(old_chip, old_code, new_chip)
                         
             # Folder Mode Setup
-            if FOLDER_MODE > 2:
+            if FOLDER_MODE > 0 and FOLDER_MODE < 3:
                 c, o = folder_data[f][i].split(' ')
                 new_chip = int(c, 10)
-                new_code = get_new_code(new_chip, int(o), new_chip)
-                if FOLDER_MODE == 3:
+                new_code = get_new_code(new_chip, int(o, 10), new_chip)
+                if FOLDER_MODE == 1:
                     if n_folders == 1:
                         singlerandomfolder.append([new_chip, new_code])
                     else:
@@ -2103,31 +2103,28 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     i = 0
     
     # After Tutorial Intro Text Boxes
-    textbox_string1 = "This seed's Hash:"
+    textbox_string1 = "Hash:"
     for i in range(0,len(textbox_string1)-1):
         finalhash = finalhash + chr(mmchars.index(textbox_string1[i]))
     finalhash = finalhash + chr(0xe8)
     for i in range(1,20):
         if i % 4 == 0:
-            seed_hash = seed_hash + "-"
+            seed_hash = seed_hash + " "
             finalhash = finalhash + chr(0)
         else:
             hashchar = random.randint(0,len(mmchars)-1)
             seed_hash = seed_hash + format(hashchar, "x")
             if not i % 4 == 3:
-                seed_hash = seed_hash + " "
+                seed_hash = seed_hash + "-"
             finalhash = finalhash + chr(hashchar)
-    finalhash = finalhash + chr(0xe8)
-    textbox_string3 = "Good Luck!"
-    for i in range(0,len(textbox_string3)):
-        finalhash = finalhash + chr(mmchars.index(textbox_string3[i]))
-    setintro = "\x02\x00\xED\x01\xF1\x00" + finalhash + "\xEB\xE9"
+    setintro = "\x02\x00\xED\x01\xF1\x00"
     if FOLDER_MODE > 0:
-        setintro = setintro + "\xFB\x34\x01\xFB\x34\x0A\x10\x33\x30\x28\x29\x36\x00\x16\x33\x27\x2F\x00\x0B\x27\x38\x2D\x3A\x29\x4D\xE8\x11\x33\x33\x28\x00\x30\x39\x27\x2F\x47\xEB\xE9"
+        setintro = setintro + "\xFB\x34\x01\xFB\x34\x0A\x10\x33\x30\x28\x29\x36\x00\x16\x33\x27\x2F\x00\x0B\x27\x38\x2D\x3A\x29\x4D\xE8"
         if ROMVERSION == "b":
             write_data(chr(5), 0x2DC4A)
         else:
             write_data(chr(5), 0x2DC62)
+    setintro = setintro + finalhash + "\xEB\xE9"
     setintro = setintro + "\xF2\x00\x63\x01\xF2\x00\x64\x01\xF2\x00\x65\x01\xF2\x00\x66\x01\xF1\x01\xE7\x00"
     for i in range(0, len(setintro)-1):
         write_data(setintro[i], 0x778A40 + i)
