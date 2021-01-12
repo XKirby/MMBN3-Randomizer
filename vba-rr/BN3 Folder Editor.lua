@@ -144,7 +144,7 @@ function controls()
 		if joypad.get(0).select and not SelHeld then
 			SelHeld = true
 			local folder = memory.readdword(0x02009418)
-			file = io.open("folders.txt", "w")
+			file = io.open("folders.txt", "a")
 			for i = 0,29 do
 				local endchip = memory.readword(folder + i*4)
 				local endcode = memory.readword(folder + i*4 + 2)

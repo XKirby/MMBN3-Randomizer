@@ -132,9 +132,9 @@ The randomizer reads this file and force-sets all Folders to one of the specific
 
 Each line has a total of 30 Chips and Codes, with the Chips seperating each other by commas and the Codes are seperated from the Chips by spaces. Both values are integers (not the hexidecimal equivalent), and take up that particular slot in the Folder.
 
-Codes go from 0 to 26, while Chips go from 1 to 312. I recommend following standard in-game Folder rules to prevent issues, and if you need a refresher, they're as followed:
+Codes go from 0 to 26, while Chips go from 1 to 312. I recommend following standard in-game Folder rules, and if you need a refresher, they're as followed:
 1) Only up to 4 of the same Standard Chip.
 2) Only 1 of the same Mega and Giga Chip.
 3) Only up to 4 Mega Chips by default.
 4) Only up to 1 Giga Chip by default.
-5) Some Gigas and Megas are version-exclusive and should not be used at all as there's no failsafe for them.
+5) Some Gigas are version-exclusive and should not be used at all as there's no failsafe for them.

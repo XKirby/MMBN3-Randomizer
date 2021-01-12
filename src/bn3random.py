@@ -18,10 +18,17 @@ obstacles = ["Mega Man", "Virus", "Rock", "RockCube", "MetalCube", "IceCube", "G
 chip_codes = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "*"]
 
 # Virus Lists
-weak_viruses = [1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,16, 29,30,31,32, 33,34,35,36, 123,124,125,126, 131,132,133,134]
-med_viruses = [17,18,19,20, 21,22,23,24, 37,38,39,40, 41,42,43,44, 75,76,77,78, 79,80,81,82, 91,92,93,94, 103,104,105,106, 111,112,113,114, 129,140,141,142, 147,148,149,150, 155,156,157,158]
-strong_viruses = [25,26,27,28, 45,46,47,48, 49,50,51,52, 53,54,55,56, 57,58,59,60, 65,66,67,68, 83,84,85,86, 87,88,89,90, 95,96,97,98, 99,100,101,102, 107,108,109,110, 115,116,117,118, 119,120,121,122, 143,144,145,146]
-bad_viruses = [61,62,63,64, 127,128,129,130, 135,136,137,138]
+# Weak: Mettaur, Canodumb, Fishy, Swordy, Shrimpy, Spikey, Bunny, Beetle, Trumpy, Quaker
+weak_viruses = [1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,16, 29,30,31,32, 33,34,35,36, 37,38,39,40, 75,76,77,78, 123,124,125,126, 131,132,133,134]
+# Med: Ratty, HardHead, Windbox, Metrid, Momogra, Pengi, Slimer, Eleball, Totem, Boomer
+med_viruses = [17,18,19,20, 21,22,23,24, 41,42,43,44, 79,80,81,82, 91,92,93,94, 103,104,105,106, 111,112,113,114, 139,140,141,142, 147,148,149,150, 155,156,157,158]
+# Strong: Puffball, Mushy, SnowBlow, Heavy, Needler, Volcano
+strong_viruses = [45,46,47,48, 49,50,51,52, 83,84,85,86, 99,100,101,102, 119,120,121,122, 143,144,145,146]
+# Powerful: Jelly, Yort, Brushman, KillerEye, Viney
+powerful_viruses = [25,26,27,28, 57,58,59,60, 65,66,67,68, 87,88,89,90, 107,108,109,110]
+# Dangerous: Dominerd, Shadow, Basher, Elebee, AlphaBug, N.O
+dangerous_viruses = [53,54,55,56, 61,62,63,64, 95,96,97,98, 115,116,117,118, 127,128,129,130, 135,136,137,138]
+# Banned: Scuttle, Twins, Number, Number-M, Number-G
 banned_viruses = [69,70,71,72,73,74, 151,152,153,154, 159,160,161, 162,163,164, 165,166,167]
 
 # Potentially Required NPC Trades
@@ -1234,8 +1241,11 @@ def virus_replace(ind):
     if ind in strong_viruses:
         new_ind = strong_viruses[random.randint(0,(len(strong_viruses)-1))]
         new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
-    if ind in bad_viruses:
-        new_ind = bad_viruses[random.randint(0,(len(bad_viruses)-1))]
+    if ind in powerful_viruses:
+        new_ind = powerful_viruses[random.randint(0,(len(powerful_viruses)-1))]
+        new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
+    if ind in dangerous_viruses:
+        new_ind = dangerous_viruses[random.randint(0,(len(dangerous_viruses)-1))]
         new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
     if new_ind not in banned_viruses:
         if OMEGA_MODE > 0:
@@ -2091,6 +2101,8 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     finalhash = ""
     seed_hash = ""
     i = 0
+    
+    # After Tutorial Intro Text Boxes
     textbox_string1 = "This seed's Hash:"
     for i in range(0,len(textbox_string1)-1):
         finalhash = finalhash + chr(mmchars.index(textbox_string1[i]))
@@ -2116,13 +2128,21 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
             write_data(chr(5), 0x2DC4A)
         else:
             write_data(chr(5), 0x2DC62)
-    setintro = setintro + "\xF2\x00\x92\x01\xF2\x00\x63\x01\xF2\x00\x64\x01\xF2\x00\x65\x01\xF2\x00\x66\x01\xF1\x01\xE7\x00"
+    setintro = setintro + "\xF2\x00\x63\x01\xF2\x00\x64\x01\xF2\x00\x65\x01\xF2\x00\x66\x01\xF1\x01\xE7\x00"
     for i in range(0, len(setintro)-1):
         write_data(setintro[i], 0x778A40 + i)
     if ROMVERSION == "b":
         write_data(struct.pack("<I", 0x8778A40), 0xFECA4)
     else:
         write_data(struct.pack("<I", 0x8778A40), 0xFEBB4)
+    
+    setenableomega = "\x04\x00\x6E\x00\xED\x00\x00\xF1\x00\x17\x29\x2B\x25\x17\x25\x32\x4B\x2D\x38\x50\x37\x00\x25\x30\x31\x33\x37\x38\xE8\x38\x2D\x31\x29\x00\x2A\x33\x36\x00\x0B\x30\x34\x2C\x25\x00\x38\x33\xE8\x25\x3B\x25\x2F\x29\x32\x47\xEB\xE9\x21\x29\x00\x28\x33\x32\x50\x38\x00\x2C\x25\x3A\x29\x00\x38\x2D\x31\x29\xE8\x38\x33\x00\x3B\x25\x37\x38\x29\x47\x00\x10\x2D\x32\x28\xE8\x0E\x36\x2D\x30\x30\x17\x25\x32\x47\x00\x10\x25\x37\x38\x47\xEB\xE9\xF5\x00\x01\xED\x00\x42\xF1\x00\x1C\x33\x2B\x29\x36\x47\x47\xEB\xF2\x00\x92\x01\xE7"
+    if ROMVERSION == "b":
+        write_data(struct.pack("<I", len(randomized_data)+0x08000000),0x1255E4)
+    else:
+        write_data(struct.pack("<I", len(randomized_data)+0x08000000),0x1254E4)
+    for i in range(0, len(setenableomega)-1):
+        write_data(setenableomega[i], len(randomized_data))
     
     # Output Rom
     open(output_path, 'wb').write(''.join(randomized_data))
