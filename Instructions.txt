@@ -30,48 +30,63 @@ NPC Chip Trade Requirement Randomization
 [Randomizer Modifiers]
 The program has a lot of options to further change each run of the game. Here's a short description of each option and what they do.
 
-"Power Multiplier" is for Battle Chips and Program Advances. (0.25 to 3.0)
-"Power Variance" is also for Battle Chips and Program Advances. (0.0 to 0.9)
-"Virus HP Multiplier" is for virus HP. (0.25 to 3.0)
-"Virus HP Variance" is also for virus HP. (0.0 to 0.9)
-"Chip Code Roullete Mode" is for the Chip Codes.
-	0) Normal Codes
-	1) All Stars
-	2) Simplified
-	3) Random
-"NaviCust Program Shapes" can be randomized by setting this option to 1. Note that this is not recommended.
-"Battlefield Stages" can be set to 0-2. 0 is default, 1 is randomized stage data, 2 is both stage data and IDs. Note that this is not recommended.
-"Element Mode" can randomize the Elements with the following options:
-	0) No Randomization
-	1) Randomize Virus/Navi elementst (Always select an element)
-	2) Randomize Chip elements (Might choose netural)
-	3) Randomize both with the above settings.
-"Randomize Navis" can be 0 or 1, set to 1 to enable.
-"Skip Tutorial" can be 0 or 1, set to 1 to prevent the tutorial enemies from being randomized.
-"Fill Shops" can be 0 or 1, set to 1 to fill every shop's contents with new Battle Chips.
-"Folder Lock Mode" can be 0-2, and each setting had different rules.
-	0) Disable Folder Lock Mode and randomize all folders.
-	1) Single Folder Lock Mode, all folders in the game share the exact same chips and these are taken from
-	the "folders_custom.txt".
-	2) Multi Folder Lock Mode, similar to the above but instead of one folder, multiple folders are chosen.
-	3) Single Random Folder Lock Mode, where the folder is randomly generated like normal but each folder is the same.
-"Omega Mode" can be 0-3, with 0 being the default level of difficulty. Setting it above 0 forces all fights to be
-a specific Virus level.
-	0) Default Virus Levels
-	1) Alpha+
-	2) Beta+
-	3) Omega
-"Regular Memory Values" can be 0-99. To randomize RegMem Values, use a number between the range of 1 to 99.
-"Hell Mode" can be 0-3. 0 is default. 1 disables the ability to increase your Maximum HP with HP Memories.
-2 disables HP Memories completely, adding the disabling of Run Rate increases and gaining Current HP.
-3 Sets your Maximum HP to 5 on top of everything else. Good luck with this one.
-The "Seed" can be anything you want (or nothing for the current time)
+"Power Multiplier" is for Battle Chip and Program Advance Damage. (0.25 to 3.0)
+"Power Variance" is also for Battle Chip and Program Advance Damage. (0.0 to 0.9)
+"Virus HP Multiplier" is for Virus and Navi HP. (0.25 to 3.0)
+"Virus HP Variance" is also for Virus and Navi HP. (0.0 to 0.9)
+Multiplier is applied first, then Variance. Multiplier obviously multiplies the value. Variance multiplies again, but picks a random number between the negative and positive of the value you chose.
 
-Multiplier is applied first, then Variance. Multiplier straight up multiplies the value by the number specified in the line. Can be between 0.25 and 3. Variance multiplies again, but can work in both directions and is between 0.0 and 0.9.
+"Chip Code Roullete Mode" is for the Chip Codes.
+	0) No Randomization.
+	1) All * Codes.
+	2) Simplified Codes. All Chips will have A, B, C, D, E, or *.
+	3) Random Codes. PAs should still be useable.
+
+"NaviCust Program Shapes" can be randomized by setting this option to 1. Note that this is not recommended.
+
+"Battlefield Stages" can be set to 0-2. Note that this is not recommended.
+	0) Default Battle Stages. Randomized Stages are disabled.
+	1) Randomized Stage Data is enabled.
+	2) Randomized Stage Data and IDs are enabled.
+
+"Element Mode" can randomize the Elements with the following options:
+	0) No Randomization.
+	1) Randomize Virus/Navi elements.
+	2) Randomize Chip elements.
+	3) Randomize Virus/Navi/Chip elements.
+
+"Randomize Navis" can be 0 or 1, check the box/set to 1 to enable.
+
+"Skip Tutorial" can be 0 or 1, check the box/set to 1 to prevent the tutorial enemies from being randomized.
+
+"Fill Shops" can be 0 or 1, check the box/set to 1 to fill every shop's contents with new Battle Chips.
+
+"Folder Lock Mode" can be 0-2, and each setting had different rules. When enabled, you can't edit your folders.
+	0) Disable Folder Lock Mode and randomize all folders.
+	1) "Preset Single", all folders in the game share the exact same chips and these are taken from the "folders_custom.txt".
+	2) "Preset Multi", similar to the above but instead of one folder, multiple folders are chosen.
+	3) "Random Single", where the folder is randomly generated like normal but each folder is the same.
+	4) "Random Multi", where the folders are randomly generated like normal.
+
+"Omega Mode" can be 0-3, with 0 being the default level of difficulty. Setting it above 0 forces all fights to be a specific Virus level.
+	0) Omega Mode is disabled. Viruses will not be increased in difficulty.
+	1) Alpha+. Most Viruses and Navis are scaled by 1 step.
+	2) Beta+. Most Viruses and Navis are scaled by 2 steps.
+	3) Omega. Almost Everything is as hard as possible.
+
+"Regular Memory Values" can be 0-99. To randomize RegMem Values, use a number between the range of 1 to 99.
+
+"Hell Mode" can be 0-3.
+	0) Hell Mode is disabled.
+	1) "Hell" disables the ability to increase your Maximum HP with HP Memories.
+	2) "Insane" disables HP Memories completely, adding the disabling of Run Rate increases and gaining Current HP.
+	3) "Death Wish" Sets your Maximum HP to 5 on top of everything else. Good luck with this one.
+
+The "Seed" can be anything you want (or nothing for the current time)
 
 [*_attackpower.txt]
 These files are for Battle chips (chip_attackpower.txt) and Program Advances (pa_attackpower.txt).
-Some values are forced to be zero, while others can be changed from their defaults.
+Some values are forced to be zero or negative, while others can be changed from their defaults.
 MAKE A BACKUP BEFORE ALTERING.
 
 [navi_data.txt]
@@ -80,7 +95,7 @@ DO NOT EDIT THE OFFSETS OR NAMES. HP is okay though.
 
 [virus_data.txt]
 Holds Virus' HP, Attack Power, and Name, in that order.
-DO NOT EDIT THE NAMES. Also, Attack Power is unused due to being obscured in each Virus' AI.
+DO NOT EDIT THE NAMES. HP is okay though. Attack Power is unused due to being obscured in each Virus' AI.
 
 [chip_data.txt, pa_data.txt, chip_names.txt, pa_names.txt]
 The *_data.txt files might change the rank of chips and P.A.s, though I'm unsure if that has an effect in-game.
@@ -90,6 +105,7 @@ DO NOT EDIT THE NAME FILES.
 If you see this file, you can share the info inside with others to generate similar randomized ROMs.
 If you're using modifiers, they'll also be included for people to copy down for their run.
 Note that if you export detailed seed info that this is also the game's spoiler log!
+Also note that if you changed any text files that there WILL be differences between similar seeds and settings!
 
 [chip_randomnames.txt]
 Stores randomly chooseable chip names! Have fun making your own. Also, have at least 1 name for 3, 4, 5, 6, 7, and 8 letter Chip Names. Otherwise you'll run into an infinite loop when using randomized names.
@@ -105,13 +121,13 @@ The randomizer reads this file to change the NaviCust Program Shapes. I made a p
 Each entry in this list is 2 patterns of 5x5 grids as one line, with every 5 0s and 1s counting as a single row. Each pattern is 25 tiles on the board, and each pattern has a "Compressed" pattern for the other 25 tiles. Be sure to include both.
 
 [stages.txt]
-The randomizer reads this file to chage the Battle Stage Panels.
+The randomizer reads this file to change the Battle Stage Panels.
 
-Each line has a total of 24 numbers ranging from 0 to 10, but only 18 of the available numbers are used for the panels themselves. The other 6 "0"s are used to seperate the panels by row. This is how it works interally in the ROM:
+Each line has a total of 24 numbers ranging from 0 to 10, but only 18 of the available numbers are used for the panels themselves. The other 6 "0"s are used to seperate the panels by row. This is how it works:
 
-00 ?? ?? ?? ?? ?? ?? 00 00 ?? ?? ?? ?? ?? ?? 00 ?? ?? ?? ?? ?? ?? 00
+0 ?? ?? ?? ?? ?? ?? 0 0 ?? ?? ?? ?? ?? ?? 0 ?? ?? ?? ?? ?? ?? 0
 
-?? Can be any number between 0x00 and 0x0A. Anything else and it'll glitch the panel out. I also don't recommend setting the panels to 1. Panel Types are listed below:
+?? Can be any number from 0 to 10. Anything else and it'll glitch the panel out. I also don't recommend setting the panels to 1. Panel Types are listed below:
 
 0: Empty Panel
 1: Cracked Open Panel

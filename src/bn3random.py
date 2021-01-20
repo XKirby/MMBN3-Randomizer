@@ -32,7 +32,7 @@ dangerous_viruses = [53,54,55,56, 61,62,63,64, 95,96,97,98, 115,116,117,118, 127
 banned_viruses = [69,70,71,72,73,74, 151,152,153,154, 159,160,161, 162,163,164, 165,166,167]
 
 # Potentially Required NPC Trades
-required_trades = [[0x20, 4], [0x3a, 2], [136, 10], [46, 21], [99, 13], [103, 0], [122, 26], [163, 26], [0x8f, 26], [0x45, 6], [0x19, 12]]
+required_trades = [[0x20, 4], [0x3a, 2], [136, 10], [46, 21], [81, 0], [122, 26], [0x8f, 26], [0x45, 6], [0x19, 12], [45, 22], [14, 2], [125, 18], [110, 12], [33, 15], [31, 2], [88, 7], [165, 9], [99, 13]]
 tradechiplist = []
 
 # Navi Lists for Navi Randomizations
@@ -41,7 +41,7 @@ mid_navis = [8,20,48,52,56]
 strong_navis = [12,16,24,44]
 post_navis = [36,60,64]
 chosen_navis = list()
-for i in range(0, 75):
+for i in range(0, 76):
     chosen_navis.append(-1)
 
 special_virus_level = {
@@ -654,7 +654,7 @@ def init_chip_data():
             allcodes[i] = filter(lambda x : x != 255, allcodes[i])
             
             old_power = power
-            if int(power) > 0 and int(power) < 1000:
+            if int(power) > 0 and int(power) < 10000:
                 power = int(float(power) * float(1 + (float(float(random.randint(-100,100)/100)) * P_VARIANCE)) * P_MULTIPLIER)
                 power -= power % 5
                 if power < 5:
@@ -1262,9 +1262,9 @@ def randomize_viruses():
     
     n_battles = 0
     #open('fights.txt','w').write("")
-    newviruslist = []
-    for i in range(0,244):
-        newviruslist.append(virus_replace(i))
+    #newviruslist = []
+    #for i in range(0,244):
+    #    newviruslist.append(virus_replace(i))
     
     for match in battle_regex.finditer(rom_data):
         # Sanity check
@@ -1276,7 +1276,7 @@ def randomize_viruses():
         for i in range(match.start(), match.end(), 4):
             if ord(rom_data[i + 3]) == 1:
                 virus_ind = ord(rom_data[i])
-                new_ind = newviruslist[virus_ind]
+                new_ind = virus_replace(virus_ind)
                 if new_ind == -1:
                     new_ind = virus_ind
                 write_data(chr(new_ind), i)         
