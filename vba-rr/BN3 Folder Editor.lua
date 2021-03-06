@@ -82,7 +82,7 @@ function controls()
 	end
 	local chip = memory.readword(chipslot)
 	local code = memory.readword(chipslot + 2)
-	gui.register(gui.text(4,150,"Chip: "..chiplist.names[chip].." "..chiplist.codes[code], "white","black"))
+	gui.register(gui.text(4,150,"Chip: "..chiplist.names[chip].." "..chiplist.codes[code].." ("..chip..")", "white","black"))
 	if edit == true then
 		gui.register(gui.text(4,10,"Edit Mode Active!", "white","black"))
 		

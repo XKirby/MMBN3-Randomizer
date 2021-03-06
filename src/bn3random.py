@@ -1427,14 +1427,18 @@ def randomize_folders():
     f = 0
     first = 0
     singlerandomfolder = []
-    if FOLDER_MODE > 0 and FOLDER_MODE < 3:
-        f = random.randint(0, len(folder_data)-1)
-        first = f
     
     while True:
         if n_folders == 14:
             break
         folder_start = s
+        
+        if FOLDER_MODE > 0 and FOLDER_MODE < 3:
+            if n_folders < 12:
+                f = random.randint(0, len(folder_data)-1)
+            if n_folders == 0:
+                first = f
+        
         # There are 14 folders, the last 3 are tutorial only
         n_folders += 1
         is_tutorial = (n_folders >= 12 and n_folders <= 14)
@@ -1453,12 +1457,11 @@ def randomize_folders():
                 c, o = folder_data[f][i].split(' ')
                 new_chip = int(c, 10)
                 new_code = get_new_code(new_chip, int(o, 10), new_chip)
-                if FOLDER_MODE == 1:
-                    if n_folders == 1:
-                        singlerandomfolder.append([new_chip, new_code])
-                    else:
-                        new_chip = singlerandomfolder[i][0]
-                        new_code = singlerandomfolder[i][1]
+                if n_folders == 1:
+                    singlerandomfolder.append([new_chip, new_code])
+                if (FOLDER_MODE == 1 and n_folders > 1) or (FOLDER_MODE == 2 and is_tutorial):
+                    new_chip = singlerandomfolder[i][0]
+                    new_code = singlerandomfolder[i][1]
                 if is_tutorial:
                     new_code = 26
             
@@ -1479,7 +1482,7 @@ def randomize_folders():
             s += 4
         
         # Pick a new Folder for Multi Folder Lock
-        if FOLDER_MODE > 2:
+        if FOLDER_MODE > 0:
             f = random.randint(0, len(folder_data)-1)
             if n_folders >= 11 and n_folders <= 13:
                 f = first
