@@ -1,5 +1,8 @@
 [ROM Offsets]
+0x198C - Giga Chips in Folder Comparison Check (Set to 0x42A4 to break limit)
+0x199E - Mega Chips in Folder Comparison Check (Set to 0x42A4 to break limit)
 0x45EA - Initial Area and Subarea Values (At Start of Game, and it's a single command.)
+0xD564 - Program Advance Pointers and Tables
 0x45F2 - Initial Progress Value (At Start of Game)
 0xFE7E0 - Intro Script Value (Blue)
 0xFE6F0 - Intro Script Value (White)

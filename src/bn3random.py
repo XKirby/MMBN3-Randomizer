@@ -778,6 +778,26 @@ def init_pa_data():
         pa_data.append(chip)
         s += 32
 
+def fix_pas():
+    s = 0xD684
+    fixed_pas = []
+    for i in range(0, 0x34):
+        base_pa, pa_code_offset, chip = struct.unpack("<BBH", rom_data[s + i * 4 : s + 4 + i * 4])
+        old_code_offset = pa_code_offset
+        if len(fixed_pas) > 0:
+            count = 0
+            for check in fixed_pas:
+                if base_pa in check:
+                    count += 1
+            pa_code_offset = 0x1 + 0x2 * allcodes[chip-1][count]
+            fixed_pas.append([base_pa, pa_code_offset])
+        else:
+            pa_code_offset = 0x1 + 0x2 * allcodes[chip-1][0]
+            fixed_pas.append([base_pa, pa_code_offset])
+        write_data(chr(pa_code_offset), s + 1 + i * 4)
+        changelog_pas.append([base_pa, old_code_offset, pa_code_offset])
+    
+
 def mmbn3_text_parse(char):
     bn3c = ""
     for bn3c in mmchars:
@@ -1003,153 +1023,157 @@ def randomize_bmds_trades():
         pattern_list.append(base_offset + ptr)
         ptr += 4
     
-    for ptr in pattern_list:
-        script_ptr = read_word(ptr)
-        script_addr = 0x0
-        if script_ptr == 0:
-            continue
-        elif script_ptr - 0x08000000 < 0x00600000:
-            script_addr = script_ptr - 0x08000000
-            continue
-        else:
-            script_addr = script_ptr - 0x08000000
-        if script_addr < 1:
-            continue
-        earliest_script = min(earliest_script, script_ptr - 0x08000000)
-        script_data = decompress_data(script_addr)
-        end_addr = max(end_addr, compressed_data_end)
-        new_data = map(ord, script_data)
-        
-        # Replace chip tables
-        if ALLOW_BMD == 1:
-            for match in chip_regex.finditer(script_data):
-                match_offset = match.start()
-                old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
-                old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
-                new_chip = chip_map[old_chip]
-                while new_chip == 279:
-                    new_chip = random.choice(available_chips)
-                new_code = random.choice(allcodes[new_chip-1])
-                if [old_chip, old_code] in required_trades:
-                    if ALLOW_TRADES == 1:
-                        if len(samechiplist) > 0:
-                            found = False
-                            for i in range(len(samechiplist)):
-                                if old_chip == samechiplist[i][0] and old_code == samechiplist[i][1]:
-                                    found = True
-                                    break
-                            if found == False:
+    for valcheck in range(0,2):
+        for ptr in pattern_list:
+            script_ptr = read_word(ptr)
+            script_addr = 0x0
+            if script_ptr == 0:
+                continue
+            elif script_ptr - 0x08000000 < 0x00600000:
+                script_addr = script_ptr - 0x08000000
+                continue
+            else:
+                script_addr = script_ptr - 0x08000000
+            if script_addr < 1:
+                continue
+            earliest_script = min(earliest_script, script_ptr - 0x08000000)
+            script_data = decompress_data(script_addr)
+            end_addr = max(end_addr, compressed_data_end)
+            new_data = map(ord, script_data)
+            
+            # Replace chip tables
+            if valcheck == 0 and ALLOW_BMD == 1:
+                for match in chip_regex.finditer(script_data):
+                    match_offset = match.start()
+                    old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
+                    old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
+                    new_chip = chip_map[old_chip]
+                    while new_chip == 279:
+                        new_chip = random.choice(available_chips)
+                    new_code = random.choice(allcodes[new_chip-1])
+                    if [old_chip, old_code] in required_trades:
+                        if ALLOW_TRADES == 1:
+                            if len(samechiplist) > 0:
+                                found = False
+                                for i in range(len(samechiplist)):
+                                    if old_chip == samechiplist[i][0] and old_code == samechiplist[i][1]:
+                                        found = True
+                                if found == False:
+                                    samechiplist.append([old_chip, old_code, new_chip, new_code])
+                            else:
                                 samechiplist.append([old_chip, old_code, new_chip, new_code])
                         else:
-                            samechiplist.append([old_chip, old_code, new_chip, new_code])
-                    else:
-                        new_chip = old_chip
-                        new_code = allcodes[new_chip][chip_data[new_chip]['codes'].index(old_code)]
-                if len(bmdchiplist) > 0:
+                            new_chip = old_chip
+                            new_code = allcodes[new_chip][chip_data[new_chip]['codes'].index(old_code)]
+                    if len(bmdchiplist) > 0:
+                        for i in range(len(bmdchiplist)):
+                            if old_chip == bmdchiplist[i][0] and old_code == bmdchiplist[i][1]:
+                                new_chip = bmdchiplist[i][2]
+                                new_code = bmdchiplist[i][3]
+                                break
+                        
+                    #Get Chip Command Offsets
+                    new_data[match.start(1)] = new_chip % 256
+                    new_data[match.start(1)+1] = int(new_chip / 256)
+                    new_data[match.start(2)] = new_code
+                    bmdchiplist.append([old_chip, old_code, new_chip, new_code])
+                    changelog_bmd.append(["chip", chip_hex.keys()[chip_hex.values().index(old_chip)], old_code, chip_hex.keys()[chip_hex.values().index(new_chip)], new_code, match_offset])
+
+                # Multiply zenny tables
+                for match in zenny_regex.finditer(script_data):
+                    #match_found.append(match.start() + script_addr)
+                    match_offset = match.start() + 2
+                    zennys = list(struct.unpack('<I', match.groups()[0]))
+                    text_offset = match.start(10) - match_offset
+                    zennys[0] = zennys[0] * 3 / 2
+                    if len(str(match.group(10))) < len(str(zennys[0])):
+                        zennys[0] = 9 * pow(10, len(str(match.group(10)))-1)
+                    zenny_str = struct.pack('<I', *zennys)
+                    for i in range(len(zenny_str)):
+                        new_data[match_offset + i] = ord(zenny_str[i])
+                    for i in range(len(str(match.group(10)))):
+                        #print i, int(zennys[0] / pow(10,len(str(match.group(3)))-(i+1)) % 10) + 1
+                        new_data[match_offset + text_offset + i] = int(zennys[0] / pow(10,len(str(match.group(10)))-(i+1)) % 10) + 1
+                    #print "Zenny found at", hex(script_addr), "!"
+                    changelog_bmd.append(["zenny", list(struct.unpack('<I', match.groups()[0]))[0], zennys[0]])
+                    
+                for match in bmdchiptext_regex.finditer(script_data):
+                    match_offset = match.start()
+                    old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
+                    old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
                     for i in range(len(bmdchiplist)):
                         if old_chip == bmdchiplist[i][0] and old_code == bmdchiplist[i][1]:
                             new_chip = bmdchiplist[i][2]
                             new_code = bmdchiplist[i][3]
+                            
+                            new_data[match.start(1)] = new_chip % 256
+                            new_data[match.start(1)+1] = int(new_chip / 256) + 1
+                            new_data[match.start(2)] = new_code
                             break
-                    
-                #Get Chip Command Offsets
-                new_data[match.start(1)] = new_chip % 256
-                new_data[match.start(1)+1] = int(new_chip / 256)
-                new_data[match.start(2)] = new_code
-                bmdchiplist.append([old_chip, old_code, new_chip, new_code])
-                changelog_bmd.append(["chip", chip_hex.keys()[chip_hex.values().index(old_chip)], old_code, chip_hex.keys()[chip_hex.values().index(new_chip)], new_code, match_offset])
-
-            # Multiply zenny tables
-            for match in zenny_regex.finditer(script_data):
-                #match_found.append(match.start() + script_addr)
-                match_offset = match.start() + 2
-                zennys = list(struct.unpack('<I', match.groups()[0]))
-                text_offset = match.start(10) - match_offset
-                zennys[0] = zennys[0] * 3 / 2
-                if len(str(match.group(10))) < len(str(zennys[0])):
-                    zennys[0] = 9 * pow(10, len(str(match.group(10)))-1)
-                zenny_str = struct.pack('<I', *zennys)
-                for i in range(len(zenny_str)):
-                    new_data[match_offset + i] = ord(zenny_str[i])
-                for i in range(len(str(match.group(10)))):
-                    #print i, int(zennys[0] / pow(10,len(str(match.group(3)))-(i+1)) % 10) + 1
-                    new_data[match_offset + text_offset + i] = int(zennys[0] / pow(10,len(str(match.group(10)))-(i+1)) % 10) + 1
-                #print "Zenny found at", hex(script_addr), "!"
-                changelog_bmd.append(["zenny", list(struct.unpack('<I', match.groups()[0]))[0], zennys[0]])
+            
+            if valcheck == 1 and ALLOW_TRADES == 1:
+                for match in tradechipcheck_regex.finditer(script_data):
+                    match_offset = match.start()
+                    old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
+                    old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
+                    new_chip = chip_map[old_chip]
+                    while new_chip == 279:
+                        new_chip = random.choice(available_chips)
+                    new_code = random.choice(allcodes[new_chip-1])
+                    if len(tradechiplist) > 0:
+                        for i in range(len(tradechiplist)):
+                            if old_chip == tradechiplist[i][0] and old_code == tradechiplist[i][1]:
+                                new_chip = tradechiplist[i][2]
+                                new_code = tradechiplist[i][3]
+                                break
+                    if len(samechiplist) > 0:
+                        for i in range(len(samechiplist)):
+                            if old_chip == samechiplist[i][0] and old_code == samechiplist[i][1]:
+                                new_chip = samechiplist[i][2]
+                                new_code = samechiplist[i][3]
+                                break
+                    new_data[match.start(1)] = new_chip % 256
+                    new_data[match.start(1)+1] = int(new_chip / 256)
+                    new_data[match.start(2)] = new_code
+                    tradechiplist.append([old_chip, old_code, new_chip, new_code])
+                    changelog_trades.append(["requirement", chip_hex.keys()[chip_hex.values().index(old_chip)], old_code, chip_hex.keys()[chip_hex.values().index(new_chip)], new_code, match_offset])
+                    #print "Check: ", chip_names[chip_hex.keys()[chip_hex.values().index(new_data[match.start(1)] + new_data[match.start(1)+1] * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
                 
-            for match in bmdchiptext_regex.finditer(script_data):
-                match_offset = match.start()
-                old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
-                old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
-                for i in range(len(bmdchiplist)):
-                    if old_chip == bmdchiplist[i][0] and old_code == bmdchiplist[i][1]:
-                        new_chip = bmdchiplist[i][2]
-                        new_code = bmdchiplist[i][3]
-                        
-                        new_data[match.start(1)] = new_chip % 256
-                        new_data[match.start(1)+1] = int(new_chip / 256) + 1
-                        new_data[match.start(2)] = new_code
-                        break
-        
-        if ALLOW_TRADES == 1:
-            for match in tradechipcheck_regex.finditer(script_data):
-                match_offset = match.start()
-                old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
-                old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
-                new_chip = chip_map[old_chip]
-                while new_chip == 279:
-                    new_chip = random.choice(available_chips)
-                new_code = random.choice(allcodes[new_chip-1])
-                if [old_chip, old_code] in required_trades and len(samechiplist) > 0:
-                    for i in range(len(samechiplist)):
-                        if old_chip == samechiplist[i][0] and old_code == samechiplist[i][1]:
-                            new_chip = samechiplist[i][2]
-                            new_code = samechiplist[i][3]
-                            break
-                if len(tradechiplist) > 0:
+                for match in tradechipremove_regex.finditer(script_data):
+                    match_offset = match.start()
+                    old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
+                    old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
                     for i in range(len(tradechiplist)):
                         if old_chip == tradechiplist[i][0] and old_code == tradechiplist[i][1]:
                             new_chip = tradechiplist[i][2]
                             new_code = tradechiplist[i][3]
+                            
+                            new_data[match.start(1)] = new_chip % 256
+                            new_data[match.start(1)+1] = int(new_chip / 256)
+                            new_data[match.start(2)] = new_code
+                            #print "Remove: ", chip_names[chip_hex.keys()[chip_hex.values().index(new_data[match.start(1)] + new_data[match.start(1)+1] * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
                             break
-                new_data[match.start(1)] = new_chip % 256
-                new_data[match.start(1)+1] = int(new_chip / 256)
-                new_data[match.start(2)] = new_code
-                tradechiplist.append([old_chip, old_code, new_chip, new_code])
-                changelog_trades.append(["requirement", chip_hex.keys()[chip_hex.values().index(old_chip)], old_code, chip_hex.keys()[chip_hex.values().index(new_chip)], new_code, match_offset])
-                #print "Check: ", chip_names[chip_hex.keys()[chip_hex.values().index(new_data[match.start(1)] + new_data[match.start(1)+1] * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
-            
-            for match in tradechipremove_regex.finditer(script_data):
-                match_offset = match.start()
-                old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
-                old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
-                for i in range(len(tradechiplist)):
-                    if old_chip == tradechiplist[i][0] and old_code == tradechiplist[i][1]:
-                        new_chip = tradechiplist[i][2]
-                        new_code = tradechiplist[i][3]
-                        
-                        new_data[match.start(1)] = new_chip % 256
-                        new_data[match.start(1)+1] = int(new_chip / 256)
-                        new_data[match.start(2)] = new_code
-                        #print "Remove: ", chip_names[chip_hex.keys()[chip_hex.values().index(new_data[match.start(1)] + new_data[match.start(1)+1] * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
-                        break
-                        
-            for match in tradechiptext_regex.finditer(script_data):
-                match_offset = match.start()
-                old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
-                old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
-                for i in range(len(tradechiplist)):
-                    if old_chip == tradechiplist[i][0] and old_code == tradechiplist[i][1]:
-                        new_chip = tradechiplist[i][2]
-                        new_code = tradechiplist[i][3]
-                        
-                        new_data[match.start(1)] = new_chip % 256
-                        new_data[match.start(1)+1] = int(new_chip / 256) + 1
-                        new_data[match.start(2)] = new_code
-                        #print "Text: ", chip_names[chip_hex.keys()[chip_hex.values().index(new_data[match.start(1)] + (new_data[match.start(1)+1]-1) * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
-                        
-        new_script = ''.join(map(chr, new_data))
-        new_scripts.append([(ptr), compress_data(new_script)])
+                            
+                for match in tradechiptext_regex.finditer(script_data):
+                    match_offset = match.start()
+                    old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
+                    old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
+                    for i in range(len(tradechiplist)):
+                        if old_chip == tradechiplist[i][0] and old_code == tradechiplist[i][1]:
+                            new_chip = tradechiplist[i][2]
+                            new_code = tradechiplist[i][3]
+                            
+                            new_data[match.start(1)] = new_chip % 256
+                            new_data[match.start(1)+1] = int(new_chip / 256) + 1
+                            new_data[match.start(2)] = new_code
+                            #print "Text: ", chip_names[chip_hex.keys()[chip_hex.values().index(new_data[match.start(1)] + (new_data[match.start(1)+1]-1) * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
+                            
+            new_script = ''.join(map(chr, new_data))
+            new_scripts.append([(ptr), compress_data(new_script)])
+        
+        ptr = 0x0
+        earliest_script = 0x10000000
+        end_addr = -1
     
     # Write all the scripts back
     for i in range(len(new_scripts)):
@@ -1926,6 +1950,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     global changelog_folders
     global changelog_fields
     global changelog_trades
+    global changelog_pas
     
     # Data variables
     global rom_data
@@ -1943,6 +1968,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     changelog_battles = []
     changelog_fields = []
     changelog_trades = []
+    changelog_pas = []
     
     ROMVERSION = versionValue;
     P_MULTIPLIER = fChipMult
@@ -2041,6 +2067,8 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     init_custom_folders()
     init_chip_data()
     init_pa_data()
+    if ALLOW_CHIPS == 1 and C_ALLSTARMODE > 1:
+        fix_pas()
     # Ignore Limits code
     if IGNORE_LIMITS == 1:
         # Relink Enemy Table Read
@@ -2122,6 +2150,8 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
             finalhash = finalhash + chr(hashchar)
     setintro = "\x02\x00\xED\x01\xF1\x00"
     if FOLDER_MODE > 0:
+        write_data(struct.pack("H", 0x42A4), 0x198C)
+        write_data(struct.pack("H", 0x42A4), 0x199E)
         setintro = setintro + "\xFB\x34\x01\xFB\x34\x0A\x10\x33\x30\x28\x29\x36\x00\x16\x33\x27\x2F\x00\x0B\x27\x38\x2D\x3A\x29\x4D\xE8"
         if ROMVERSION == "b":
             write_data(chr(5), 0x2DC4A)
@@ -2159,6 +2189,8 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         print("!!NOTE!! Writing detailed log to seedinfo.txt, this will take a few...")
         for i in range(len(changelog_chip)):
             open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write(changelog_chip[i][0] + " -> " + changelog_chip[i][1] + ", Power: " + str(changelog_chip[i][2]) + " -> " + str(changelog_chip[i][3]) + ", Codes: " + changelog_chip[i][4] + ", RegMem: " + str(changelog_chip[i][5]) + "\n")
+        for i in range(0, len(changelog_pas)-1):
+            open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("Sequence Program Advance Requirement #" + str(i) + ": " + hex(0x100 + changelog_pas[i][0]) + " - " + chip_codes[(changelog_pas[i][1]-1)/2] + " -> " + chip_codes[(changelog_pas[i][2]-1)/2] + "\n")
         for i in range(0, len(changelog_battles)-1):
             name1 = ""
             name2 = ""

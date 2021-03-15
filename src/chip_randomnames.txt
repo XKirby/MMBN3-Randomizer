@@ -560,9 +560,9 @@ MisdASrd
 01011000 
 Slap 
 Slap[V2] 
-Slap[v3] 
-Slap[v4] 
-Slap[v5] 
+Slap[V3] 
+Slap[V4] 
+Slap[V5] 
 Kick Me 
 Kick Me[V2] 
 Kick Me[V3] 
@@ -789,3 +789,25 @@ Clash2
 Clash3 
 Yubi+ 
 Yami- 
+Progress 
+XBuster 
+ZBuster 
+[omega]Buster 
+WinBtn 
+EasyBtn 
+SuprJump 
+StarRain 
+GenoWhrl 
+ToxicGas 
+GroupHug 
+MchnPnch 
+MchnKick 
+Trnsform
+Megaform  
+Ggantmax 
+Dynamax 
+Legend[V1] 
+Legend[V2] 
+Legend[V3] 
+Legend[V4] 
+Legend[V5] 
