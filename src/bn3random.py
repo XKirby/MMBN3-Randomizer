@@ -26,10 +26,13 @@ med_viruses = [17,18,19,20, 21,22,23,24, 41,42,43,44, 79,80,81,82, 91,92,93,94, 
 strong_viruses = [45,46,47,48, 49,50,51,52, 83,84,85,86, 99,100,101,102, 119,120,121,122, 143,144,145,146]
 # Powerful: Jelly, Yort, Brushman, KillerEye, Viney
 powerful_viruses = [25,26,27,28, 57,58,59,60, 65,66,67,68, 87,88,89,90, 107,108,109,110]
-# Dangerous: Dominerd, Shadow, Basher, Elebee, AlphaBug, N.O
-dangerous_viruses = [53,54,55,56, 61,62,63,64, 95,96,97,98, 115,116,117,118, 127,128,129,130, 135,136,137,138]
-# Banned: Scuttle, Twins, Number, Number-M, Number-G
-banned_viruses = [69,70,71,72,73,74, 151,152,153,154, 159,160,161, 162,163,164, 165,166,167]
+# Dangerous: Dominerd, Basher, Elebee, AlphaBug, N.O
+dangerous_viruses = [53,54,55,56, 95,96,97,98, 115,116,117,118, 127,128,129,130, 135,136,137,138]
+# Banned: Shadow, Scuttle, Twins, Number, Number-M, Number-G
+banned_viruses = [61,62,63,64, 69,70,71,72,73,74, 151,152,153,154, 159,160,161, 162,163,164, 165,166,167]
+# Chaos Virus Exclusions: Banned
+allviruses = [1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,16, 29,30,31,32, 33,34,35,36, 37,38,39,40, 75,76,77,78, 123,124,125,126, 131,132,133,134, 17,18,19,20, 21,22,23,24, 41,42,43,44, 79,80,81,82, 91,92,93,94, 103,104,105,106, 111,112,113,114, 139,140,141,142, 147,148,149,150, 155,156,157,158, 45,46,47,48, 49,50,51,52, 83,84,85,86, 99,100,101,102, 119,120,121,122, 143,144,145,146, 25,26,27,28, 57,58,59,60, 65,66,67,68, 87,88,89,90, 107,108,109,110, 53,54,55,56, 95,96,97,98, 115,116,117,118, 127,128,129,130, 135,136,137,138]
+#allviruses = [1,5,9,13,29,33,37,75,123,131,17,21,41,79,91,103,111,139,147,155,45,49,83,99,119,143,25,57,65,87,107,53,95,115,127,135]
 
 # Potentially Required NPC Trades
 required_trades = [[0x20, 4], [0x3a, 2], [136, 10], [46, 21], [81, 0], [122, 26], [0x8f, 26], [0x45, 6], [0x19, 12], [45, 22], [14, 2], [125, 18], [110, 12], [33, 15], [31, 2], [88, 7], [165, 9], [99, 13]]
@@ -38,16 +41,14 @@ tradechiplist = []
 # Navi Lists for Navi Randomizations
 weak_navis = [0,4,32,40]
 mid_navis = [8,20,48,52,56]
-strong_navis = [12,16,24,44]
+strong_navis = [12,16,24]
 post_navis = [36,60,64]
+allnavis = [0,4,8,12,16,20,24,32,36,40,44,48,52,56,60,64]
 chosen_navis = list()
 for i in range(0, 76):
     chosen_navis.append(-1)
 
 special_virus_level = {
-    2: 1,
-    95: 1,
-    135: 1,
     168: 1,
     169: 2,
     170: 3,
@@ -1003,12 +1004,13 @@ def randomize_bmds_trades():
     free_space = len(old_data)
     if ROMVERSION == "b":
         base_offset = 0x28854
-        pattern_list.append(0x2664c)
+        pattern_list.append([0, 0x2664c])
     else:
         base_offset = 0x2886C
-        pattern_list.append(0x26664)
+        pattern_list.append([0, 0x26664])
     new_scripts = []
     ptr = 0x0
+    p = 0
     chip_regex = re.compile(r'(?s)\xf6\x10([\s\S][\x00-\x01])([\x00-\x1a])[\x01-\x03]')
     zenny_regex = re.compile(r'(?s)\xf6\x30([\s\S]{4})(\xff{3})((((\x16\x25\x32)|(\x17\x29\x2b\x25\x17\x25\x32))\x00(\x2b\x33\x38[\x00\x42]\xe8\x51))|([\s\S]{,40}?))([\x01-\x0a]{3,6})\x00\x24\x29\x32\x32\x3d\x37?\x51\x47\x47')
     bmdchiptext_regex = re.compile(r'(?s)\xF9[\x00-\xFF]([\s\S][\x01-\x02])\x00\xF9[\x00-\xFF]([\x00-\x1A])\x03')
@@ -1020,12 +1022,12 @@ def randomize_bmds_trades():
     chip_map = generate_chip_permutation(True)
     
     while ptr <= 0x24C:
-        pattern_list.append(base_offset + ptr)
+        pattern_list.append([ptr, base_offset + ptr])
         ptr += 4
     
     for valcheck in range(0,2):
         for ptr in pattern_list:
-            script_ptr = read_word(ptr)
+            script_ptr = read_word(ptr[1])
             script_addr = 0x0
             if script_ptr == 0:
                 continue
@@ -1038,6 +1040,10 @@ def randomize_bmds_trades():
                 continue
             earliest_script = min(earliest_script, script_ptr - 0x08000000)
             script_data = decompress_data(script_addr)
+            p += 1
+            if len(new_scripts) >= p and p > 0:
+                if new_scripts[p-1][0] == ptr[1]:
+                    script_data = new_scripts[p-1][1]
             end_addr = max(end_addr, compressed_data_end)
             new_data = map(ord, script_data)
             
@@ -1169,16 +1175,19 @@ def randomize_bmds_trades():
                             #print "Text: ", chip_names[chip_hex.keys()[chip_hex.values().index(new_data[match.start(1)] + (new_data[match.start(1)+1]-1) * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
                             
             new_script = ''.join(map(chr, new_data))
-            new_scripts.append([(ptr), compress_data(new_script)])
-        
+            if len(new_scripts) >= p:
+                new_scripts[p-1] = [ptr[1], new_script]
+            else:
+                new_scripts.insert(p-1, [ptr[1], new_script])
         ptr = 0x0
+        p = 0
         earliest_script = 0x10000000
         end_addr = -1
     
     # Write all the scripts back
-    for i in range(len(new_scripts)):
-        script_ptr = new_scripts[i][0]
-        script_data = new_scripts[i][1]
+    for i in new_scripts:
+        script_ptr = i[0]
+        script_data = compress_data(i[1])
         start_addr = read_word(script_ptr) - 0x08000000
         write_data(script_data, free_space)
         write_data(struct.pack('<I', free_space + 0x08000000), script_ptr)
@@ -1199,43 +1208,53 @@ def virus_replace(ind):
         # Randomize Navi Battles
         if RANDOM_NAVIS == 1:
             if ind not in [196, 197, 198, 199, 220, 221, 222, 223, 224, 225, 226, 227, 236, 237, 238, 239, 240, 241, 242, 243]:
-                # Easy Navis
-                if ind-168 in [0, 4, 32, 40] and chosen_navis[ind-168] < 0:
-                    chosen_navis[ind-168] = random.choice(weak_navis)
-                    chosen_navis[ind-168+1] = chosen_navis[ind-168]
-                    chosen_navis[ind-168+2] = chosen_navis[ind-168]
-                    chosen_navis[ind-168+3] = chosen_navis[ind-168]
-                    weak_navis.remove(chosen_navis[ind-168])
-                
-                # Middle Navis
-                if ind-168 in [8, 20, 48] and chosen_navis[ind-168] < 0:
-                    chosen_navis[ind-168] = random.choice(mid_navis)
-                    chosen_navis[ind-168+1] = chosen_navis[ind-168]
-                    chosen_navis[ind-168+2] = chosen_navis[ind-168]
-                    chosen_navis[ind-168+3] = chosen_navis[ind-168]
-                    mid_navis.remove(chosen_navis[ind-168])
-                
-                # Strong Navis
-                if ind-168 in [12, 16, 24, 44] and chosen_navis[ind-168] < 0:
-                    chosen_navis[ind-168] = random.choice(strong_navis)
-                    chosen_navis[ind-168+1] = chosen_navis[ind-168]
-                    chosen_navis[ind-168+2] = chosen_navis[ind-168]
-                    chosen_navis[ind-168+3] = chosen_navis[ind-168]
-                    strong_navis.remove(chosen_navis[ind-168])
-                
-                # Post-game Navis
-                if ind-168 in [36, 60, 64] and chosen_navis[ind-168] < 0:
-                    chosen_navis[ind-168] = random.choice(post_navis)
-                    chosen_navis[ind-168+1] = chosen_navis[ind-168]
-                    chosen_navis[ind-168+2] = chosen_navis[ind-168]
-                    chosen_navis[ind-168+3] = chosen_navis[ind-168]
-                    post_navis.remove(chosen_navis[ind-168])
+                # Shuffle Mode
+                if OMEGA_MODE < 4:
+                    # Easy Navis
+                    if ind-168 in [0, 4, 32, 40] and chosen_navis[ind-168] < 0:
+                        chosen_navis[ind-168] = random.choice(weak_navis)
+                        chosen_navis[ind-168+1] = chosen_navis[ind-168]
+                        chosen_navis[ind-168+2] = chosen_navis[ind-168]
+                        chosen_navis[ind-168+3] = chosen_navis[ind-168]
+                        weak_navis.remove(chosen_navis[ind-168])
+                    
+                    # Middle Navis
+                    if ind-168 in [8, 20, 48] and chosen_navis[ind-168] < 0:
+                        chosen_navis[ind-168] = random.choice(mid_navis)
+                        chosen_navis[ind-168+1] = chosen_navis[ind-168]
+                        chosen_navis[ind-168+2] = chosen_navis[ind-168]
+                        chosen_navis[ind-168+3] = chosen_navis[ind-168]
+                        mid_navis.remove(chosen_navis[ind-168])
+                    
+                    # Strong Navis
+                    if ind-168 in [12, 16, 24, 44] and chosen_navis[ind-168] < 0:
+                        chosen_navis[ind-168] = random.choice(strong_navis)
+                        chosen_navis[ind-168+1] = chosen_navis[ind-168]
+                        chosen_navis[ind-168+2] = chosen_navis[ind-168]
+                        chosen_navis[ind-168+3] = chosen_navis[ind-168]
+                        strong_navis.remove(chosen_navis[ind-168])
+                    
+                    # Post-game Navis
+                    if ind-168 in [36, 60, 64] and chosen_navis[ind-168] < 0:
+                        chosen_navis[ind-168] = random.choice(post_navis)
+                        chosen_navis[ind-168+1] = chosen_navis[ind-168]
+                        chosen_navis[ind-168+2] = chosen_navis[ind-168]
+                        chosen_navis[ind-168+3] = chosen_navis[ind-168]
+                        post_navis.remove(chosen_navis[ind-168])
+                # Chaos Mode
+                else:
+                    if ind-168 in [0,4,8,12,16,20,24,32,36,40,44,48,52,56,60,64] and chosen_navis[ind-168] < 0:
+                        chosen_navis[ind-168] = random.choice(allnavis)
+                        chosen_navis[ind-168+1] = chosen_navis[ind-168]
+                        chosen_navis[ind-168+2] = chosen_navis[ind-168]
+                        chosen_navis[ind-168+3] = chosen_navis[ind-168]
+                        allnavis.remove(chosen_navis[ind-168])
                 
                 new_ind = chosen_navis[ind-168] + 168
                 ind = new_ind + virus_level(ind) - 1
         if OMEGA_MODE >= 1:
             # Bass, ignore swap-out mechanic
-            if ind in [238, 239, 240, 241]:
+            if ind in [240, 241, 242, 243]:
                 return ind
             # Alpha, ignore swap-out mechanic
             elif ind in [196, 197]:
@@ -1244,10 +1263,10 @@ def virus_replace(ind):
             elif ind in [236,237,238,239]:
                 return ind
             else:
-                if virus_level(ind) > virus_level(ind + OMEGA_MODE):
+                if virus_level(ind) > virus_level(ind + (OMEGA_MODE % 4)):
                     return ind
                 else:
-                    return ind + OMEGA_MODE
+                    return ind + (OMEGA_MODE % 4)
         else:
             return ind
     old_hp, old_attack, old_name = virus_data[ind]
@@ -1256,27 +1275,32 @@ def virus_replace(ind):
         return ind
 
     new_ind = -1
-    if ind in weak_viruses:
-        new_ind = weak_viruses[random.randint(0,(len(weak_viruses)-1))]
-        new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
-    if ind in med_viruses:
-        new_ind = med_viruses[random.randint(0,(len(med_viruses)-1))]
-        new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
-    if ind in strong_viruses:
-        new_ind = strong_viruses[random.randint(0,(len(strong_viruses)-1))]
-        new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
-    if ind in powerful_viruses:
-        new_ind = powerful_viruses[random.randint(0,(len(powerful_viruses)-1))]
-        new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
-    if ind in dangerous_viruses:
-        new_ind = dangerous_viruses[random.randint(0,(len(dangerous_viruses)-1))]
-        new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
+    if OMEGA_MODE < 4:
+        if ind in weak_viruses:
+            new_ind = weak_viruses[random.randint(0,(len(weak_viruses)-1))]
+            new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
+        if ind in med_viruses:
+            new_ind = med_viruses[random.randint(0,(len(med_viruses)-1))]
+            new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
+        if ind in strong_viruses:
+            new_ind = strong_viruses[random.randint(0,(len(strong_viruses)-1))]
+            new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
+        if ind in powerful_viruses:
+            new_ind = powerful_viruses[random.randint(0,(len(powerful_viruses)-1))]
+            new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
+        if ind in dangerous_viruses:
+            new_ind = dangerous_viruses[random.randint(0,(len(dangerous_viruses)-1))]
+            new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
+    else:
+        if ind - virus_level(ind) in allviruses:
+            new_ind = allviruses[random.randint(0,(len(allviruses)-1))]
+            new_ind = new_ind - virus_level(new_ind) + virus_level(ind)
     if new_ind not in banned_viruses:
-        if OMEGA_MODE > 0:
-            if virus_level(new_ind) > virus_level(new_ind + OMEGA_MODE):
+        if OMEGA_MODE % 4 > 0:
+            if virus_level(new_ind) > virus_level(new_ind + (OMEGA_MODE % 4)):
                 return new_ind
             else:
-                return new_ind + OMEGA_MODE
+                return new_ind + (OMEGA_MODE % 4)
         else:
             return new_ind
     return new_ind
@@ -1892,20 +1916,27 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     global mid_navis
     mid_navis = [8,20,48]
     global strong_navis
-    strong_navis = [12,16,24,44]
+    strong_navis = [12,16,24]
     global post_navis
     post_navis = [36,60,64]
+    global allnavis
+    allnavis = [0,4,8,12,16,20,24,32,36,40,44,48,52,56,60,64]
     
     global weak_viruses
-    weak_viruses = [1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,16, 29,30,31,32, 33,34,35,36, 123,124,125,126, 131,132,133,134]
+    weak_viruses = [1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,16, 29,30,31,32, 33,34,35,36, 37,38,39,40, 75,76,77,78, 123,124,125,126, 131,132,133,134]
     global med_viruses
-    med_viruses = [17,18,19,20, 21,22,23,24, 37,38,39,40, 41,42,43,44, 75,76,77,78, 79,80,81,82, 103,104,105,106, 111,112,113,114, 129,140,141,142, 147,148,149,150, 155,156,157,158]
+    med_viruses = [17,18,19,20, 21,22,23,24, 41,42,43,44, 79,80,81,82, 91,92,93,94, 103,104,105,106, 111,112,113,114, 139,140,141,142, 147,148,149,150, 155,156,157,158]
     global strong_viruses
-    strong_viruses = [25,26,27,28, 45,46,47,48, 53,54,55,56, 57,58,59,60, 65,66,67,68, 83,84,85,86, 87,88,89,90, 95,96,97,98, 99,100,101,102, 115,116,117,118, 119,120,121,122, 143,144,145,146]
-    global bad_viruses
-    bad_viruses = [49,50,51,52, 61,62,63,64, 91,92,93,94, 107,108,109,110, 127,128,129,130, 135,136,137,138, 151,152,153,154]
+    strong_viruses = [45,46,47,48, 49,50,51,52, 83,84,85,86, 99,100,101,102, 119,120,121,122, 143,144,145,146]
+    global powerful_viruses
+    powerful_viruses = [25,26,27,28, 57,58,59,60, 65,66,67,68, 87,88,89,90, 107,108,109,110]
+    global dangerous_viruses
+    dangerous_viruses = [53,54,55,56, 95,96,97,98, 115,116,117,118, 127,128,129,130, 135,136,137,138]
     global banned_viruses
-    banned_viruses = [69,70,71,72,73,74, 159,160,161, 162,163,164, 165,166,167]
+    banned_viruses = [61,62,63,64, 69,70,71,72,73,74, 151,152,153,154, 159,160,161, 162,163,164, 165,166,167]
+    global allviruses
+    allviruses = [1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,16, 29,30,31,32, 33,34,35,36, 37,38,39,40, 75,76,77,78, 123,124,125,126, 131,132,133,134, 17,18,19,20, 21,22,23,24, 41,42,43,44, 79,80,81,82, 91,92,93,94, 103,104,105,106, 111,112,113,114, 139,140,141,142, 147,148,149,150, 155,156,157,158, 45,46,47,48, 49,50,51,52, 83,84,85,86, 99,100,101,102, 119,120,121,122, 143,144,145,146, 25,26,27,28, 57,58,59,60, 65,66,67,68, 87,88,89,90, 107,108,109,110, 53,54,55,56, 95,96,97,98, 115,116,117,118, 127,128,129,130, 135,136,137,138]
+    #allviruses = [1,5,9,13,29,33,37,75,123,131,17,21,41,79,91,103,111,139,147,155,45,49,83,99,119,143,25,57,65,87,107,53,95,115,127,135]
     
     global P_MULTIPLIER
     global P_VARIANCE
@@ -2031,7 +2062,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         ELEMENT_MODE = random.choice([0,0,0,0,1,1,2,2,3])
         REGMEM_MODE = random.choice([0,0,0,random.randint(1,20),random.randint(1,20),random.randint(1,35),random.randint(1,55)])
         HELL_MODE = 0
-        OMEGA_MODE = random.choice([0,0,0,0,0,1])
+        OMEGA_MODE = random.choice([0,0,0,0,0,1,4])
         RANDOM_NAVIS = random.choice([0,0,0,1])
         RANDOM_OBSTACLES = random.choice([0,0,0,0,0,0,1])
         FOLDER_MODE = random.choice([0,0,0,0,1,1,2,3,3,4])
