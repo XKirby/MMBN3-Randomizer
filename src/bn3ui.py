@@ -297,6 +297,32 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label4.configure(highlightcolor="black")
         self.Label4.configure(justify=RIGHT)
         self.Label4.configure(text='''Enemy HP Variance''')
+        
+        self.Entry8 = Entry(self.Labelframe3)
+        self.Entry8.place(relx=0.64, rely=0.43, height=20, relwidth=0.08)
+        self.Entry8.configure(background="white")
+        self.Entry8.configure(disabledforeground="#a3a3a3")
+        self.Entry8.configure(font="TkFixedFont")
+        self.Entry8.configure(foreground="#000000")
+        self.Entry8.configure(highlightbackground="#d9d9d9")
+        self.Entry8.configure(highlightcolor="black")
+        self.Entry8.configure(insertbackground="black")
+        self.Entry8.configure(selectbackground="#c4c4c4")
+        self.Entry8.configure(selectforeground="black")
+        self.Entry8.configure(textvariable=bn3ui_support.multPriceVar)
+
+        self.Label13 = Label(self.Labelframe3)
+        self.Label13.place(relx=0.42, rely=0.46, height=21, width=105, y=-12, h=20)
+
+        self.Label13.configure(activebackground="#f9f9f9")
+        self.Label13.configure(activeforeground="black")
+        self.Label13.configure(background="#d9d9d9")
+        self.Label13.configure(disabledforeground="#a3a3a3")
+        self.Label13.configure(foreground="#000000")
+        self.Label13.configure(highlightbackground="#d9d9d9")
+        self.Label13.configure(highlightcolor="black")
+        self.Label13.configure(justify=RIGHT)
+        self.Label13.configure(text='''Chip Price Variance''')
 
         self.TCombobox1 = ttk.Combobox(self.Labelframe3)
         self.TCombobox1.place(relx=0.64, rely=0.07, relheight=0.07, relwidth=0.33
@@ -319,7 +345,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label5.configure(text='''Chip Code Roulette Mode''')
 
         self.Scale1 = Scale(self.Labelframe3)
-        self.Scale1.place(relx=0.5, rely=0.42, relwidth=0.48, relheight=0.0
+        self.Scale1.place(relx=0.5, rely=0.50, relwidth=0.48, relheight=0.0
                 , height=61)
         self.Scale1.configure(activebackground="#d9d9d9")
         self.Scale1.configure(background="#d9d9d9")
@@ -488,7 +514,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label7.configure(text='''Set Virus Level Mode''')
 
         self.Label8 = Label(self.Labelframe3)
-        self.Label8.place(relx=0.285, rely=0.50, height=24, width=120, y=-12, h=20)
+        self.Label8.place(relx=0.285, rely=0.58, height=24, width=120, y=-12, h=20)
 
         self.Label8.configure(activebackground="#f9f9f9")
         self.Label8.configure(activeforeground="black")
@@ -501,7 +527,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label8.configure(width=164)
 
         self.Labelframe6 = LabelFrame(self.Labelframe3)
-        self.Labelframe6.place(relx=0.31, rely=0.59, relheight=0.4, relwidth=0.67
+        self.Labelframe6.place(relx=0.31, rely=0.67, relheight=0.3, relwidth=0.67
                 , y=-12, h=6)
         self.Labelframe6.configure(relief=GROOVE)
         self.Labelframe6.configure(foreground="black")
@@ -512,7 +538,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Labelframe6.configure(width=390)
 
         self.Checkbutton7 = Checkbutton(self.Labelframe6)
-        self.Checkbutton7.place(relx=0.03, rely=0.30, relheight=0.2
+        self.Checkbutton7.place(relx=0.03, rely=0.35, relheight=0.2
                 , relwidth=0.34, y=-12, h=6)
         self.Checkbutton7.configure(activebackground="#d9d9d9")
         self.Checkbutton7.configure(activeforeground="#000000")
@@ -526,7 +552,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton7.configure(variable=bn3ui_support.allowGMD)
 
         self.Checkbutton8 = Checkbutton(self.Labelframe6)
-        self.Checkbutton8.place(relx=0.03, rely=0.50, relheight=0.2
+        self.Checkbutton8.place(relx=0.03, rely=0.6, relheight=0.2
                 , relwidth=0.42, y=-12, h=6)
         self.Checkbutton8.configure(activebackground="#d9d9d9")
         self.Checkbutton8.configure(activeforeground="#000000")
@@ -568,7 +594,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton9.configure(variable=bn3ui_support.allowShop)
 
         self.Checkbutton10 = Checkbutton(self.Labelframe6)
-        self.Checkbutton10.place(relx=0.54, rely=0.30, relheight=0.2
+        self.Checkbutton10.place(relx=0.54, rely=0.35, relheight=0.2
                 , relwidth=0.29, y=-12, h=6)
         self.Checkbutton10.configure(activebackground="#d9d9d9")
         self.Checkbutton10.configure(activeforeground="#000000")
@@ -582,7 +608,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton10.configure(variable=bn3ui_support.allowChip)
 
         self.Checkbutton11 = Checkbutton(self.Labelframe6)
-        self.Checkbutton11.place(relx=0.54, rely=0.50, relheight=0.2
+        self.Checkbutton11.place(relx=0.54, rely=0.6, relheight=0.2
                 , relwidth=0.43, y=-12, h=6)
         self.Checkbutton11.configure(activebackground="#d9d9d9")
         self.Checkbutton11.configure(activeforeground="#000000")
@@ -596,7 +622,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton11.configure(variable=bn3ui_support.allowVirus)
         
         self.Checkbutton12 = Checkbutton(self.Labelframe6)
-        self.Checkbutton12.place(relx=0.03, rely=0.70, relheight=0.2
+        self.Checkbutton12.place(relx=0.03, rely=0.85, relheight=0.2
                 , relwidth=0.30, y=-12, h=6)
         self.Checkbutton12.configure(activebackground="#d9d9d9")
         self.Checkbutton12.configure(activeforeground="#000000")

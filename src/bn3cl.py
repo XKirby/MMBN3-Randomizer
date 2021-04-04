@@ -11,6 +11,7 @@ def main():
         
         global P_MULTIPLIER
         global P_VARIANCE
+        global CPRICE_VARIANCE
         global V_MULTIPLIER
         global VH_VARIANCE
         global C_ALLSTARMODE
@@ -44,6 +45,7 @@ def main():
         parser.add_argument("-v", "--version", help="Rom Version, character.", choices=["w", "b", "W", "B"], default="w")
         parser.add_argument("-cdm", "--chipdamagemult", help="Chip/PA Damage Multiplier, float.", type=float, default=1.0)
         parser.add_argument("-cdv", "--chipdamagevar", help="Chip/PA Damage Variance, float.", type=float, default=0.0)
+        parser.add_argument("-cpv", "--chippricevar", help="Chip Price Variance, float.", type=float, default=0.0)
         parser.add_argument("-edm", "--enemydamagemult", help="Virus/Navi HP Multiplier, float.", type=float, default=1.0)
         parser.add_argument("-edv", "--enemydamagevar", help="Virus/Navi HP Variance, float.", type=float, default=0.0)
         parser.add_argument("-cr", "--coderoulettemode", help="Chip Code Roulette Mode, integer.", type=int, choices=[0,1,2,3], default=0)
@@ -107,6 +109,7 @@ def main():
         SEED = args.seed
         OUTPUTLOG = args.log
         IGNORE_LIMITS = args.limitbreak
+        CPRICE_VARIANCE = args.chippricevar
         
         #Variable Input
         if args.input >= 1:
@@ -115,6 +118,7 @@ def main():
                 ROMVERSION = str(raw_input("Which Version? [W/B]> "))
                 P_MULTIPLIER = float(raw_input("Input Damage Multiplier Float> "))
                 P_VARIANCE = float(raw_input("Input Damage Variance Float> "))
+                CPRICE_VARIANCE = float(raw_input("Input Chip Price Variance Float> "))
                 V_MULTIPLIER = float(raw_input("Input Enemy HP Multiplier Float> "))
                 VH_VARIANCE = float(raw_input("Input Enemy HP Variance Float> "))
                 C_ALLSTARMODE = int(raw_input("Input Chip Code Roulette Mode [0-3]> ")) % 4
@@ -151,7 +155,7 @@ def main():
         if len(INPUT_FILE) < 1 or len(OUTPUT_FILE) < 1:
                 return
         import bn3random
-        bn3random.randomizerom(INPUT_FILE, OUTPUT_FILE, ROMVERSION, SEED, P_MULTIPLIER, P_VARIANCE, V_MULTIPLIER, VH_VARIANCE, C_ALLSTARMODE, CP_NAMERANDOMIZER, VN_NAMERANDOMIZER, RANDOM_NAVIS, ELEMENT_MODE, REGMEM_MODE, NC_SHAPERANDOMIZER, OMEGA_MODE, HELL_MODE, BF_PANELRANDOMIZER, FOLDER_MODE, OUTPUTLOG, RANDOM_OBSTACLES, FILL_SHOPS, FREE_SHOPS, ALLOW_FOLDERS, ALLOW_GMD, ALLOW_BMD, ALLOW_SHOPS, ALLOW_CHIPS, ALLOW_VIRUSES, ALLOW_TRADES, ALLOW_DAILY, TUTORIAL_SKIP, IGNORE_LIMITS)
+        bn3random.randomizerom(INPUT_FILE, OUTPUT_FILE, ROMVERSION, SEED, P_MULTIPLIER, P_VARIANCE, V_MULTIPLIER, VH_VARIANCE, C_ALLSTARMODE, CP_NAMERANDOMIZER, VN_NAMERANDOMIZER, RANDOM_NAVIS, ELEMENT_MODE, REGMEM_MODE, NC_SHAPERANDOMIZER, OMEGA_MODE, HELL_MODE, BF_PANELRANDOMIZER, FOLDER_MODE, OUTPUTLOG, RANDOM_OBSTACLES, FILL_SHOPS, FREE_SHOPS, ALLOW_FOLDERS, ALLOW_GMD, ALLOW_BMD, ALLOW_SHOPS, ALLOW_CHIPS, ALLOW_VIRUSES, ALLOW_TRADES, ALLOW_DAILY, TUTORIAL_SKIP, IGNORE_LIMITS, CPRICE_VARIANCE)
 
 if __name__ == '__main__':
         main()
