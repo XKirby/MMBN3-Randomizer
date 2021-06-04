@@ -10,6 +10,7 @@ global rom_data
 global randomized_data
 N_CHIPS = 312
 N_PAS = 32
+DATA_PATH="data/"
 
 # Battle Obstacle List
 obstacles = ["Mega Man", "Virus", "Rock", "RockCube", "MetalCube", "IceCube", "Guardian", "BlackBomb", "N/A", "Flag", "N/A", "MetalGear"]
@@ -461,15 +462,15 @@ def virus_level(virus):
 
 def init_custom_folders():
     global folder_data
-    folder_data = open('folders_custom.txt', 'r').read().strip()
+    folder_data = open(DATA_PATH + 'folders_custom.txt', 'r').read().strip()
     folder_data = map(lambda str: map(navi_data_setup, str.split(',')), folder_data.split('\n'))
 
 def init_virus_data():
     global virus_data
-    virus_data = open('virus_data.txt', 'r').read().strip()
+    virus_data = open(DATA_PATH + 'virus_data.txt', 'r').read().strip()
     virus_data = map(lambda str: map(navi_data_setup, str.split(' ')), virus_data.split('\n'))
     global navi_data
-    navi_data = open('navi_data.txt', 'r').read().strip()
+    navi_data = open(DATA_PATH + 'navi_data.txt', 'r').read().strip()
     navi_data = map(lambda str: map(navi_data_setup, str.split(' ')), navi_data.split('\n'))
     
 def navi_data_setup(args):
@@ -511,23 +512,23 @@ def init_chip_data():
     allcodes = [[255 for x in range(6)] for y in range(N_CHIPS)]
 
     # Load in chip ranks from file
-    chip_ranks = open('chip_data.txt', 'r').read().strip()
+    chip_ranks = open(DATA_PATH +'chip_data.txt', 'r').read().strip()
     chip_ranks = map(int, chip_ranks.split('\n'))
 
-    chip_names = open('chip_names.txt', 'r').read().strip()
+    chip_names = open(DATA_PATH +'chip_names.txt', 'r').read().strip()
     chip_names = chip_names.split('\n')
     
-    chip_prices = open('chip_prices.txt', 'r').read().strip().split('\n')
+    chip_prices = open(DATA_PATH +'chip_prices.txt', 'r').read().strip().split('\n')
     nameoffset = 0x704c09
     if ROMVERSION == "b":
         nameoffset = 0x7045F5
     
-    chip_randnames = open('chip_randomnames.txt', 'r').read().strip().split('\n')
+    chip_randnames = open(DATA_PATH +'chip_randomnames.txt', 'r').read().strip().split('\n')
     
-    chip_attack = open('chip_attackpower.txt', 'r').read().strip()
+    chip_attack = open(DATA_PATH +'chip_attackpower.txt', 'r').read().strip()
     chip_attack = chip_attack.split('\n')
     
-    chip_reg = open('regmem.txt','r').read().strip().split('\n')
+    chip_reg = open(DATA_PATH +'regmem.txt','r').read().strip().split('\n')
 
     chip_data.append({})
     for i in range(N_CHIPS):
@@ -713,18 +714,18 @@ def init_pa_data():
     pa_data = []
 
     # Load in chip ranks from file
-    pa_ranks = open('pa_data.txt', 'r').read().strip()
+    pa_ranks = open(DATA_PATH +'pa_data.txt', 'r').read().strip()
     pa_ranks = map(int, pa_ranks.split('\n'))
     
-    pa_names = open('pa_names.txt', 'r').read().strip()
+    pa_names = open(DATA_PATH +'pa_names.txt', 'r').read().strip()
     pa_names = pa_names.split('\n')
     
-    chip_randnames = open('chip_randomnames.txt', 'r').read().strip().split('\n')
+    chip_randnames = open(DATA_PATH +'chip_randomnames.txt', 'r').read().strip().split('\n')
     nameoffset = 0x70571B
     if ROMVERSION == "b":
         nameoffset = 0x705107
     
-    pa_attack = open('pa_attackpower.txt', 'r').read().strip()
+    pa_attack = open(DATA_PATH +'pa_attackpower.txt', 'r').read().strip()
     pa_attack = pa_attack.split('\n')
 
     pa_data.append({})
@@ -1351,7 +1352,7 @@ def randomize_viruses():
     virus_start = 0x19618
     
     # Virus Randomizer
-    virus_randnames = open('enemy_randomnames.txt', 'r').read().strip().split('\n')
+    virus_randnames = open(DATA_PATH +'enemy_randomnames.txt', 'r').read().strip().split('\n')
     virus_namestart = 0x711B00
     if ROMVERSION == "b":
         virus_namestart = 0x7114EC
@@ -1757,7 +1758,7 @@ def randomize_navicust():
     banned_programs = ["Press", "EnergyChange", "AlphaScope", "BlackMind", "UnderShirt", "Attack+1", "Speed+1", "Charge+1"]
     ncp_programs = ["SuperArmor", "BreakBuster", "BreakCharge", "SetGreen", "SetIce", "SetLava", "SetSand", "SetMetal", "SetHoly", "Custom1", "Custom2", "MegaFolder1", "MegaFolder2", "Block", "Shield", "Reflect", "ShadowShoes", "FloatShoes", "AntiDamage", "Press", "EnergyChange", "AlphaScope", "SneakRun", "OilBody", "Fish", "Battery", "Jungle", "Collect", "AirShoes", "UnderShirt", "FastGauge", "Rush", "Beat", "Tango", "WeaponLevel+1", "HP+100", "HP+200", "HP+300", "HP+500", "Reg+5", "Attack+1", "Speed+1", "Charge+1", "BugStopper", "Humor", "BlackMind", "BusterMax", "GigaFolder1", "HubBatch", "DarkLicense"];
     
-    ncp_data = open("ncp_patterns.txt", "r").read().strip()
+    ncp_data = open(DATA_PATH +"ncp_patterns.txt", "r").read().strip()
     ncp_data = ncp_data.split("\n")
     
     ncp_offset = 0x39468
@@ -1849,7 +1850,7 @@ def randomize_name(nameoffset, name, randnames):
 def randomize_battlefields():
     # Same Offset for both games
     base_offset = 0xBFDC
-    stage_data = open("stages.txt","r").read().strip()
+    stage_data = open(DATA_PATH +"stages.txt","r").read().strip()
     stage_data = map(lambda str: map(int, str.split(' ')), stage_data.split('\n'))
     for i in range(0, 127):
         new_field = stage_data[random.randint(0, len(stage_data)-1)]
