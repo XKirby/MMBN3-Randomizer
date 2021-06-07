@@ -20,6 +20,7 @@ except ImportError:
     py3 = True
 
 import bn3ui_support
+from bn3_tooltip import *
 
 def vp_start_gui():
     '''Starting point when module is the main routine.'''
@@ -74,7 +75,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         top.configure(highlightcolor="black")
 
 
-
+        # Game ver. label
         self.Labelframe1 = LabelFrame(top)
         self.Labelframe1.place(relx=0.02, rely=0.23, relheight=0.13
                 , relwidth=0.13)
@@ -85,7 +86,9 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Labelframe1.configure(highlightbackground="#d9d9d9")
         self.Labelframe1.configure(highlightcolor="black")
         self.Labelframe1.configure(width=80)
+        Tooltip(self.Labelframe1, "Select input ROM version")
 
+        # White ver. radio button
         self.Radiobutton1 = Radiobutton(self.Labelframe1)
         self.Radiobutton1.place(relx=0.13, rely=0.24, relheight=0.33
                 , relwidth=0.74, y=-12, h=6)
@@ -103,6 +106,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Radiobutton1.configure(value="w")
         self.Radiobutton1.configure(variable=bn3ui_support.versionValue)
 
+        # Blue ver. radio button
         self.Radiobutton2 = Radiobutton(self.Labelframe1)
         self.Radiobutton2.place(relx=0.13, rely=0.64, relheight=0.33
                 , relwidth=0.64, y=-12, h=6)
@@ -123,7 +127,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         top.configure(menu = self.menubar)
 
 
-
+        # Seed label
         self.Labelframe2 = LabelFrame(top)
         self.Labelframe2.place(relx=0.02, rely=0.9, relheight=0.09
                 , relwidth=0.97)
@@ -135,6 +139,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Labelframe2.configure(highlightcolor="black")
         self.Labelframe2.configure(width=580)
 
+        # Input File box
         self.Entry1 = Entry(self.Labelframe2)
         self.Entry1.place(relx=0.02, rely=0.14,height=20, relwidth=0.59)
         self.Entry1.configure(background="white")
@@ -163,6 +168,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Button1.configure(highlightcolor="black")
         self.Button1.configure(pady="0")
         self.Button1.configure(text='''Randomize!''')
+        Tooltip(self.Button1, "Generate new ROM file with applied settings")
 
         self.Checkbutton3_1 = Checkbutton(self.Labelframe2)
         self.Checkbutton3_1.place(relx=0.62, rely=0.47, relheight=0.45
@@ -179,6 +185,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton3_1.configure(text='''Daily Run?''')
         self.Checkbutton3_1.configure(variable=bn3ui_support.allowDaily)
         self.Checkbutton3_1.configure(width=85)
+        Tooltip(self.Checkbutton3_1, "Allow daily?")
 
         self.Labelframe3 = LabelFrame(top)
         self.Labelframe3.place(relx=0.02, rely=0.37, relheight=0.53
@@ -231,10 +238,13 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label1.configure(highlightcolor="black")
         self.Label1.configure(justify=RIGHT)
         self.Label1.configure(text='''Chip Damage Multiplier''')
+        Tooltip(self.Label1, "Multiply battle chip damage to specified. Set to 1.0 for unmodified damage values")
+        
 
         self.Label2 = Label(self.Labelframe3)
         self.Label2.place(relx=0.02, rely=0.17, height=21, width=134, y=-12, h=20)
 
+        # Chip Damage Variance Label
         self.Label2.configure(activebackground="#f9f9f9")
         self.Label2.configure(activeforeground="black")
         self.Label2.configure(background="#d9d9d9")
@@ -244,6 +254,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label2.configure(highlightcolor="black")
         self.Label2.configure(justify=RIGHT)
         self.Label2.configure(text='''Chip Damage Variance''')
+        Tooltip(self.Label2, "Variable which will randomize the battle chip damage multiplier range (?). Set to 0.0 to remain constant")
 
         self.Entry4 = Entry(self.Labelframe3)
         self.Entry4.place(relx=0.26, rely=0.23,height=20, relwidth=0.08)
@@ -271,6 +282,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label3.configure(highlightcolor="black")
         self.Label3.configure(justify=RIGHT)
         self.Label3.configure(text='''Enemy HP Multiplier''')
+        Tooltip(self.Label3, "Mulitplies enemy HP by given variable.  Set to 1.0 for unmodified enemy HP values.")
 
         self.Entry5 = Entry(self.Labelframe3)
         self.Entry5.place(relx=0.26, rely=0.33,height=20, relwidth=0.08)
@@ -297,6 +309,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label4.configure(highlightcolor="black")
         self.Label4.configure(justify=RIGHT)
         self.Label4.configure(text='''Enemy HP Variance''')
+        Tooltip(self.Label4, "Variable which will randomize the enemy HP multiplier range (?). Set to 0.0 to remain constant")
         
         self.Entry8 = Entry(self.Labelframe3)
         self.Entry8.place(relx=0.64, rely=0.43, height=20, relwidth=0.08)
@@ -323,6 +336,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label13.configure(highlightcolor="black")
         self.Label13.configure(justify=RIGHT)
         self.Label13.configure(text='''Chip Price Variance''')
+        Tooltip(self.Label13, "Variable which will randomize the shop prices (?).  Set to 0.0 to remain constant")
 
         self.TCombobox1 = ttk.Combobox(self.Labelframe3)
         self.TCombobox1.place(relx=0.64, rely=0.07, relheight=0.07, relwidth=0.33
@@ -343,6 +357,11 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label5.configure(highlightbackground="#d9d9d9")
         self.Label5.configure(highlightcolor="black")
         self.Label5.configure(text='''Chip Code Roulette Mode''')
+        Tooltip(self.Label5, \
+        "Normal - (?)"
+        "All-Stars - (?)"
+        "Simplified - (?)"
+        "Chaos - (?)")
 
         self.Scale1 = Scale(self.Labelframe3)
         self.Scale1.place(relx=0.5, rely=0.50, relwidth=0.48, relheight=0.0
@@ -492,6 +511,10 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label6.configure(highlightbackground="#d9d9d9")
         self.Label6.configure(highlightcolor="black")
         self.Label6.configure(text='''Randomize Elements Mode''')
+        Tooltip(self.Label6, \
+        "Enemies - (?)"
+        "Chips - (?)"
+        "Both - (?)")
 
         self.TCombobox3 = ttk.Combobox(self.Labelframe3)
         self.TCombobox3.place(relx=0.64, rely=0.26, relheight=0.07, relwidth=0.33
@@ -512,6 +535,15 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label7.configure(highlightbackground="#d9d9d9")
         self.Label7.configure(highlightcolor="black")
         self.Label7.configure(text='''Set Virus Level Mode''')
+        Tooltip(self.Label7, \
+        "Normal - (?)"
+        "Alpha+ - (?)"
+        "Beta+ - (?)"
+        "Omega - (?)"
+        "Chaos - (?)"
+        "Chaos Alpha+ - (?)"
+        "Chaos Beta+ - (?)"
+        "Chaos Omega - (?)")
 
         self.Label8 = Label(self.Labelframe3)
         self.Label8.place(relx=0.285, rely=0.58, height=24, width=120, y=-12, h=20)
@@ -525,6 +557,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label8.configure(highlightcolor="black")
         self.Label8.configure(text='''Randomize RegMem''')
         self.Label8.configure(width=164)
+        Tooltip(self.Label8, "Randomizes something related to RegMem in-game but unsure how it works")
 
         self.Labelframe6 = LabelFrame(self.Labelframe3)
         self.Labelframe6.place(relx=0.31, rely=0.67, relheight=0.3, relwidth=0.67
@@ -646,6 +679,12 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label7_1.configure(highlightbackground="#d9d9d9")
         self.Label7_1.configure(highlightcolor="black")
         self.Label7_1.configure(text='''Set Folder Lock Mode''')
+        Tooltip(self.Label7_1, \
+        "None - (?)"
+        "Preset Single - (?)"
+        "Preset Multiple- (?)"
+        "Random Single- (?)"
+        "Random Multiple- (?)")
 
         self.TCombobox3_2 = ttk.Combobox(self.Labelframe3)
         self.TCombobox3_2.place(relx=0.64, rely=0.36, relheight=0.07
@@ -817,10 +856,6 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Message1.configure(highlightcolor="black")
         self.Message1.configure(text='''Originally created by Samfin/Mountebank, with features added by X Kirby. Created using Python, PAGE, and PyInstaller. Executable icon found posted on the /r/BattleNetwork subreddit.''')
         self.Message1.configure(width=580)
-
-
-
-
 
 
 if __name__ == '__main__':
