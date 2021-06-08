@@ -1,6 +1,6 @@
 Mega Man Battle Network 3 Randomizer
 ============
-This is a Python 2 script with a bunch of text files used for randomizing Mega Man Battle Network 3. I've taken some liberties to make it more interesting to use. Credit goes to Mountebank/Samfin, Dabomstew, Prof.9, Rockman.EXE, and potentially other people I don't know about/forgot for the original MMBN3 Randomizer.
+This is a Python 3 script with a bunch of text files used for randomizing Mega Man Battle Network 3. I've taken some liberties to make it more interesting to use. Credit goes to Mountebank/Samfin, Dabomstew, Prof.9, Rockman.EXE, and potentially other people I don't know about/forgot for the original MMBN3 Randomizer.
 
 Credit to /u/Zinthonian from Reddit for the executable icon.
 
@@ -10,7 +10,7 @@ Also included is a tool for adding new NaviCustomizer Program Shapes to the list
 
 Compilation
 ============
-To compile, I've included a .bat file to run Python 2.7's version of PyInstaller with a custom icon for the program. It will make 2 executables with their own resources in their own folders. "bn3cl" is a command line version, while "bn3ui" is the graphical user interface version.
+To compile, I've included a .bat file to run Python 3.9's version of PyInstaller with a custom icon for the program. It will make 2 executables with their own resources in their own folders. "bn3cl" is a command line version, while "bn3ui" is the graphical user interface version.
 
 Features
 ============
