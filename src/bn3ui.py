@@ -255,7 +255,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label2.configure(highlightcolor="black")
         self.Label2.configure(justify=RIGHT)
         self.Label2.configure(text='''Chip Damage Variance''')
-        Tooltip(self.Label2, "Variable which will randomize the battle chip damage between a multiplier range based on this value either positively and negatively. Set to 0.0 to remain constant.")
+        Tooltip(self.Label2, "Variable which will randomize the battle chip damage between a multiplier range based on this value either positively or negatively. Set to 0.0 to remain constant.")
 
         self.Entry4 = Entry(self.Labelframe3)
         self.Entry4.place(relx=0.26, rely=0.23,height=20, relwidth=0.08)
@@ -310,7 +310,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label4.configure(highlightcolor="black")
         self.Label4.configure(justify=RIGHT)
         self.Label4.configure(text='''Enemy HP Variance''')
-        Tooltip(self.Label4, "Variable which will randomize the enemy HP between a multiplier range based on this value either positively and negatively. Set to 0.0 to remain constant")
+        Tooltip(self.Label4, "Variable which will randomize the enemy HP between a multiplier range based on this value either positively or negatively. Set to 0.0 to remain constant")
         
         self.Entry8 = Entry(self.Labelframe3)
         self.Entry8.place(relx=0.64, rely=0.43, height=20, relwidth=0.08)
@@ -337,7 +337,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label13.configure(highlightcolor="black")
         self.Label13.configure(justify=RIGHT)
         self.Label13.configure(text='''Chip Price Variance''')
-        Tooltip(self.Label13, "Variable which will randomize the shop prices between a multiplier range based on this value either positively and negatively..  Set to 0.0 to remain constant")
+        Tooltip(self.Label13, "Variable which will randomize the shop prices between a multiplier range based on this value either positively or negatively..  Set to 0.0 to remain constant")
 
         self.TCombobox1 = ttk.Combobox(self.Labelframe3)
         self.TCombobox1.place(relx=0.64, rely=0.07, relheight=0.07, relwidth=0.33

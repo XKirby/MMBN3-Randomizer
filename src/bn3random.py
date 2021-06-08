@@ -801,7 +801,7 @@ def fix_pas():
     s = 0xD684
     fixed_pas = []
     for i in range(0, 0x34):
-        base_pa, pa_code_offset, chip = struct.unpack("<BBH", rom_data[s + i * 4 : s + 4 + i * 4].encode())
+        base_pa, pa_code_offset, chip = struct.unpack("<BBH", bytes(rom_data[s + i * 4 : s + 4 + i * 4], encoding="raw_unicode_escape"))
         old_code_offset = pa_code_offset
         if len(fixed_pas) > 0:
             count = 0
@@ -1272,7 +1272,6 @@ def virus_replace(ind):
                         allnavis.remove(chosen_navis[ind-168])
                 
                 new_ind = chosen_navis[ind-168] + 168 + virus_level(ind) - 1
-                print(str(ind) + ", " + str(new_ind))
                 ind = new_ind
         if OMEGA_MODE >= 1:
             # Bass, ignore swap-out mechanic
@@ -1434,7 +1433,7 @@ def randomize_viruses():
         if IGNORE_LIMITS == 1:
             # ... Unless you want it to, then go ahead, be my guest ;)
             if ELEMENT_MODE == 1 or ELEMENT_MODE == 3:
-                write_data(chr(random.randint(1,4)), 0x680020+((navi_offset - 0x19618) / 8))
+                write_data(chr(random.randint(1,4)), 0x680020+int((navi_offset - 0x19618) / 8))
             write_data(chr(virus_hp % 256)+chr(virus_hp // (2**8) % 256), navi_offset)
         else:
             if virus_hp > 4000:
@@ -1788,7 +1787,7 @@ def randomize_navicust():
         compressed = struct.unpack('<I', bytes(rom_data[ncp_offset + 4: ncp_offset + 8], encoding="raw_unicode_escape"))[0] - 0x08000000
         if ncp_offset >= basencpoffset + 0xC80:
             break
-        if ncp_programs[(ncp_offset - basencpoffset) / 64] not in banned_programs:
+        if ncp_programs[int((ncp_offset - basencpoffset) / 64)] not in banned_programs:
             #print "Old Patterns: ", pattern
             new_pattern = ncp_data[random.randint(0, len(ncp_data)-1)]
             i = 0
@@ -1815,7 +1814,7 @@ def randomize_navicust():
                     n1 = n1 + str(write_pattern[i])
                 else:
                     n2 = n2 + str(write_pattern[i])
-            changelog_ncp.append([ncp_programs[(ncp_offset - basencpoffset) / 64], n1, n2])
+            changelog_ncp.append([ncp_programs[int((ncp_offset - basencpoffset) / 64)], n1, n2])
         ncp_offset += 64
     print('randomized %d NaviCust Program Shapes' % ncp_total)
 
@@ -1826,12 +1825,12 @@ def randomize_name(nameoffset, name, randnames):
     while foundfit == 0:
         nn = random.randint(0, len(randnames)-1)
         newname = ""
-        nl = -1
+        nl = ""
         k = 1
         c = 0
         while k <= len(randnames[nn]):
             char = ""
-            while nl < 0 and k <= len(randnames[nn]):
+            while nl == "" and k <= len(randnames[nn]):
                 char = char + randnames[nn][k-1]
                 if len(mmbn3_text_parse(char)) == 1:
                     nl = mmbn3_text_parse(char)
@@ -1839,9 +1838,9 @@ def randomize_name(nameoffset, name, randnames):
                     break
                 else:
                     k = k + 1
-            if nl > -1:
+            if not nl == "":
                 newname = newname + nl
-                nl = -1
+                nl = ""
                 c = len(newname)
             if k >= len(randnames[nn]):
                 if len(newname) == len(name):
@@ -1868,7 +1867,7 @@ def randomize_battlefields():
     # Same Offset for both games
     base_offset = 0xBFDC
     stage_data = open(DATA_PATH +"stages.txt","r").read().strip()
-    stage_data = list(map(lambda s: map(int, s.split(' ')), stage_data.split('\n')))
+    stage_data = list(map(lambda s: list(map(lambda x : int(x), s.split(' '))), stage_data.split('\n')))
     for i in range(0, 127):
         new_field = stage_data[random.randint(0, len(stage_data)-1)]
         old_field = []
@@ -2247,7 +2246,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         for i in range(len(changelog_chip)):
             open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write(changelog_chip[i][0] + " -> " + changelog_chip[i][1] + ", Power: " + str(changelog_chip[i][2]) + " -> " + str(changelog_chip[i][3]) + ", Codes: " + changelog_chip[i][4] + ", RegMem: " + str(changelog_chip[i][5]) + "\n")
         for i in range(0, len(changelog_pas)-1):
-            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Sequence Program Advance Requirement #" + str(i) + ": " + hex(0x100 + changelog_pas[i][0]) + " - " + chip_codes[(changelog_pas[i][1]-1)/2] + " -> " + chip_codes[(changelog_pas[i][2]-1)/2] + "\n")
+            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Sequence Program Advance Requirement #" + str(i) + ": " + hex(0x100 + changelog_pas[i][0]) + " - " + chip_codes[int((changelog_pas[i][1]-1)/2)] + " -> " + chip_codes[int((changelog_pas[i][2]-1)/2)] + "\n")
         for i in range(0, len(changelog_battles)-1):
             name1 = ""
             name2 = ""
