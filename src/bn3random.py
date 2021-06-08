@@ -547,6 +547,7 @@ def init_chip_data():
     chip_reg = open(DATA_PATH +'regmem.txt','r').read().strip().split('\n')
 
     chip_data.append({})
+    
     for i in range(N_CHIPS):
         code1, code2, code3, code4, code5, code6, element, filler, extra, regsize, chip_type, power, num = struct.unpack('<BBBBBBBBHBBHH', bytes(rom_data[s:s+16], encoding="raw_unicode_escape"))
         # chip_type seems to be a bitfield, only look at lsb for now
@@ -556,11 +557,6 @@ def init_chip_data():
             codes.remove(255)
         purecodes = [code1, code2, code3, code4, code5, code6]
         
-        # if num <= 200:
-            # rank = chip_ranks[num]
-            # name = chip_names[num]
-            # power = chip_attack[num]
-        # else:
         rank = chip_ranks[i]
         name = chip_names[i]
         power = chip_attack[i]
