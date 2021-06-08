@@ -556,14 +556,14 @@ def init_chip_data():
             codes.remove(255)
         purecodes = [code1, code2, code3, code4, code5, code6]
         
-        if num <= 200:
-            rank = chip_ranks[num]
-            name = chip_names[num]
-            power = chip_attack[num]
-        else:
-            rank = chip_ranks[i]
-            name = chip_names[i]
-            power = chip_attack[i]
+        # if num <= 200:
+            # rank = chip_ranks[num]
+            # name = chip_names[num]
+            # power = chip_attack[num]
+        # else:
+        rank = chip_ranks[i]
+        name = chip_names[i]
+        power = chip_attack[i]
         
         allcodes[i] = codes
         if ALLOW_CHIPS == 1:
