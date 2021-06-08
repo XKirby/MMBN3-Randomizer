@@ -86,7 +86,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Labelframe1.configure(highlightbackground="#d9d9d9")
         self.Labelframe1.configure(highlightcolor="black")
         self.Labelframe1.configure(width=80)
-        Tooltip(self.Labelframe1, "Select input ROM version")
+        Tooltip(self.Labelframe1, "Select Input ROM version")
 
         # White ver. radio button
         self.Radiobutton1 = Radiobutton(self.Labelframe1)
@@ -154,6 +154,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Entry1.configure(textvariable=bn3ui_support.versionSeed)
         self.Entry1.configure(validate="focusout")
         self.Entry1.configure(width=344)
+        Tooltip(self.Entry1, "Seed Value. Leave blank to generate based on time.")
 
         self.Button1 = Button(self.Labelframe2)
         self.Button1.place(relx=0.78, rely=0.47, height=24, width=117, y=-12
@@ -168,7 +169,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Button1.configure(highlightcolor="black")
         self.Button1.configure(pady="0")
         self.Button1.configure(text='''Randomize!''')
-        Tooltip(self.Button1, "Generate new ROM file with applied settings")
+        Tooltip(self.Button1, "Generate new ROM file with applied settings.")
 
         self.Checkbutton3_1 = Checkbutton(self.Labelframe2)
         self.Checkbutton3_1.place(relx=0.62, rely=0.47, relheight=0.45
@@ -185,14 +186,14 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton3_1.configure(text='''Daily Run?''')
         self.Checkbutton3_1.configure(variable=bn3ui_support.allowDaily)
         self.Checkbutton3_1.configure(width=85)
-        Tooltip(self.Checkbutton3_1, "Allow daily?")
+        Tooltip(self.Checkbutton3_1, "Perform Daily Run?")
 
         self.Labelframe3 = LabelFrame(top)
         self.Labelframe3.place(relx=0.02, rely=0.37, relheight=0.53
                 , relwidth=0.97)
         self.Labelframe3.configure(relief=GROOVE)
         self.Labelframe3.configure(foreground="black")
-        self.Labelframe3.configure(text='''Chip/Virus Options''')
+        self.Labelframe3.configure(text='''Chip and Virus Options''')
         self.Labelframe3.configure(background="#d9d9d9")
         self.Labelframe3.configure(highlightbackground="#d9d9d9")
         self.Labelframe3.configure(highlightcolor="black")
@@ -254,7 +255,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label2.configure(highlightcolor="black")
         self.Label2.configure(justify=RIGHT)
         self.Label2.configure(text='''Chip Damage Variance''')
-        Tooltip(self.Label2, "Variable which will randomize the battle chip damage multiplier range (?). Set to 0.0 to remain constant")
+        Tooltip(self.Label2, "Variable which will randomize the battle chip damage between a multiplier range based on this value either positively and negatively. Set to 0.0 to remain constant.")
 
         self.Entry4 = Entry(self.Labelframe3)
         self.Entry4.place(relx=0.26, rely=0.23,height=20, relwidth=0.08)
@@ -282,7 +283,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label3.configure(highlightcolor="black")
         self.Label3.configure(justify=RIGHT)
         self.Label3.configure(text='''Enemy HP Multiplier''')
-        Tooltip(self.Label3, "Mulitplies enemy HP by given variable.  Set to 1.0 for unmodified enemy HP values.")
+        Tooltip(self.Label3, "Mulitplies enemy HP by given variable. Set to 1.0 for unmodified enemy HP values.")
 
         self.Entry5 = Entry(self.Labelframe3)
         self.Entry5.place(relx=0.26, rely=0.33,height=20, relwidth=0.08)
@@ -309,7 +310,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label4.configure(highlightcolor="black")
         self.Label4.configure(justify=RIGHT)
         self.Label4.configure(text='''Enemy HP Variance''')
-        Tooltip(self.Label4, "Variable which will randomize the enemy HP multiplier range (?). Set to 0.0 to remain constant")
+        Tooltip(self.Label4, "Variable which will randomize the enemy HP between a multiplier range based on this value either positively and negatively. Set to 0.0 to remain constant")
         
         self.Entry8 = Entry(self.Labelframe3)
         self.Entry8.place(relx=0.64, rely=0.43, height=20, relwidth=0.08)
@@ -336,7 +337,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label13.configure(highlightcolor="black")
         self.Label13.configure(justify=RIGHT)
         self.Label13.configure(text='''Chip Price Variance''')
-        Tooltip(self.Label13, "Variable which will randomize the shop prices (?).  Set to 0.0 to remain constant")
+        Tooltip(self.Label13, "Variable which will randomize the shop prices between a multiplier range based on this value either positively and negatively..  Set to 0.0 to remain constant")
 
         self.TCombobox1 = ttk.Combobox(self.Labelframe3)
         self.TCombobox1.place(relx=0.64, rely=0.07, relheight=0.07, relwidth=0.33
@@ -358,10 +359,10 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label5.configure(highlightcolor="black")
         self.Label5.configure(text='''Chip Code Roulette Mode''')
         Tooltip(self.Label5, \
-        "Normal - (?)"
-        "All-Stars - (?)"
-        "Simplified - (?)"
-        "Chaos - (?)")
+        "Normal - Chip Codes are unchanged.\n\n"
+        "All-Stars - Chip Codes are stars (*) and only stars.\n\n"
+        "Simplified - Chip Codes are set to be ABCDE* or at least have one or more of those codes available.\n\n"
+        "Chaos - Chip Codes are mostly completely randomized.")
 
         self.Scale1 = Scale(self.Labelframe3)
         self.Scale1.place(relx=0.5, rely=0.50, relwidth=0.48, relheight=0.0
@@ -512,9 +513,9 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label6.configure(highlightcolor="black")
         self.Label6.configure(text='''Randomize Elements Mode''')
         Tooltip(self.Label6, \
-        "Enemies - (?)"
-        "Chips - (?)"
-        "Both - (?)")
+        "Enemies - Base Enemy Elements are randomized.\n\n"
+        "Chips - Base Battle Chip Elements are randomized.\n\n"
+        "Both - Both base Enemy and Battle Chip Elements are randomized.")
 
         self.TCombobox3 = ttk.Combobox(self.Labelframe3)
         self.TCombobox3.place(relx=0.64, rely=0.26, relheight=0.07, relwidth=0.33
@@ -536,14 +537,14 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label7.configure(highlightcolor="black")
         self.Label7.configure(text='''Set Virus Level Mode''')
         Tooltip(self.Label7, \
-        "Normal - (?)"
-        "Alpha+ - (?)"
-        "Beta+ - (?)"
-        "Omega - (?)"
-        "Chaos - (?)"
-        "Chaos Alpha+ - (?)"
-        "Chaos Beta+ - (?)"
-        "Chaos Omega - (?)")
+        "Normal - Normal Difficulty.\n\n"
+        "Alpha+ - All Virus Ranks are increased by 1. Normal Viruses are Alpha, Alpha are Beta, Beta are Omega.\n\n"
+        "Beta+ - All Virus Ranks are increased by 2. Normal Viruses are Beta, Alpha and Beta are Omega.\n\n"
+        "Omega - All Viruses are Omega Level.\n\n"
+        "Chaos - Normal Difficulty, except all Viruses can show up anywhere, barring a few banned exceptions.\n\n"
+        "Chaos Alpha+ - Alpha+ Difficulty except all Viruses can show up anywhere.\n\n"
+        "Chaos Beta+ - Beta+ Difficulty except all Viruses can show up anywhere.\n\n"
+        "Chaos Omega - Omega Difficulty except all viruses can show up anywhere.")
 
         self.Label8 = Label(self.Labelframe3)
         self.Label8.place(relx=0.285, rely=0.58, height=24, width=120, y=-12, h=20)
@@ -557,7 +558,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label8.configure(highlightcolor="black")
         self.Label8.configure(text='''Randomize RegMem''')
         self.Label8.configure(width=164)
-        Tooltip(self.Label8, "Randomizes something related to RegMem in-game but unsure how it works")
+        Tooltip(self.Label8, "Randomizes Regular Memory between 1 to whatever you set this to.\n\nIf set to 0, RegMem remains unmodified.")
 
         self.Labelframe6 = LabelFrame(self.Labelframe3)
         self.Labelframe6.place(relx=0.31, rely=0.67, relheight=0.3, relwidth=0.67
@@ -680,11 +681,11 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label7_1.configure(highlightcolor="black")
         self.Label7_1.configure(text='''Set Folder Lock Mode''')
         Tooltip(self.Label7_1, \
-        "None - (?)"
-        "Preset Single - (?)"
-        "Preset Multiple- (?)"
-        "Random Single- (?)"
-        "Random Multiple- (?)")
+        "None - Your folders are randomized and can be edited normally.\n\n"
+        "Preset Single - Your folders are set to a single, predetermined setup from the Custom Folders text file and can't be edited.\n\n"
+        "Preset Multiple- Your folders are set to multiple predetermined setups from the Custom Folders text file and can't be edited.\n\n"
+        "Random Single- Your folders are set to a single, randomized setup and can't be edited.\n\n"
+        "Random Multiple- Your folders are randomized and can't be edited.")
 
         self.TCombobox3_2 = ttk.Combobox(self.Labelframe3)
         self.TCombobox3_2.place(relx=0.64, rely=0.36, relheight=0.07
@@ -766,6 +767,10 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label9.configure(highlightbackground="#d9d9d9")
         self.Label9.configure(highlightcolor="black")
         self.Label9.configure(text='''Randomize Battlefields''')
+        Tooltip(self.Label9, \
+        "Normal - Battlefields remain unmodified.\n\n"
+        "Semi-random - Battlefields are randomized per area.\n\n"
+        "Super-random - Battlefields are randomized per area and per encounter.")
 
         self.TCombobox4_1 = ttk.Combobox(self.Labelframe4)
         self.TCombobox4_1.place(relx=0.78, rely=0.64, relheight=0.27
@@ -786,6 +791,11 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label10.configure(highlightbackground="#d9d9d9")
         self.Label10.configure(highlightcolor="black")
         self.Label10.configure(text='''Enable Hell Mode''')
+        Tooltip(self.Label10, \
+        "Normal - No Difficulty changes.\n\n"
+        "Hell - HP Memories no longer apply to your Maximum HP. You still gain HP and Run Rate increases.\n\n"
+        "Insane - HP Memories no longer apply at all. Run Rate increases and bonus HP gained are disabled.\n\n"
+        "Death Wish - HP Memories do nothing and your Maximum HP is 5.")
 
         self.Labelframe5 = LabelFrame(top)
         self.Labelframe5.place(relx=0.02, rely=0.08, relheight=0.14

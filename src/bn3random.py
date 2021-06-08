@@ -6,8 +6,7 @@ import argparse
 from collections import defaultdict
 from pprint import pprint
 
-global rom_data
-global randomized_data
+compressed_data_end = 0
 N_CHIPS = 312
 N_PAS = 32
 DATA_PATH="data/"
@@ -36,7 +35,7 @@ allviruses = [1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,16, 29,30,31,32, 33,34,35,3
 #allviruses = [1,5,9,13,29,33,37,75,123,131,17,21,41,79,91,103,111,139,147,155,45,49,83,99,119,143,25,57,65,87,107,53,95,115,127,135]
 
 # Potentially Required NPC Trades
-required_trades = [[0x20, 4], [0x3a, 2], [136, 10], [46, 21], [81, 0], [122, 26], [0x8f, 26], [0x45, 6], [0x19, 12], [45, 22], [14, 2], [125, 18], [110, 12], [33, 15], [31, 2], [88, 7], [165, 9], [99, 13]]
+required_trades = [[0x20, 4], [0x3a, 2], [136, 10], [46, 21], [81, 0], [122, 26], [0x8f, 26], [0x45, 6], [0x19, 12], [45, 22], [14, 2], [125, 18], [110, 12], [110, 18], [33, 15], [31, 2], [88, 7], [165, 9], [99, 13], [46, 21]]
 tradechiplist = []
 
 # Navi Lists for Navi Randomizations
@@ -448,6 +447,11 @@ chip_hex = {
 mmchars = [" ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "-", "[smallx]", "=", ":", "+", "[divide]", "[burst]", "*", "!", "?", "%", "&", ",", "[hollowbox]", ".", "[tinydot]", ";", "'", '"', "~", "/", "(", ")", "[leftJbracket]", "[rightJbracket]", "[V2]", "[V3]", "[V4]", "[V5]", "@", "[heart]", "[note]", "[MB]", "[box]", "_", "[circle1]", "[circle2]", "[cross1]", "[cross2]", "[bracket1]", "[bracket2]", "[ModTools1]", "[ModTools2]", "[ModTools3]", "[sigma]", "[omega]", "[alpha]", "[beta]", "#", "[ellipses]", ">", "<", "[weirdIthing]"]
 chipnames_in_order = ["Cannon","HiCannon","M-Cannon","AirShot1","AirShot2","AirShot3","LavaCan1","LavaCan2","LavaCan3","ShotGun","V-Gun","SideGun","Spreader","Bubbler","Bub-V","BublSide","Heatshot","Heat-V","HeatSide","MiniBomb","SnglBomb","DublBomb","TrplBomb","CannBall","IceBall","LavaBall","BlkBomb1","BlkBomb2","BlkBomb3","Sword","WideSwrd","LongSwrd","FireSwrd","AquaSwrd","ElecSwrd","BambSwrd","CustSwrd","VarSwrd","StepSwrd","StepCros","Panic","AirSwrd","Slasher","ShockWav","SonicWav","DynaWave","GutPunch","GutStrgt","GutImpct","AirStrm1","AirStrm2","AirStrm3","DashAtk","Burner","Totem1","Totem2","Totem3","Ratton1","Ratton2","Ratton3","Wave","RedWave","MudWave","Hammer","Tornado","Zapring1","Zapring2","Zapring3","Yo-Yo1","Yo-Yo2","Yo-Yo3","Spice1","Spice2","Spice3","Lance","Scuttlst","Momogra","Rope1","Rope2","Rope3","Magnum1","Magnum2","Magnum3","Boomer1","Boomer2","Boomer3","RndmMetr","HoleMetr","ShotMetr","IceWave1","IceWave2","IceWave3","Plasma1","Plasma2","Plasma3","Arrow1","Arrow2","Arrow3","TimeBomb","Mine","Sensor1","Sensor2","Sensor3","CrsShld1","CrsShld2","CrsShld3","Geyser","PoisMask","PoisFace","Shake1","Shake2","Shake3","BigWave","Volcano","Condor","Burning","FireRatn","Guard","PanlOut1","PanlOut3","Recov10","Recov30","Recov50","Recov80","Recov120","Recov150","Recov200","Recov300","PanlGrab","AreaGrab","Snake","Team1","MetaGel1","MetaGel2","MetaGel3","GrabBack","GrabRvng","Geddon1","Geddon2","Geddon3","RockCube","Prism","Wind","Fan","RockArm1","RockArm2","RockArm3","NoBeam1","NoBeam2","NoBeam3","Pawn","Knight","Rook","Needler1","Needler2","Needler3","SloGauge","FstGauge","Repair","Invis","Hole","Mole1","Mole2","Mole3","Shadow","Mettaur","Bunny","AirShoes","Team2","Fanfare","Discord","Timpani","Barrier","Barr100","Barr200","Aura","NrthWind","HolyPanl","LavaStge","IceStage","GrassStg","SandStge","MetlStge","Snctuary","Swordy","Spikey","Mushy","Jelly","KillrEye","AntiNavi","AntiDmg","AntiSwrd","AntiRecv","CopyDmg","Atk+10","Fire+30","Aqua+30","Elec+30","Wood+30","Navi+20","LifeAura","Muramasa","Guardian","Anubis","Atk+30","Navi+40","HeroSwrd","ZeusHamr","GodStone","OldWood","FullCust","Meteors","Poltrgst","Jealousy","StandOut","WatrLine","Ligtning","GaiaSwrd","Roll","RollV2","RollV3","Gutsman","GutsmanV2","GutsmanV3","GustmanV4","GutsManV5","Protoman","ProtomnV2","ProtomnV3","ProtomnV4","ProtoMnV5","Flashman","FlashmnV2","FlashmnV3","FlashmnV4","FlashMnV5","Beastman","BeastmnV2","BeastmnV3","BeastmnV4","BeastMnV5","BubblMan","BubblMnV2","BubblMnV3","BubblMnV4","BubblMnV5","DesrtMan","DesrtMnV2","DesrtMnV3","DesrtMnV4","DesrtMnV5","PlantMan","PlantMnV2","PlantMnV3","PlantMnV4","PlantMnV5","FlamMan","FlamManV2","FlamManV3","FlamManV4","FlamManV5","DrillMan","DrillMnV2","DrillMnV3","DrillMnV4","DrillMnV5","MetalMan","MetalMnV2","MetalMnV3","MetalMnV4","MetalMnV5","Punk","Salamndr","Fountain","Bolt","GaiaBlad","KingMan","KingManV2","KingManV3","KingManV4","KingMnV5","MistMan","MistManV2","MistManV3","MistManV4","MistManV5","BowlMan","BowlManV2","BowlManV3","BowlManV4","BowlManV5","DarkMan","DarkManV2","DarkManV3","DarkManV4","DarkManV5","JapanMan","JapanMnV2","JapanMnV3","JapanMnV4","JapanMnV5","DeltaRay","FoldrBak","NavRcycl","AlphArmS","Bass","Serenade","Balance","DarkAura","AlphArmO","Bass+","BassGS"]
 
+def checkval(val):
+    if re.fullmatch(r"(?s)[\x00-\xff]?", str(val)) and not type(val) == int:
+        return ord(val)
+    return int(val)
+
 def virus_level(virus):
     if virus == 0 or (virus >= 0x9f and virus < 168):
         return -1
@@ -463,15 +467,15 @@ def virus_level(virus):
 def init_custom_folders():
     global folder_data
     folder_data = open(DATA_PATH + 'folders_custom.txt', 'r').read().strip()
-    folder_data = map(lambda str: map(navi_data_setup, str.split(',')), folder_data.split('\n'))
+    folder_data = list(map(lambda s: list(map(lambda s2: navi_data_setup(s2), s.split(','))), folder_data.split('\n')))
 
 def init_virus_data():
     global virus_data
     virus_data = open(DATA_PATH + 'virus_data.txt', 'r').read().strip()
-    virus_data = map(lambda str: map(navi_data_setup, str.split(' ')), virus_data.split('\n'))
+    virus_data = list(map(lambda s: list(map(lambda s2: navi_data_setup(s2), s.split(' '))), virus_data.split('\n')))
     global navi_data
     navi_data = open(DATA_PATH + 'navi_data.txt', 'r').read().strip()
-    navi_data = map(lambda str: map(navi_data_setup, str.split(' ')), navi_data.split('\n'))
+    navi_data = list(map(lambda s: list(map(lambda s2: navi_data_setup(s2), s.split(' '))), navi_data.split('\n')))
     
 def navi_data_setup(args):
     value = args
@@ -483,22 +487,34 @@ def navi_data_setup(args):
 def init_rom_data(rom_path):
     global rom_data
     global randomized_data
-    rom_data = open(rom_path, 'rb').read()
-    randomized_data = list(rom_data)
+    rom_data = ''.join(chr(x) for x in list(open(rom_path, 'rb').read()))
+    randomized_data = list(map(lambda x: checkval(x), rom_data))
     return [rom_data, randomized_data]
 
 def read_byte(offset):
     global rom_data
-    return ord(rom_data[offset])
+    return checkval(rom_data[offset])
 def read_halfword(offset):
     global rom_data
-    return struct.unpack('<H', rom_data[offset:offset+2])[0]
+    s = list(map(checkval, rom_data[offset:offset+2]))
+    result = 0
+    for i in range(len(s)):
+        result += s[i] << (i*8)
+    return result
 def read_word(offset):
     global rom_data
-    return struct.unpack('<I', rom_data[offset:offset+4])[0]
+    s = list(map(checkval, rom_data[offset:offset+4]))
+    result = 0
+    for i in range(len(s)):
+        result += s[i] << (i*8)
+    return result
 def read_dblword(offset):
     global rom_data
-    return struct.unpack('<Q', rom_data[offset:offset+8])[0]
+    s = list(map(checkval, rom_data[offset:offset+8]))
+    result = 0
+    for i in range(len(s)):
+        result += s[i] << (i*8)
+        return result
 
 def init_chip_data():
     s = 0x11530
@@ -513,7 +529,7 @@ def init_chip_data():
 
     # Load in chip ranks from file
     chip_ranks = open(DATA_PATH +'chip_data.txt', 'r').read().strip()
-    chip_ranks = map(int, chip_ranks.split('\n'))
+    chip_ranks = list(map(int, chip_ranks.split('\n')))
 
     chip_names = open(DATA_PATH +'chip_names.txt', 'r').read().strip()
     chip_names = chip_names.split('\n')
@@ -532,21 +548,20 @@ def init_chip_data():
 
     chip_data.append({})
     for i in range(N_CHIPS):
-        code1, code2, code3, code4, code5, code6, element, filler, extra, regsize, chip_type, power, num = struct.unpack('<BBBBBBBBHBBHH', rom_data[s : s + 16])
+        code1, code2, code3, code4, code5, code6, element, filler, extra, regsize, chip_type, power, num = struct.unpack('<BBBBBBBBHBBHH', bytes(rom_data[s:s+16], encoding="raw_unicode_escape"))
         # chip_type seems to be a bitfield, only look at lsb for now
         is_attack = (chip_type & 1)
-        codes = filter(lambda x : x != 255, [code1, code2, code3, code4, code5, code6])
+        codes = [code1, code2, code3, code4, code5, code6]
+        while codes.count(255) > 0:
+            codes.remove(255)
         purecodes = [code1, code2, code3, code4, code5, code6]
         
         if num <= 200:
-            rank = chip_ranks[num - 1]
+            rank = chip_ranks[num]
+            name = chip_names[num]
+            power = chip_attack[num]
         else:
             rank = chip_ranks[i]
-
-        if num >= 1 and num <= 200:
-            name = chip_names[num - 1]
-            power = chip_attack[num - 1]
-        else:
             name = chip_names[i]
             power = chip_attack[i]
         
@@ -656,7 +671,8 @@ def init_chip_data():
             write_data(chr(allcodes[i][4]), s+4)
             write_data(chr(allcodes[i][5]), s+5)
             # Fix the list, for some reason having all 6 codes for some chips breaks something later.
-            allcodes[i] = filter(lambda x : x != 255, allcodes[i])
+            while allcodes[i].count(255) > 0:
+                allcodes[i].remove(255)
             
             old_power = power
             if int(power) > 0 and int(power) < 10000:
@@ -715,7 +731,7 @@ def init_pa_data():
 
     # Load in chip ranks from file
     pa_ranks = open(DATA_PATH +'pa_data.txt', 'r').read().strip()
-    pa_ranks = map(int, pa_ranks.split('\n'))
+    pa_ranks = list(map(int, pa_ranks.split('\n')))
     
     pa_names = open(DATA_PATH +'pa_names.txt', 'r').read().strip()
     pa_names = pa_names.split('\n')
@@ -730,10 +746,12 @@ def init_pa_data():
 
     pa_data.append({})
     for i in range(N_PAS):
-        code1, code2, code3, code4, code5, code6, element, filler, extra, regsize, chip_type, power, num = struct.unpack('<BBBBBBBBHBBHH', rom_data[s : s + 16])
+        code1, code2, code3, code4, code5, code6, element, filler, extra, regsize, chip_type, power, num = struct.unpack('<BBBBBBBBHBBHH', bytes(rom_data[s:s+16], encoding="raw_unicode_escape"))
         # chip_type seems to be a bitfield, only look at lsb for now
         is_attack = (chip_type & 1)
-        codes = filter(lambda x : x != 255, [code1, code2, code3, code4, code5, code6])
+        codes = [code1, code2, code3, code4, code5, code6]
+        while codes.count(255) > 0:
+            codes.remove(255)
         rank = pa_ranks[i]
         name = pa_names[i]
         power = pa_attack[i]
@@ -787,7 +805,7 @@ def fix_pas():
     s = 0xD684
     fixed_pas = []
     for i in range(0, 0x34):
-        base_pa, pa_code_offset, chip = struct.unpack("<BBH", rom_data[s + i * 4 : s + 4 + i * 4])
+        base_pa, pa_code_offset, chip = struct.unpack("<BBH", rom_data[s + i * 4 : s + 4 + i * 4].encode())
         old_code_offset = pa_code_offset
         if len(fixed_pas) > 0:
             count = 0
@@ -810,12 +828,12 @@ def mmbn3_text_parse(char):
             return chr(mmchars.index(bn3c))
     return ""
 
-def write_data(str, offset):
+def write_data(s, offset):
     global randomized_data
-    while offset + len(str) - len(randomized_data) > 0:
+    while offset + len(s) - len(randomized_data) > 0:
         randomized_data.append(chr(0xFF))
-    for i in range(len(str)):
-        randomized_data[offset + i] = str[i]
+    for i in range(len(s)):
+        randomized_data[offset + i] = s[i]
 
 def decompress_data(offset):
     global compressed_data_end
@@ -842,7 +860,7 @@ def decompress_data(offset):
             flags <<= 1;
     output = output[:decompressed_size]
     compressed_data_end = offset
-    return ''.join(map(lambda x : chr(x), output))
+    return ''.join(list(map(lambda x : chr(x), output)))
 
 def compress_data(raw_data):
     ops = []
@@ -854,7 +872,7 @@ def compress_data(raw_data):
         start = max(0, i - 4096)
         last_match_ind = -1
         while lo < hi:
-            mid = (lo + hi + 1) / 2
+            mid = int((lo + hi + 1) / 2)
             ss = raw_data[i : i + mid]
             t = raw_data.find(ss, start)
             if t < i:
@@ -891,9 +909,11 @@ def compress_data(raw_data):
                 l -= 3
                 output.append( ((l & 0xf) << 4) + ((o >> 8) & 0xf) )
                 output.append(o & 0xff)
-    return ''.join(map(chr, output))
+    return ''.join(list(map(chr, output)))
 
 def randomize_gmds():
+    global compressed_data_end
+
     # Works in Blue now.
     base_offset = 0x28810
     if ROMVERSION == "b":
@@ -910,25 +930,25 @@ def randomize_gmds():
     new_scripts = {}
     area = 0x10
     subarea = 0x0
-    chip_regex = re.compile('(?s)\xf1\x00\xfb\x04\x0f(.{32})')
-    zenny_regex = re.compile('(?s)\xf1\x00\xfb\x00\x0f(.{64})')
+    chip_regex = re.compile(r'(?s)\xf1\x00\xfb\x04\x0f(.{32})')
+    zenny_regex = re.compile(r'(?s)\xf1\x00\xfb\x00\x0f(.{64})')
     earliest_script = 999999999
     end_addr = -1
     chip_map = generate_chip_permutation()
     
-    for area, subareas in map_data.iteritems():
+    for (area, subareas) in list(map_data.items()):
         for subarea in subareas:
             script_ptr = read_word(base_offset + 4 * area) - 0x08000000 + 4 * subarea
-            earliest_script = min(earliest_script, script_ptr)
             script_addr = read_word(script_ptr) - 0x08000000
+            earliest_script = min(earliest_script, script_ptr)
             script_data = decompress_data(script_addr)
             end_addr = max(end_addr, compressed_data_end)
-            new_data = map(ord, script_data)
+            new_data = list(map(ord, script_data))
 
             # Replace chip tables
             for match in chip_regex.finditer(script_data):
                 match_offset = match.start() + 5
-                x = map(lambda x : ord(x), list(match.groups()[0]))
+                x = list(map(lambda x : checkval(x), list(match.groups()[0])))
                 for i in range(0, len(x), 2):
                     old_chip = x[i]
                     new_chip = chip_map[old_chip]
@@ -940,15 +960,15 @@ def randomize_gmds():
             # Multiply zenny tables
             for match in zenny_regex.finditer(script_data):
                 match_offset = match.start() + 5
-                zennys = list(struct.unpack('<IIIIIIIIIIIIIIII', match.groups()[0]))
+                zennys = list(struct.unpack('<IIIIIIIIIIIIIIII', bytes(match.groups()[0], encoding="raw_unicode_escape")))
                 for i in range(16):
                     zennys[i] = (zennys[i] * 3) / 2
-                zenny_str = struct.pack('<IIIIIIIIIIIIIIII', *zennys)
+                zenny_str = struct.pack('<IIIIIIIIIIIIIIII', *(int(x) for x in zennys))
                 for i in range(len(zenny_str)):
-                    new_data[match_offset + i] = ord(zenny_str[i])
+                    new_data[match_offset + i] = zenny_str[i]
                 changelog_gmd.append(["zenny", zennys[0], zennys[1], zennys[2], zennys[3], zennys[4], zennys[5], zennys[6], zennys[7], zennys[8], zennys[9], zennys[10], zennys[11], zennys[12], zennys[13], zennys[14], zennys[15]])
 
-            new_script = ''.join(map(chr, new_data))
+            new_script = ''.join(list(map(chr, new_data)))
             new_scripts[script_ptr] = compress_data(new_script)
 
     # Get the missing scripts
@@ -965,7 +985,7 @@ def randomize_gmds():
 
     start_addr = read_word(earliest_script) - 0x08000000
     # Write all the scripts back
-    for script_ptr, script_data in new_scripts.iteritems():
+    for (script_ptr, script_data) in list(new_scripts.items()):
         #print hex(script_ptr), hex(start_addr), hex(free_space)
         if start_addr + len(script_data) < end_addr:
             write_data(script_data, start_addr)
@@ -986,8 +1006,9 @@ def randomize_bmds_trades():
     global rom_data
     global randomized_data
     global tradechiplist
+    global compressed_data_end
     old_data = rom_data
-    rom_data = ''.join(randomized_data)
+    rom_data = randomized_data
     
     if ALLOW_TRADES == 0 and ALLOW_BMD == 0:
         rom_data = old_data
@@ -1030,8 +1051,8 @@ def randomize_bmds_trades():
         ptr += 4
     
     for valcheck in range(0,2):
-        for ptr in pattern_list:
-            script_ptr = read_word(ptr[1])
+        for block in pattern_list:
+            script_ptr = read_word(block[1])
             script_addr = 0x0
             if script_ptr == 0:
                 continue
@@ -1046,17 +1067,17 @@ def randomize_bmds_trades():
             script_data = decompress_data(script_addr)
             p += 1
             if len(new_scripts) >= p and p > 0:
-                if new_scripts[p-1][0] == ptr[1]:
+                if new_scripts[p-1][0] == block[1]:
                     script_data = new_scripts[p-1][1]
             end_addr = max(end_addr, compressed_data_end)
-            new_data = map(ord, script_data)
+            new_data = list(map(ord, script_data))
             
             # Replace chip tables
             if valcheck == 0 and ALLOW_BMD == 1:
                 for match in chip_regex.finditer(script_data):
                     match_offset = match.start()
-                    old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
-                    old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
+                    old_chip = list(map(lambda old_chip : ord(old_chip), list(match.groups()[0])))[0]
+                    old_code = list(map(lambda old_code : ord(old_code), list(match.groups()[1])))[0]
                     new_chip = chip_map[old_chip]
                     while new_chip == 279:
                         new_chip = random.choice(available_chips)
@@ -1087,30 +1108,30 @@ def randomize_bmds_trades():
                     new_data[match.start(1)+1] = int(new_chip / 256)
                     new_data[match.start(2)] = new_code
                     bmdchiplist.append([old_chip, old_code, new_chip, new_code])
-                    changelog_bmd.append(["chip", chip_hex.keys()[chip_hex.values().index(old_chip)], old_code, chip_hex.keys()[chip_hex.values().index(new_chip)], new_code, match_offset])
+                    changelog_bmd.append(["chip", list(chip_hex.keys())[list(chip_hex.values()).index(old_chip)], old_code, list(list(chip_hex.keys()))[list(list(chip_hex.values())).index(new_chip)], new_code, match_offset])
 
                 # Multiply zenny tables
                 for match in zenny_regex.finditer(script_data):
                     #match_found.append(match.start() + script_addr)
                     match_offset = match.start() + 2
-                    zennys = list(struct.unpack('<I', match.groups()[0]))
+                    zennys = list(struct.unpack('<I', bytes(match.groups()[0], encoding="raw_unicode_escape")))
                     text_offset = match.start(10) - match_offset
                     zennys[0] = zennys[0] * 3 / 2
                     if len(str(match.group(10))) < len(str(zennys[0])):
                         zennys[0] = 9 * pow(10, len(str(match.group(10)))-1)
-                    zenny_str = struct.pack('<I', *zennys)
+                    zenny_str = struct.pack('<I', *(int(x) for x in zennys))
                     for i in range(len(zenny_str)):
-                        new_data[match_offset + i] = ord(zenny_str[i])
+                        new_data[match_offset + i] = zenny_str[i]
                     for i in range(len(str(match.group(10)))):
                         #print i, int(zennys[0] / pow(10,len(str(match.group(3)))-(i+1)) % 10) + 1
                         new_data[match_offset + text_offset + i] = int(zennys[0] / pow(10,len(str(match.group(10)))-(i+1)) % 10) + 1
                     #print "Zenny found at", hex(script_addr), "!"
-                    changelog_bmd.append(["zenny", list(struct.unpack('<I', match.groups()[0]))[0], zennys[0]])
+                    changelog_bmd.append(["zenny", list(struct.unpack('<I', bytes(match.groups()[0], encoding="raw_unicode_escape")))[0], zennys[0]])
                     
                 for match in bmdchiptext_regex.finditer(script_data):
                     match_offset = match.start()
-                    old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
-                    old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
+                    old_chip = list(map(lambda old_chip : ord(old_chip), list(match.groups()[0])))[0]
+                    old_code = list(map(lambda old_code : ord(old_code), list(match.groups()[1])))[0]
                     for i in range(len(bmdchiplist)):
                         if old_chip == bmdchiplist[i][0] and old_code == bmdchiplist[i][1]:
                             new_chip = bmdchiplist[i][2]
@@ -1124,8 +1145,8 @@ def randomize_bmds_trades():
             if valcheck == 1 and ALLOW_TRADES == 1:
                 for match in tradechipcheck_regex.finditer(script_data):
                     match_offset = match.start()
-                    old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
-                    old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
+                    old_chip = list(map(lambda old_chip : ord(old_chip), list(match.groups()[0])))[0]
+                    old_code = list(map(lambda old_code : ord(old_code), list(match.groups()[1])))[0]
                     new_chip = chip_map[old_chip]
                     while new_chip == 279:
                         new_chip = random.choice(available_chips)
@@ -1146,13 +1167,13 @@ def randomize_bmds_trades():
                     new_data[match.start(1)+1] = int(new_chip / 256)
                     new_data[match.start(2)] = new_code
                     tradechiplist.append([old_chip, old_code, new_chip, new_code])
-                    changelog_trades.append(["requirement", chip_hex.keys()[chip_hex.values().index(old_chip)], old_code, chip_hex.keys()[chip_hex.values().index(new_chip)], new_code, match_offset])
-                    #print "Check: ", chip_names[chip_hex.keys()[chip_hex.values().index(new_data[match.start(1)] + new_data[match.start(1)+1] * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
+                    changelog_trades.append(["requirement", list(chip_hex.keys())[list(chip_hex.values()).index(old_chip)], old_code, list(list(chip_hex.keys()))[list(list(chip_hex.values())).index(new_chip)], new_code, match_offset])
+                    #print "Check: ", chip_names[list(list(chip_hex.keys()))[list(list(chip_hex.values())).index(new_data[match.start(1)] + new_data[match.start(1)+1] * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
                 
                 for match in tradechipremove_regex.finditer(script_data):
                     match_offset = match.start()
-                    old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
-                    old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
+                    old_chip = list(map(lambda old_chip : ord(old_chip), list(match.groups()[0])))[0]
+                    old_code = list(map(lambda old_code : ord(old_code), list(match.groups()[1])))[0]
                     for i in range(len(tradechiplist)):
                         if old_chip == tradechiplist[i][0] and old_code == tradechiplist[i][1]:
                             new_chip = tradechiplist[i][2]
@@ -1161,13 +1182,13 @@ def randomize_bmds_trades():
                             new_data[match.start(1)] = new_chip % 256
                             new_data[match.start(1)+1] = int(new_chip / 256)
                             new_data[match.start(2)] = new_code
-                            #print "Remove: ", chip_names[chip_hex.keys()[chip_hex.values().index(new_data[match.start(1)] + new_data[match.start(1)+1] * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
+                            #print "Remove: ", chip_names[list(list(chip_hex.keys()))[list(list(chip_hex.values())).index(new_data[match.start(1)] + new_data[match.start(1)+1] * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
                             break
                             
                 for match in tradechiptext_regex.finditer(script_data):
                     match_offset = match.start()
-                    old_chip = map(lambda old_chip : ord(old_chip), list(match.groups()[0]))[0]
-                    old_code = map(lambda old_code : ord(old_code), list(match.groups()[1]))[0]
+                    old_chip = list(map(lambda old_chip : ord(old_chip), list(match.groups()[0])))[0]
+                    old_code = list(map(lambda old_code : ord(old_code), list(match.groups()[1])))[0]
                     for i in range(len(tradechiplist)):
                         if old_chip == tradechiplist[i][0] and old_code == tradechiplist[i][1]:
                             new_chip = tradechiplist[i][2]
@@ -1176,13 +1197,13 @@ def randomize_bmds_trades():
                             new_data[match.start(1)] = new_chip % 256
                             new_data[match.start(1)+1] = int(new_chip / 256) + 1
                             new_data[match.start(2)] = new_code
-                            #print "Text: ", chip_names[chip_hex.keys()[chip_hex.values().index(new_data[match.start(1)] + (new_data[match.start(1)+1]-1) * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
+                            #print "Text: ", chip_names[list(list(chip_hex.keys()))[list(list(chip_hex.values())).index(new_data[match.start(1)] + (new_data[match.start(1)+1]-1) * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
                             
-            new_script = ''.join(map(chr, new_data))
+            new_script = ''.join(list(map(chr, new_data)))
             if len(new_scripts) >= p:
-                new_scripts[p-1] = [ptr[1], new_script]
+                new_scripts[p-1] = [block[1], new_script]
             else:
-                new_scripts.insert(p-1, [ptr[1], new_script])
+                new_scripts.insert(p-1, [block[1], new_script])
         ptr = 0x0
         p = 0
         earliest_script = 0x10000000
@@ -1198,9 +1219,9 @@ def randomize_bmds_trades():
         free_space += len(script_data)
         free_space += (4 - free_space) % 4
     rom_data = old_data
-    if ALLOW_BMD == 1:
+    if ALLOW_BMD == 1 and not changelog_bmd == None:
         print('randomized bmds')
-    if ALLOW_TRADES == 1:
+    if ALLOW_TRADES == 1 and not changelog_trades == None:
         print('randomized trades')
 
 def virus_replace(ind):
@@ -1327,8 +1348,8 @@ def randomize_viruses():
         if n_battles <= 3 and TUTORIAL_SKIP == 1:
             continue
         for i in range(match.start(), match.end(), 4):
-            if ord(rom_data[i + 3]) == 1:
-                virus_ind = ord(rom_data[i])
+            if checkval(rom_data[i + 3]) == 1:
+                virus_ind = checkval(rom_data[i])
                 new_ind = virus_replace(virus_ind)
                 if new_ind == -1:
                     new_ind = virus_ind
@@ -1339,8 +1360,8 @@ def randomize_viruses():
                 elif virus_ind > 0 and virus_ind < 168:
                     #open('fights.txt','a').write(virus_data[ord(rom_data[i])][2] + "(" + str(ord(rom_data[i+1])) + "," + str(ord(rom_data[i+2])) + "), ")
                     changelog_battles.append(["virus", n_battles, virus_ind, new_ind])
-            elif ord(rom_data[i + 3]) in [2, 3, 4, 5, 6, 7, 11] and RANDOM_OBSTACLES == 1:
-                old_obst = ord(rom_data[i + 3])
+            elif checkval(rom_data[i + 3]) in [2, 3, 4, 5, 6, 7, 11] and RANDOM_OBSTACLES == 1:
+                old_obst = checkval(rom_data[i + 3])
                 new_obst = random.choice([2,3,4,5,6,7,11])
                 write_data(chr(new_obst), i + 3)
                 changelog_battles.append(["obstacle", n_battles, old_obst, new_obst])
@@ -1452,7 +1473,7 @@ def generate_chip_permutation(allow_conditional_attacks = False):
         all_chips[chip_id].append(chip_ind)
     # Do the shuffling
     chip_map = {}
-    for key, chips in all_chips.iteritems():
+    for (key, chips) in list(all_chips.items()):
         keys = copy.copy(chips)
         random.shuffle(chips)
         for old_chip, new_chip in zip(keys, chips):
@@ -1501,7 +1522,7 @@ def randomize_folders():
             chip_map = generate_chip_permutation()
         permutations.append(chip_map)
         for i in range(30):
-            old_chip, old_code = struct.unpack('<HH', rom_data[s:s+4])
+            old_chip, old_code = struct.unpack('<HH', bytes(rom_data[s:s+4], encoding="raw_unicode_escape"))
             new_chip = chip_map[old_chip]
             new_code = get_new_code(old_chip, old_code, new_chip)
                         
@@ -1550,7 +1571,7 @@ def randomize_virus_drops():
         for i in range(28):
             if i % 14 == 0:
                 last_chip = None
-            reward = struct.unpack('<H', rom_data[offset:offset+2])[0]
+            reward = struct.unpack('<H', bytes(rom_data[offset:offset+2], encoding="raw_unicode_escape"))[0]
             # 0 = chip, 1 = zenny, 2 = health, 3 = should not happen (terminator)
             reward_type = reward >> 14;
             # Number from 0-6
@@ -1614,7 +1635,7 @@ def randomize_shops():
     # Chip Order Randomization
     if ALLOW_SHOPS == 1:
         while True:
-            item_type, stock, chip, code, filler, price = struct.unpack('<BBHBBH', rom_data[chip_order_offset: chip_order_offset + 8])
+            item_type, stock, chip, code, filler, price = struct.unpack('<BBHBBH', bytes(rom_data[chip_order_offset: chip_order_offset + 8], encoding="raw_unicode_escape"))
             if item_type == 0:
                 break
             code = random.choice(allcodes[chip-1])
@@ -1632,7 +1653,7 @@ def randomize_shops():
     for match in shop_regex.finditer(rom_data):
         shop_offset = match.start()
         n_shops += 1
-        currency, filler, first_item, n_items = struct.unpack('<IIII', rom_data[shop_offset: shop_offset + 16])
+        currency, filler, first_item, n_items = struct.unpack('<IIII', bytes(rom_data[shop_offset: shop_offset + 16], encoding="raw_unicode_escape"))
         if first_shop is None:
             first_shop = first_item
         # Convert RAM address to ROM address
@@ -1648,7 +1669,7 @@ def randomize_shops():
             #t = read_dblword(item_offset)
             if n_items <= 0:
                 break
-            item_type, stock, old_chip, old_code, filler, price = struct.unpack('<BBHBBH', rom_data[item_offset: item_offset + 8])
+            item_type, stock, old_chip, old_code, filler, price = struct.unpack('<BBHBBH', bytes(rom_data[item_offset: item_offset + 8], encoding="raw_unicode_escape"))
             new_chip = -1
             new_code = 255
             # Only care about chips
@@ -1720,7 +1741,7 @@ def randomize_shops():
                     price = 0
                 new_item = struct.pack('<BBHBBH', item_type, stock, new_chip, new_code, filler, price)
                 write_data(new_item, item_offset)
-                changelog_shops.append([n_shops, chip_hex.keys()[chip_hex.values().index(new_chip)], new_code, price*100])
+                changelog_shops.append([n_shops, list(chip_hex.keys())[list(chip_hex.values()).index(new_chip)], new_code, price*100])
             item_offset += 8
             n_items -= 1
         # Immediately break the loop if we're past the first shop and we don't want to randomize them
@@ -1737,7 +1758,7 @@ def randomize_number_trader():
     n_rewards = 0
     chip_map = generate_chip_permutation()
     while True:
-        reward_type, old_code, old_chip, encrypted_number = struct.unpack('<BBH8s', rom_data[reward_offset : reward_offset + 12])
+        reward_type, old_code, old_chip, encrypted_number = struct.unpack('<BBH8s', bytes(rom_data[reward_offset : reward_offset + 12], encoding="raw_unicode_escape"))
         if reward_type == 0xff:
             break
         if reward_type == 0:
@@ -1767,8 +1788,8 @@ def randomize_navicust():
     ncp_total = 0
     basencpoffset = ncp_offset
     while True:
-        uncompressed = struct.unpack('<I', rom_data[ncp_offset: ncp_offset + 4])[0] - 0x08000000
-        compressed = struct.unpack('<I', rom_data[ncp_offset + 4: ncp_offset + 8])[0] - 0x08000000
+        uncompressed = struct.unpack('<I', bytes(rom_data[ncp_offset: ncp_offset + 4], encoding="raw_unicode_escape"))[0] - 0x08000000
+        compressed = struct.unpack('<I', bytes(rom_data[ncp_offset + 4: ncp_offset + 8], encoding="raw_unicode_escape"))[0] - 0x08000000
         if ncp_offset >= basencpoffset + 0xC80:
             break
         if ncp_programs[(ncp_offset - basencpoffset) / 64] not in banned_programs:
@@ -1851,7 +1872,7 @@ def randomize_battlefields():
     # Same Offset for both games
     base_offset = 0xBFDC
     stage_data = open(DATA_PATH +"stages.txt","r").read().strip()
-    stage_data = map(lambda str: map(int, str.split(' ')), stage_data.split('\n'))
+    stage_data = list(map(lambda s: map(int, s.split(' ')), stage_data.split('\n')))
     for i in range(0, 127):
         new_field = stage_data[random.randint(0, len(stage_data)-1)]
         old_field = []
@@ -1897,7 +1918,7 @@ def randomize_battlefields():
             write_data(chr(character), battle_offset + (i * 16) + 0xC)
             changelog_fields.append(["id", str(battle_offset + (i * 16) + 0xC), str(character)])
         # Random Encounter Stages Search
-        stage_regex = re.compile('(?s)(?:[\x00-\x7f][\x20|\x50]....[\x01-\x02]\x08)+\xff\x00\x00\x00')
+        stage_regex = re.compile(r'(?s)(?:[\x00-\x7f][\x20|\x50]....[\x01-\x02]\x08)+\xff\x00\x00\x00')
         for match in stage_regex.finditer(rom_data):
             stage_offset = match.start()
             if stage_offset <= 0x19D00:
@@ -2180,13 +2201,13 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     finalhash = finalhash + chr(0xe8)
     for i in range(1,20):
         if i % 4 == 0:
-            seed_hash = seed_hash + " "
+            seed_hash = seed_hash + "-"
             finalhash = finalhash + chr(0)
         else:
             hashchar = random.randint(0,len(mmchars)-1)
             seed_hash = seed_hash + format(hashchar, "x")
             if not i % 4 == 3:
-                seed_hash = seed_hash + "-"
+                seed_hash = seed_hash + ","
             finalhash = finalhash + chr(hashchar)
     setintro = "\x02\x00\xED\x01\xF1\x00"
     if FOLDER_MODE > 0:
@@ -2215,67 +2236,67 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         write_data(setenableomega[i], len(randomized_data))
     
     # Output Rom
-    open(output_path, 'wb').write(''.join(randomized_data))
+    open(output_path + ".gba", 'wb').write(bytes(''.join((chr(checkval(x)) for x in randomized_data)), encoding="raw_unicode_escape"))
     print("Seed: " + str(SEED))
     print("Hash: " + seed_hash)
     print("ROM Output: \"" + output_path + "\".")
     
     #Spoiler Info
-    open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'w').write("Seed: " + str(SEED) + "\nHash: " + seed_hash + "\n\nChip Damage Multiplier: " + str(P_MULTIPLIER) + "\nChip Damage Variance: " + str(P_VARIANCE) + "\nChip Price Variance: " + str(CPRICE_VARIANCE) + "\nEnemy HP Multiplier: " + str(V_MULTIPLIER) + "\nEnemy HP Variance: " + str(VH_VARIANCE) + "\nChip Codes Mode: " + str(C_ALLSTARMODE) + "\nRandomized Chip Names?: " + str(bool(CP_NAMERANDOMIZER)) + "\nRandomized Enemy Names?: " + str(bool(VN_NAMERANDOMIZER)) + "\nRandomized NaviCust Shapes?: " + str(bool(NC_SHAPERANDOMIZER)) + "\nRandom Battlefield Mode: " + str(int(BF_PANELRANDOMIZER)) + "\nRandom Element Mode: " + str(int(ELEMENT_MODE))+ "\nRandomize Navis?: " + str(bool(RANDOM_NAVIS))+ "\nFolder Lock Mode: " + str(FOLDER_MODE)+ "\nOMEGA Mode: " + str(OMEGA_MODE)+ "\nRegMem Max Range: " + str(int(REGMEM_MODE))+ "\nHELL Mode: " + str(HELL_MODE))
-    open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("\n\nAllow Folders?: "+str(bool(ALLOW_FOLDERS))+"\nAllow Blue Mystery Data?: "+str(bool(ALLOW_BMD))+"\nAllow Green Mystery Data?: "+str(bool(ALLOW_GMD))+"\nAllow Shops?: "+str(bool(ALLOW_SHOPS))+"\nAllow Battle Chips?: "+str(bool(ALLOW_CHIPS))+"\nAllow Viruses?: "+str(bool(ALLOW_VIRUSES))+"\nAllow NPC Trades?: "+str(bool(ALLOW_TRADES)))
-    open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("\n\nAllow Easy Tutorial?: "+str(bool(TUTORIAL_SKIP))+"\nRandomize Battle Objects?: "+str(bool(RANDOM_OBSTACLES))+"\nFree BattleChips in Shops?: "+str(bool(FREE_SHOPS))+"\nFill Shops?: "+str(bool(FILL_SHOPS))+"\nIgnore HP/Damage Limiters?: "+str(bool(IGNORE_LIMITS)))
+    open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'w').write("Seed: " + str(SEED) + "\nHash: " + seed_hash + "\n\nChip Damage Multiplier: " + str(P_MULTIPLIER) + "\nChip Damage Variance: " + str(P_VARIANCE) + "\nChip Price Variance: " + str(CPRICE_VARIANCE) + "\nEnemy HP Multiplier: " + str(V_MULTIPLIER) + "\nEnemy HP Variance: " + str(VH_VARIANCE) + "\nChip Codes Mode: " + str(C_ALLSTARMODE) + "\nRandomized Chip Names?: " + str(bool(CP_NAMERANDOMIZER)) + "\nRandomized Enemy Names?: " + str(bool(VN_NAMERANDOMIZER)) + "\nRandomized NaviCust Shapes?: " + str(bool(NC_SHAPERANDOMIZER)) + "\nRandom Battlefield Mode: " + str(int(BF_PANELRANDOMIZER)) + "\nRandom Element Mode: " + str(int(ELEMENT_MODE))+ "\nRandomize Navis?: " + str(bool(RANDOM_NAVIS))+ "\nFolder Lock Mode: " + str(FOLDER_MODE)+ "\nOMEGA Mode: " + str(OMEGA_MODE)+ "\nRegMem Max Range: " + str(int(REGMEM_MODE))+ "\nHELL Mode: " + str(HELL_MODE))
+    open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("\n\nAllow Folders?: "+str(bool(ALLOW_FOLDERS))+"\nAllow Blue Mystery Data?: "+str(bool(ALLOW_BMD))+"\nAllow Green Mystery Data?: "+str(bool(ALLOW_GMD))+"\nAllow Shops?: "+str(bool(ALLOW_SHOPS))+"\nAllow Battle Chips?: "+str(bool(ALLOW_CHIPS))+"\nAllow Viruses?: "+str(bool(ALLOW_VIRUSES))+"\nAllow NPC Trades?: "+str(bool(ALLOW_TRADES)))
+    open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("\n\nAllow Easy Tutorial?: "+str(bool(TUTORIAL_SKIP))+"\nRandomize Battle Objects?: "+str(bool(RANDOM_OBSTACLES))+"\nFree BattleChips in Shops?: "+str(bool(FREE_SHOPS))+"\nFill Shops?: "+str(bool(FILL_SHOPS))+"\nIgnore HP/Damage Limiters?: "+str(bool(IGNORE_LIMITS)))
     if OUTPUTLOG == 1:
-        open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n!!!!!!!!!!!!!!\n!!!SPOILERS!!!\n!!!!!!!!!!!!!!\n\n")
+        open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n!!!!!!!!!!!!!!\n!!!SPOILERS!!!\n!!!!!!!!!!!!!!\n\n")
         print("!!NOTE!! Writing detailed log to seedinfo.txt, this will take a few...")
         for i in range(len(changelog_chip)):
-            open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write(changelog_chip[i][0] + " -> " + changelog_chip[i][1] + ", Power: " + str(changelog_chip[i][2]) + " -> " + str(changelog_chip[i][3]) + ", Codes: " + changelog_chip[i][4] + ", RegMem: " + str(changelog_chip[i][5]) + "\n")
+            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write(changelog_chip[i][0] + " -> " + changelog_chip[i][1] + ", Power: " + str(changelog_chip[i][2]) + " -> " + str(changelog_chip[i][3]) + ", Codes: " + changelog_chip[i][4] + ", RegMem: " + str(changelog_chip[i][5]) + "\n")
         for i in range(0, len(changelog_pas)-1):
-            open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("Sequence Program Advance Requirement #" + str(i) + ": " + hex(0x100 + changelog_pas[i][0]) + " - " + chip_codes[(changelog_pas[i][1]-1)/2] + " -> " + chip_codes[(changelog_pas[i][2]-1)/2] + "\n")
+            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Sequence Program Advance Requirement #" + str(i) + ": " + hex(0x100 + changelog_pas[i][0]) + " - " + chip_codes[(changelog_pas[i][1]-1)/2] + " -> " + chip_codes[(changelog_pas[i][2]-1)/2] + "\n")
         for i in range(0, len(changelog_battles)-1):
             name1 = ""
             name2 = ""
             if changelog_battles[i][0] == "virus":
                 hp1, damage1, name1 = virus_data[changelog_battles[i][2]]
                 hp2, damage2, name2 = virus_data[changelog_battles[i][3]]
-                open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("Battle #" + str(changelog_battles[i][1]) + ": " + name1 + " (" + str(changelog_battles[i][2]) + ") -> " + name2 + " (" + str(changelog_battles[i][3]) + ")\n")
+                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Battle #" + str(changelog_battles[i][1]) + ": " + name1 + " (" + str(changelog_battles[i][2]) + ") -> " + name2 + " (" + str(changelog_battles[i][3]) + ")\n")
             elif changelog_battles[i][0] == "navi":
                 offset1, hp1, name1 = navi_data[changelog_battles[i][2]]
                 offset2, hp2, name2 = navi_data[changelog_battles[i][3]]
-                open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("Battle #" + str(changelog_battles[i][1]) + ": " + name1 + " (" + str(changelog_battles[i][2]+168) + ") -> " + name2 + " (" + str(changelog_battles[i][3]+168) + ")\n")
+                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Battle #" + str(changelog_battles[i][1]) + ": " + name1 + " (" + str(changelog_battles[i][2]+168) + ") -> " + name2 + " (" + str(changelog_battles[i][3]+168) + ")\n")
             elif changelog_battles[i][0] == "obstacle":
                 name1 = obstacles[changelog_battles[i][2]]
                 name2 = obstacles[changelog_battles[i][3]]
-                open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("Battle #" + str(changelog_battles[i][1]) + ": " + name1 + " -> " + name2 + "\n")
+                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Battle #" + str(changelog_battles[i][1]) + ": " + name1 + " -> " + name2 + "\n")
         for i in range(0, len(changelog_fields)-1):
             if changelog_fields[i][0] == "data":
-                open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("Stage #" + str(changelog_fields[i][1]) + ": " + changelog_fields[i][2] + " -> " + changelog_fields[i][3] + "\n")
+                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Stage #" + str(changelog_fields[i][1]) + ": " + changelog_fields[i][2] + " -> " + changelog_fields[i][3] + "\n")
             elif changelog_fields[i][0] == "id":
-                open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("Stage ID Offset " + hex(int(changelog_fields[i][1])) + " changed to " + changelog_fields[i][2] + ".\n")
+                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Stage ID Offset " + hex(int(changelog_fields[i][1])) + " changed to " + changelog_fields[i][2] + ".\n")
         for i in range(len(changelog_virus)):
-            open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write(changelog_virus[i][0] + " -> " + changelog_virus[i][1] + ", HP: " + str(changelog_virus[i][2]) + "\n")
+            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write(changelog_virus[i][0] + " -> " + changelog_virus[i][1] + ", HP: " + str(changelog_virus[i][2]) + "\n")
         for i in range(len(changelog_gmd)):
             if changelog_gmd[i][0] == "chip":
-                open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("GMD #" + str(i) + " Data: " + chip_names[changelog_gmd[i][1]-1] + " (" + str(changelog_gmd[i][1]) + ") -> " + chip_names[changelog_gmd[i][2]-1] + " (" + str(changelog_gmd[i][2]) + ") " + chip_codes[changelog_gmd[i][3]] + "\n")
+                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("GMD #" + str(i) + " Data: " + chip_names[changelog_gmd[i][1]-1] + " (" + str(changelog_gmd[i][1]) + ") -> " + chip_names[changelog_gmd[i][2]-1] + " (" + str(changelog_gmd[i][2]) + ") " + chip_codes[changelog_gmd[i][3]] + "\n")
             elif changelog_gmd[i][0] == "zenny":
-                open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("GMD #" + str(i) + " Data: " + str(changelog_gmd[i][1]) + ", " + str(changelog_gmd[i][2]) + ", " + str(changelog_gmd[i][3]) + ", " + str(changelog_gmd[i][4]) + ", " + str(changelog_gmd[i][5]) + ", " + str(changelog_gmd[i][6]) + ", " + str(changelog_gmd[i][7]) + ", " + str(changelog_gmd[i][8]) + ", " + str(changelog_gmd[i][9]) + ", " + str(changelog_gmd[i][10]) + ", " + str(changelog_gmd[i][11]) + ", " + str(changelog_gmd[i][12]) + ", " + str(changelog_gmd[i][13]) + ", " + str(changelog_gmd[i][14]) + ", " + str(changelog_gmd[i][15]) + ", " + str(changelog_gmd[i][16]) + "\n")
+                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("GMD #" + str(i) + " Data: " + str(changelog_gmd[i][1]) + ", " + str(changelog_gmd[i][2]) + ", " + str(changelog_gmd[i][3]) + ", " + str(changelog_gmd[i][4]) + ", " + str(changelog_gmd[i][5]) + ", " + str(changelog_gmd[i][6]) + ", " + str(changelog_gmd[i][7]) + ", " + str(changelog_gmd[i][8]) + ", " + str(changelog_gmd[i][9]) + ", " + str(changelog_gmd[i][10]) + ", " + str(changelog_gmd[i][11]) + ", " + str(changelog_gmd[i][12]) + ", " + str(changelog_gmd[i][13]) + ", " + str(changelog_gmd[i][14]) + ", " + str(changelog_gmd[i][15]) + ", " + str(changelog_gmd[i][16]) + "\n")
         for i in range(len(changelog_bmd)):
             if changelog_bmd[i][0] == "chip":
-                open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("BMD #" + str(i) + " Data: " + chip_names[changelog_bmd[i][1]-1] + " (" + str(changelog_bmd[i][1]) + ") " + chip_codes[changelog_bmd[i][2]] + " -> " + chip_names[changelog_bmd[i][3]-1] + " (" + str(changelog_bmd[i][3]) + ") " + chip_codes[changelog_bmd[i][4]] + "\n")
+                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("BMD #" + str(i) + " Data: " + chip_names[changelog_bmd[i][1]-1] + " (" + str(changelog_bmd[i][1]) + ") " + chip_codes[changelog_bmd[i][2]] + " -> " + chip_names[changelog_bmd[i][3]-1] + " (" + str(changelog_bmd[i][3]) + ") " + chip_codes[changelog_bmd[i][4]] + "\n")
             elif changelog_bmd[i][0] == "zenny":
-                open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("BMD #" + str(i) + " Data: " + str(changelog_bmd[i][1]) + " -> " + str(changelog_bmd[i][2]) + "\n")
+                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("BMD #" + str(i) + " Data: " + str(changelog_bmd[i][1]) + " -> " + str(changelog_bmd[i][2]) + "\n")
         for i in range(len(changelog_ncp)):
-            open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write(changelog_ncp[i][0] + " Uncompressed: " + str(changelog_ncp[i][1]) + ", Compressed: " + str(changelog_ncp[i][2]) + "\n")
+            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write(changelog_ncp[i][0] + " Uncompressed: " + str(changelog_ncp[i][1]) + ", Compressed: " + str(changelog_ncp[i][2]) + "\n")
         for i in range(len(changelog_folders)):
-            open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("Folder #" + str(changelog_folders[i][0]) + " Chip #" + str(changelog_folders[i][1]) + ": " + chipnames_in_order[changelog_folders[i][2]-1] + " (" + str(changelog_folders[i][2]) + ") " + chip_codes[changelog_folders[i][3]] + " -> " + chipnames_in_order[changelog_folders[i][4]-1] + " (" + str(changelog_folders[i][4]) + ") " + chip_codes[changelog_folders[i][5]] + "\n")
+            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Folder #" + str(changelog_folders[i][0]) + " Chip #" + str(changelog_folders[i][1]) + ": " + chipnames_in_order[changelog_folders[i][2]-1] + " (" + str(changelog_folders[i][2]) + ") " + chip_codes[changelog_folders[i][3]] + " -> " + chipnames_in_order[changelog_folders[i][4]-1] + " (" + str(changelog_folders[i][4]) + ") " + chip_codes[changelog_folders[i][5]] + "\n")
         for i in range(len(changelog_drops)):
-            open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("Virus #" + str(changelog_drops[i][0]) + ": " + chip_names[changelog_drops[i][1]-1] + " (" + str(changelog_drops[i][1]) + ") " + chip_codes[changelog_drops[i][2]] + " -> " + chip_names[changelog_drops[i][3]-1] + " (" + str(changelog_drops[i][3]) + ") " + chip_codes[changelog_drops[i][4]] + "\n")
+            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Virus #" + str(changelog_drops[i][0]) + ": " + chip_names[changelog_drops[i][1]-1] + " (" + str(changelog_drops[i][1]) + ") " + chip_codes[changelog_drops[i][2]] + " -> " + chip_names[changelog_drops[i][3]-1] + " (" + str(changelog_drops[i][3]) + ") " + chip_codes[changelog_drops[i][4]] + "\n")
         for i in range(len(changelog_shops)):
-            open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("Shop #" + str(changelog_shops[i][0]) + ": " + chip_names[changelog_shops[i][1]-1] + " (" + str(changelog_shops[i][1]) + ") " + chip_codes[changelog_shops[i][2]] + " - " + str(changelog_shops[i][3]) + " Zennys\n")
+            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Shop #" + str(changelog_shops[i][0]) + ": " + chip_names[changelog_shops[i][1]-1] + " (" + str(changelog_shops[i][1]) + ") " + chip_codes[changelog_shops[i][2]] + " - " + str(changelog_shops[i][3]) + " Zennys\n")
         for i in range(len(changelog_numbertrader)):
-            open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("NumberTrader Chip #" + str(i) + ": " + chip_names[changelog_numbertrader[i][0]-1] + " (" + str(changelog_numbertrader[i][0]) + ") " + chip_codes[changelog_numbertrader[i][1]] + "\n")
+            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("NumberTrader Chip #" + str(i) + ": " + chip_names[changelog_numbertrader[i][0]-1] + " (" + str(changelog_numbertrader[i][0]) + ") " + chip_codes[changelog_numbertrader[i][1]] + "\n")
         for i in range(len(changelog_trades)):
-            open("mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt", 'a').write("Trade #" + str(i) + " Requirement: " + chip_names[changelog_trades[i][1]-1] + " (" + str(changelog_trades[i][1]) + ") " + chip_codes[changelog_trades[i][2]] + " -> " + chip_names[changelog_trades[i][3]-1] + " (" + str(changelog_trades[i][3]) + ") " + chip_codes[changelog_trades[i][4]] + "\n")
-        print("Output Log:", "mmbn3" + ROMVERSION + "_log (" + seed_hash + ").txt")
+            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Trade #" + str(i) + " Requirement: " + chip_names[changelog_trades[i][1]-1] + " (" + str(changelog_trades[i][1]) + ") " + chip_codes[changelog_trades[i][2]] + " -> " + chip_names[changelog_trades[i][3]-1] + " (" + str(changelog_trades[i][3]) + ") " + chip_codes[changelog_trades[i][4]] + "\n")
+        print("Output Log:", "mmbn3" + ROMVERSION + ".log(" + seed_hash + ").txt")
     print("### Done! Enjoy your game!")
     if ALLOW_DAILY == 1:
         print("\n!!NOTE!! Be sure to read this daily run's base output info!")
