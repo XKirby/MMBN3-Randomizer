@@ -1104,7 +1104,7 @@ def randomize_bmds_trades():
                     new_data[match.start(1)+1] = int(new_chip / 256)
                     new_data[match.start(2)] = new_code
                     bmdchiplist.append([old_chip, old_code, new_chip, new_code])
-                    changelog_bmd.append(["chip", list(chip_hex.keys())[list(chip_hex.values()).index(old_chip)], old_code, list(list(chip_hex.keys()))[list(list(chip_hex.values())).index(new_chip)], new_code, match_offset])
+                    changelog_bmd.append(["chip", old_chip, old_code, new_chip, new_code, match_offset])
 
                 # Multiply zenny tables
                 for match in zenny_regex.finditer(script_data):
@@ -1163,7 +1163,7 @@ def randomize_bmds_trades():
                     new_data[match.start(1)+1] = int(new_chip / 256)
                     new_data[match.start(2)] = new_code
                     tradechiplist.append([old_chip, old_code, new_chip, new_code])
-                    changelog_trades.append(["requirement", list(chip_hex.keys())[list(chip_hex.values()).index(old_chip)], old_code, list(list(chip_hex.keys()))[list(list(chip_hex.values())).index(new_chip)], new_code, match_offset])
+                    changelog_trades.append(["requirement", old_chip, old_code, new_chip, new_code, match_offset])
                     #print "Check: ", chip_names[list(list(chip_hex.keys()))[list(list(chip_hex.values())).index(new_data[match.start(1)] + new_data[match.start(1)+1] * 256)]-1], " ", chip_codes[new_data[match.start(2)]], " (", str(hex(script_addr)), ")"
                 
                 for match in tradechipremove_regex.finditer(script_data):
@@ -1737,7 +1737,7 @@ def randomize_shops():
                     price = 0
                 new_item = struct.pack('<BBHBBH', item_type, stock, new_chip, new_code, filler, price)
                 write_data(new_item, item_offset)
-                changelog_shops.append([n_shops, list(chip_hex.keys())[list(chip_hex.values()).index(new_chip)], new_code, price*100])
+                changelog_shops.append([n_shops, new_chip, new_code, price*100])
             item_offset += 8
             n_items -= 1
         # Immediately break the loop if we're past the first shop and we don't want to randomize them
