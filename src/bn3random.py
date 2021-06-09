@@ -1112,7 +1112,7 @@ def randomize_bmds_trades():
                     match_offset = match.start() + 2
                     zennys = list(struct.unpack('<I', bytes(match.groups()[0], encoding="raw_unicode_escape")))
                     text_offset = match.start(10) - match_offset
-                    zennys[0] = zennys[0] * 3 / 2
+                    zennys[0] = int(zennys[0] * 3 / 2)
                     if len(str(match.group(10))) < len(str(zennys[0])):
                         zennys[0] = 9 * pow(10, len(str(match.group(10)))-1)
                     zenny_str = struct.pack('<I', *(int(x) for x in zennys))
