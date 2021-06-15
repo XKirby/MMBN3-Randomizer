@@ -1078,6 +1078,7 @@ def randomize_bmds_trades():
                     while new_chip == 279:
                         new_chip = random.choice(available_chips)
                     new_code = random.choice(allcodes[new_chip-1])
+                    found = False
                     if [old_chip, old_code] in required_trades:
                         if ALLOW_TRADES == 1:
                             if len(samechiplist) > 0:
@@ -1092,17 +1093,21 @@ def randomize_bmds_trades():
                         else:
                             new_chip = old_chip
                             new_code = allcodes[old_chip][chip_data[old_chip]['codes'].index(old_code)]
+                    found = False
                     if len(bmdchiplist) > 0:
                         for i in range(len(bmdchiplist)):
                             if old_chip == bmdchiplist[i][0] and old_code == bmdchiplist[i][1]:
                                 new_chip = bmdchiplist[i][2]
                                 new_code = bmdchiplist[i][3]
+                                found = True
+                                break
                         
                     #Get Chip Command Offsets
                     new_data[match.start(1)] = new_chip % 256
                     new_data[match.start(1)+1] = int(new_chip / 256)
                     new_data[match.start(2)] = new_code
-                    bmdchiplist.append([old_chip, old_code, new_chip, new_code])
+                    if not found:
+                        bmdchiplist.append([old_chip, old_code, new_chip, new_code])
                     changelog_bmd.append(["chip", old_chip, old_code, new_chip, new_code, match_offset])
 
                 # Multiply zenny tables
@@ -1131,9 +1136,10 @@ def randomize_bmds_trades():
                         if old_chip == bmdchiplist[i][0] and old_code == bmdchiplist[i][1]:
                             new_chip = bmdchiplist[i][2]
                             new_code = bmdchiplist[i][3]
-                    new_data[match.start(1)] = new_chip % 256
-                    new_data[match.start(1)+1] = int(new_chip / 256) + 1
-                    new_data[match.start(2)] = new_code
+                            new_data[match.start(1)] = new_chip % 256
+                            new_data[match.start(1)+1] = int(new_chip / 256) + 1
+                            new_data[match.start(2)] = new_code
+                            break
             
             if valcheck == 1 and ALLOW_TRADES == 1:
                 for match in tradechipcheck_regex.finditer(script_data):
@@ -1149,11 +1155,13 @@ def randomize_bmds_trades():
                             if old_chip == tradechiplist[i][0] and old_code == tradechiplist[i][1]:
                                 new_chip = tradechiplist[i][2]
                                 new_code = tradechiplist[i][3]
+                                break
                     if ALLOW_BMD == 1 and len(bmdchiplist) > 0:
                         for i in range(len(bmdchiplist)):
                             if old_chip == bmdchiplist[i][0] and old_code == bmdchiplist[i][1]:
                                 new_chip = bmdchiplist[i][2]
                                 new_code = bmdchiplist[i][3]
+                                break
                     new_data[match.start(1)] = new_chip % 256
                     new_data[match.start(1)+1] = int(new_chip / 256)
                     new_data[match.start(2)] = new_code
@@ -1169,14 +1177,16 @@ def randomize_bmds_trades():
                         if old_chip == tradechiplist[i][0] and old_code == tradechiplist[i][1]:
                             new_chip = tradechiplist[i][2]
                             new_code = tradechiplist[i][3]
-                    if ALLOW_BMD == 1 and len(bmdchiplist) > 0:
-                        for i in range(len(bmdchiplist)):
-                            if old_chip == bmdchiplist[i][0] and old_code == bmdchiplist[i][1]:
-                                new_chip = bmdchiplist[i][2]
-                                new_code = bmdchiplist[i][3]
-                    new_data[match.start(1)] = new_chip % 256
-                    new_data[match.start(1)+1] = int(new_chip / 256)
-                    new_data[match.start(2)] = new_code
+                            if ALLOW_BMD == 1 and len(bmdchiplist) > 0:
+                                for i in range(len(bmdchiplist)):
+                                    if old_chip == bmdchiplist[i][0] and old_code == bmdchiplist[i][1]:
+                                        new_chip = bmdchiplist[i][2]
+                                        new_code = bmdchiplist[i][3]
+                                        break
+                            new_data[match.start(1)] = new_chip % 256
+                            new_data[match.start(1)+1] = int(new_chip / 256)
+                            new_data[match.start(2)] = new_code
+                            break
                             
                 for match in tradechiptext_regex.finditer(script_data):
                     match_offset = match.start()
@@ -1186,14 +1196,16 @@ def randomize_bmds_trades():
                         if old_chip == tradechiplist[i][0] and old_code == tradechiplist[i][1]:
                             new_chip = tradechiplist[i][2]
                             new_code = tradechiplist[i][3]
-                    if ALLOW_BMD == 1 and len(bmdchiplist) > 0:
-                        for i in range(len(bmdchiplist)):
-                            if old_chip == bmdchiplist[i][0] and old_code == bmdchiplist[i][1]:
-                                new_chip = bmdchiplist[i][2]
-                                new_code = bmdchiplist[i][3]
-                    new_data[match.start(1)] = new_chip % 256
-                    new_data[match.start(1)+1] = int(new_chip / 256) + 1
-                    new_data[match.start(2)] = new_code
+                            if ALLOW_BMD == 1 and len(bmdchiplist) > 0:
+                                for i in range(len(bmdchiplist)):
+                                    if old_chip == bmdchiplist[i][0] and old_code == bmdchiplist[i][1]:
+                                        new_chip = bmdchiplist[i][2]
+                                        new_code = bmdchiplist[i][3]
+                                        break
+                            new_data[match.start(1)] = new_chip % 256
+                            new_data[match.start(1)+1] = int(new_chip / 256) + 1
+                            new_data[match.start(2)] = new_code
+                            break
                             
             new_script = ''.join(list(map(chr, new_data)))
             if len(new_scripts) >= p:
