@@ -1274,6 +1274,12 @@ def virus_replace(ind):
                         chosen_navis[ind-168+2] = chosen_navis[ind-168]
                         chosen_navis[ind-168+3] = chosen_navis[ind-168]
                         post_navis.remove(chosen_navis[ind-168])
+                    # Punk
+                    if ind-168 == 44 and chosen_navis[ind-168] < 0:
+                        chosen_navis[ind-168] = 44
+                        chosen_navis[ind-168+1] = chosen_navis[ind-168]
+                        chosen_navis[ind-168+2] = chosen_navis[ind-168]
+                        chosen_navis[ind-168+3] = chosen_navis[ind-168]
                 # Chaos Mode
                 else:
                     if ind-168 in [0,4,8,12,16,20,24,32,36,40,44,48,52,56,60,64] and chosen_navis[ind-168] < 0:
@@ -1285,7 +1291,7 @@ def virus_replace(ind):
                 
                 new_ind = chosen_navis[ind-168] + 168 + virus_level(ind) - 1
                 ind = new_ind
-        if OMEGA_MODE >= 1:
+        if OMEGA_MODE % 4 >= 1:
             # Bass, ignore swap-out mechanic
             if ind in [240, 241, 242, 243]:
                 return ind
@@ -1294,9 +1300,6 @@ def virus_replace(ind):
                 return ind
             # Serenade, ignore swap-out mechanic
             elif ind in [236,237,238,239]:
-                return ind
-            # Punk, ignore swap-out mechanic
-            elif ind in [44,45,46,47]:
                 return ind
             else:
                 if virus_level(ind) > virus_level(ind + (OMEGA_MODE % 4)):
@@ -1954,6 +1957,9 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     post_navis = [36,60,64]
     global allnavis
     allnavis = [0,4,8,12,16,20,24,32,36,40,44,48,52,56,60,64]
+    chosen_navis = list()
+    for i in range(0, 76):
+        chosen_navis.append(-1)
     
     global weak_viruses
     weak_viruses = [1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,16, 29,30,31,32, 33,34,35,36, 37,38,39,40, 75,76,77,78, 123,124,125,126, 131,132,133,134]
