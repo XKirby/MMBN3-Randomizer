@@ -39,7 +39,7 @@ These checksums are from a clean MMBN3 Blue rom. If you're going to the use this
 Open Mode Patches
 ============
 These patches can be used if you want to experience the game in a different way. Make sure to patch the rom with the correct patch BEFORE randomizing it! The features of these patches are listed below.
-- A built-in Full Library code! This took a while to figure out.
+- ~~A built-in Full Library code! This took a while to figure out.~~ *(This has been recently disabled.)*
 - Every area of the game should be open to the player right off the bat.
 - You start the game with every email, access to the NaviCust and StyleChange menus, as well as some NCP programs and Key Items for access to various areas.
 - Style Changes happen more frequently.
