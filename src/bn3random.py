@@ -1633,6 +1633,8 @@ def randomize_shops():
     last_ind = 0
     n_shops = 0
     gigachips = [226,231,236,241,246,251,256,261,266,271,281,286,291,296,301]
+    bluegigas = [302,303,309,310,311]
+    whitegigas = [304,305,306,307,308]
     # Offsets
     item_data_offset = 0x44bc8
     if ROMVERSION == "b":
@@ -1644,6 +1646,18 @@ def randomize_shops():
     
     global tradechiplist
     chip_map = generate_chip_permutation()
+    
+    available_chips = []
+    for i in range(1,302):
+        if i == 279:
+            continue
+        available_chips.append(i)
+    if ROMVERSION == "b":
+        for i in range(len(bluegigas)):
+            available_chips.append(bluegigas[i])
+    if ROMVERSION == "w":
+        for i in range(len(whitegigas)):
+            available_chips.append(whitegigas[i])
     
     # Chip Order Randomization
     if ALLOW_SHOPS == 1:
@@ -1673,11 +1687,6 @@ def randomize_shops():
         item_offset = first_item - first_shop + item_data_offset
         if ALLOW_SHOPS == 1 and (FILL_SHOPS == 1 or n_shops == 1):
             n_items = 8
-        available_chips = []
-        for i in range(1,301):
-            if i == 279:
-                continue
-            available_chips.append(i)
         while True:
             #t = read_dblword(item_offset)
             if n_items <= 0:
@@ -1691,12 +1700,13 @@ def randomize_shops():
                 if (old_chip == 0 or item_type == 0):
                     if FILL_SHOPS == 1 or n_shops == 1:
                         item_type = 2
-                        old_chip = random.choice(available_chips)
+                        new_chip = random.choice(available_chips)
                     else:
                         item_offset += 8
                         n_items -= 1
                         continue
-                new_chip = chip_map[old_chip]
+                else:
+                    new_chip = chip_map[old_chip]
                 while new_chip == 279:
                     new_chip = random.choice(available_chips)
                 new_code = random.choice(allcodes[new_chip-1])
@@ -1741,14 +1751,19 @@ def randomize_shops():
                     #new_code = 12
                     stock = 2
                     price = 1
-                # Fix Giga Chip in Secret Area Shop to be version-agnostic
+                # Fixes Giga Chip in Undernet 2 Bug Trader to be version-exclusive
                 if item_offset == item_data_offset + 0x2a8:
                     if ROMVERSION == "w":
-                        new_chip = random.choice(gigachips)
+                        new_chip = random.choice(whitegigas)
                     if ROMVERSION == "b":
-                        new_chip = random.choice(gigachips)
+                        new_chip = random.choice(bluegigas)
                     stock = 1
                     new_code = random.choice(allcodes[new_chip-1])
+                # Fixes Bugfrag Shop Prices from being too expensive
+                if (item_offset >= item_data_offset + 0x100 and item_offset < item_data_offset + 0x140) or (item_offset >= item_data_offset + 0x280 and item_offset < item_data_offset + 0x2c0):
+                    price = int(price/5)
+                    if price < 1:
+                        price = 1
                 # Free Shops check
                 if FREE_SHOPS == 1:
                     price = 0
