@@ -1,3 +1,3 @@
-pyinstaller bn3ui.py --icon="Recycle chip.ico"
-pyinstaller bn3cl.py --icon="Recycle chip.ico"
+pyinstaller -F --paths=".\packages" --icon="Recycle chip.ico" bn3ui.py
+pyinstaller -F --paths=".\packages" --icon="Recycle chip.ico" bn3cl.py
 pause

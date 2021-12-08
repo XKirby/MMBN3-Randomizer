@@ -139,7 +139,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Labelframe2.configure(highlightcolor="black")
         self.Labelframe2.configure(width=580)
 
-        # Input File box
+        # Input Seed box
         self.Entry1 = Entry(self.Labelframe2)
         self.Entry1.place(relx=0.02, rely=0.14,height=20, relwidth=0.59)
         self.Entry1.configure(background="white")
@@ -168,7 +168,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Button1.configure(highlightbackground="#d9d9d9")
         self.Button1.configure(highlightcolor="black")
         self.Button1.configure(pady="0")
-        self.Button1.configure(text='''Randomize!''')
+        self.Button1.configure(text='''Randomize''')
         Tooltip(self.Button1, "Generate new ROM file with applied settings.")
 
         self.Checkbutton3_1 = Checkbutton(self.Labelframe2)
@@ -809,7 +809,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Labelframe5.configure(width=580)
 
         self.Entry6 = Entry(self.Labelframe5)
-        self.Entry6.place(relx=0.14, rely=0.14,height=20, relwidth=0.85)
+        self.Entry6.place(relx=0.14, rely=0.14, height=20, relwidth=0.76)
         self.Entry6.configure(background="white")
         self.Entry6.configure(disabledforeground="#a3a3a3")
         self.Entry6.configure(font="TkFixedFont")
@@ -820,6 +820,20 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Entry6.configure(selectbackground="#c4c4c4")
         self.Entry6.configure(selectforeground="black")
         self.Entry6.configure(textvariable=bn3ui_support.fInputPath)
+        
+        self.Button1 = Button(self.Labelframe5)
+        self.Button1.place(relx=0.905, rely=0.14, height=20, width=48)
+        self.Button1.configure(activebackground="#d9d9d9")
+        self.Button1.configure(activeforeground="#000000")
+        self.Button1.configure(background="#d9d9d9")
+        self.Button1.configure(command=bn3ui_support.buttonOpenRom)
+        self.Button1.configure(disabledforeground="#a3a3a3")
+        self.Button1.configure(foreground="#000000")
+        self.Button1.configure(highlightbackground="#d9d9d9")
+        self.Button1.configure(highlightcolor="black")
+        self.Button1.configure(pady="0")
+        self.Button1.configure(text='''Open''')
+        Tooltip(self.Button1, "Opens a Mega Man Battle Network 3 ROM file.")
 
         self.Entry7 = Entry(self.Labelframe5)
         self.Entry7.place(relx=0.14, rely=0.55,height=20, relwidth=0.85)
@@ -835,8 +849,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Entry7.configure(textvariable=bn3ui_support.fOutputPath)
 
         self.Label11 = Label(self.Labelframe5)
-        self.Label11.place(relx=0.02, rely=0.27, height=21, width=65, y=-10, h=21)
-
+        self.Label11.place(relx=0.02, rely=0.27, height=21, width=64, y=-10, h=21)
         self.Label11.configure(activebackground="#f9f9f9")
         self.Label11.configure(activeforeground="black")
         self.Label11.configure(background="#d9d9d9")
@@ -848,7 +861,6 @@ class Mega_Man_Battle_Network_3_Randomizer:
 
         self.Label12 = Label(self.Labelframe5)
         self.Label12.place(relx=0.02, rely=0.68, height=21, width=64, y=-10, h=21)
-
         self.Label12.configure(activebackground="#f9f9f9")
         self.Label12.configure(activeforeground="black")
         self.Label12.configure(background="#d9d9d9")
