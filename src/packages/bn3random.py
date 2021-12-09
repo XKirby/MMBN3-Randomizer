@@ -3,6 +3,7 @@ import random
 import struct
 import copy
 import argparse
+import errno
 from collections import defaultdict
 from pprint import pprint
 
@@ -2269,68 +2270,93 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         write_data(setenableomega[i], len(randomized_data))
     
     # Output Rom
-    open("output\\" + output_path + ".gba", 'wb').write(bytes(''.join((chr(checkval(x)) for x in randomized_data)), encoding="raw_unicode_escape"))
+    new_output_path = "output\\" + output_path
+    from pathlib import Path
+    Path("output\\").mkdir(parents=True, exist_ok=True)
+    try:
+        f1 = open(new_output_path + ".gba", 'wb')
+    except OSError as e:
+        if e.errno == errno.ENOENT:
+            f1 = open(output_path + ".gba", 'wb')
+        else:
+            raise
+    f1.write(bytes(''.join((chr(checkval(x)) for x in randomized_data)), encoding="raw_unicode_escape"))
+    f1.close()
     print("Seed: " + str(SEED))
     print("Hash: " + seed_hash)
-    print("ROM Output: \"" + "output\\" + output_path + ".gba" + "\".")
+    print("ROM Output: \"" + output_path + ".gba" + "\".")
     
     #Spoiler Info
-    open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'w').write("Seed: " + str(SEED) + "\nHash: " + seed_hash + "\n\nChip Damage Multiplier: " + str(P_MULTIPLIER) + "\nChip Damage Variance: " + str(P_VARIANCE) + "\nChip Price Variance: " + str(CPRICE_VARIANCE) + "\nEnemy HP Multiplier: " + str(V_MULTIPLIER) + "\nEnemy HP Variance: " + str(VH_VARIANCE) + "\nChip Codes Mode: " + str(C_ALLSTARMODE) + "\nRandomized Chip Names?: " + str(bool(CP_NAMERANDOMIZER)) + "\nRandomized Enemy Names?: " + str(bool(VN_NAMERANDOMIZER)) + "\nRandomized NaviCust Shapes?: " + str(bool(NC_SHAPERANDOMIZER)) + "\nRandom Battlefield Mode: " + str(int(BF_PANELRANDOMIZER)) + "\nRandom Element Mode: " + str(int(ELEMENT_MODE))+ "\nRandomize Navis?: " + str(bool(RANDOM_NAVIS))+ "\nFolder Lock Mode: " + str(FOLDER_MODE)+ "\nOMEGA Mode: " + str(OMEGA_MODE)+ "\nRegMem Max Range: " + str(int(REGMEM_MODE))+ "\nHELL Mode: " + str(HELL_MODE))
-    open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("\n\nAllow Folders?: "+str(bool(ALLOW_FOLDERS))+"\nAllow Blue Mystery Data?: "+str(bool(ALLOW_BMD))+"\nAllow Green Mystery Data?: "+str(bool(ALLOW_GMD))+"\nAllow Shops?: "+str(bool(ALLOW_SHOPS))+"\nAllow Battle Chips?: "+str(bool(ALLOW_CHIPS))+"\nAllow Viruses?: "+str(bool(ALLOW_VIRUSES))+"\nAllow NPC Trades?: "+str(bool(ALLOW_TRADES)))
-    open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("\n\nAllow Easy Tutorial?: "+str(bool(TUTORIAL_SKIP))+"\nRandomize Battle Objects?: "+str(bool(RANDOM_OBSTACLES))+"\nFree BattleChips in Shops?: "+str(bool(FREE_SHOPS))+"\nFill Shops?: "+str(bool(FILL_SHOPS))+"\nIgnore HP/Damage Limiters?: "+str(bool(IGNORE_LIMITS)))
+    try:
+        f1 = open(new_output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'w')
+        f1.write("")
+        f1.close()
+        f1 = open(new_output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a')
+    except OSError as e:
+        if e.errno == errno.ENOENT:
+            f1 = open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'w')
+            f1.write("")
+            f1.close()
+            f1 = open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a')
+        else:
+            raise
+    f1.write("Seed: " + str(SEED) + "\nHash: " + seed_hash + "\n\nChip Damage Multiplier: " + str(P_MULTIPLIER) + "\nChip Damage Variance: " + str(P_VARIANCE) + "\nChip Price Variance: " + str(CPRICE_VARIANCE) + "\nEnemy HP Multiplier: " + str(V_MULTIPLIER) + "\nEnemy HP Variance: " + str(VH_VARIANCE) + "\nChip Codes Mode: " + str(C_ALLSTARMODE) + "\nRandomized Chip Names?: " + str(bool(CP_NAMERANDOMIZER)) + "\nRandomized Enemy Names?: " + str(bool(VN_NAMERANDOMIZER)) + "\nRandomized NaviCust Shapes?: " + str(bool(NC_SHAPERANDOMIZER)) + "\nRandom Battlefield Mode: " + str(int(BF_PANELRANDOMIZER)) + "\nRandom Element Mode: " + str(int(ELEMENT_MODE))+ "\nRandomize Navis?: " + str(bool(RANDOM_NAVIS))+ "\nFolder Lock Mode: " + str(FOLDER_MODE)+ "\nOMEGA Mode: " + str(OMEGA_MODE)+ "\nRegMem Max Range: " + str(int(REGMEM_MODE))+ "\nHELL Mode: " + str(HELL_MODE))
+    f1.write("\n\nAllow Folders?: "+str(bool(ALLOW_FOLDERS))+"\nAllow Blue Mystery Data?: "+str(bool(ALLOW_BMD))+"\nAllow Green Mystery Data?: "+str(bool(ALLOW_GMD))+"\nAllow Shops?: "+str(bool(ALLOW_SHOPS))+"\nAllow Battle Chips?: "+str(bool(ALLOW_CHIPS))+"\nAllow Viruses?: "+str(bool(ALLOW_VIRUSES))+"\nAllow NPC Trades?: "+str(bool(ALLOW_TRADES)))
+    f1.write("\n\nAllow Easy Tutorial?: "+str(bool(TUTORIAL_SKIP))+"\nRandomize Battle Objects?: "+str(bool(RANDOM_OBSTACLES))+"\nFree BattleChips in Shops?: "+str(bool(FREE_SHOPS))+"\nFill Shops?: "+str(bool(FILL_SHOPS))+"\nIgnore HP/Damage Limiters?: "+str(bool(IGNORE_LIMITS)))
     print("Log Output: \"" +output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt"+ "\".")
     if OUTPUTLOG == 1:
-        open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n!!!!!!!!!!!!!!\n!!!SPOILERS!!!\n!!!!!!!!!!!!!!\n\n")
+        f1.write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n!!!!!!!!!!!!!!\n!!!SPOILERS!!!\n!!!!!!!!!!!!!!\n\n")
         print("!!NOTE!! Writing detailed log to seedinfo.txt, this will take a few...")
         for i in range(len(changelog_chip)):
-            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write(changelog_chip[i][0] + " -> " + changelog_chip[i][1] + ", Power: " + str(changelog_chip[i][2]) + " -> " + str(changelog_chip[i][3]) + ", Codes: " + changelog_chip[i][4] + ", RegMem: " + str(changelog_chip[i][5]) + "\n")
+            f1.write(changelog_chip[i][0] + " -> " + changelog_chip[i][1] + ", Power: " + str(changelog_chip[i][2]) + " -> " + str(changelog_chip[i][3]) + ", Codes: " + changelog_chip[i][4] + ", RegMem: " + str(changelog_chip[i][5]) + "\n")
         for i in range(0, len(changelog_pas)-1):
-            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Sequence Program Advance Requirement #" + str(i) + ": " + hex(0x100 + changelog_pas[i][0]) + " - " + chip_codes[int((changelog_pas[i][1]-1)/2)] + " -> " + chip_codes[int((changelog_pas[i][2]-1)/2)] + "\n")
+            f1.write("Sequence Program Advance Requirement #" + str(i) + ": " + hex(0x100 + changelog_pas[i][0]) + " - " + chip_codes[int((changelog_pas[i][1]-1)/2)] + " -> " + chip_codes[int((changelog_pas[i][2]-1)/2)] + "\n")
         for i in range(0, len(changelog_battles)-1):
             name1 = ""
             name2 = ""
             if changelog_battles[i][0] == "virus":
                 hp1, damage1, name1 = virus_data[changelog_battles[i][2]]
                 hp2, damage2, name2 = virus_data[changelog_battles[i][3]]
-                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Battle #" + str(changelog_battles[i][1]) + ": " + name1 + " (" + str(changelog_battles[i][2]) + ") -> " + name2 + " (" + str(changelog_battles[i][3]) + ")\n")
+                f1.write("Battle #" + str(changelog_battles[i][1]) + ": " + name1 + " (" + str(changelog_battles[i][2]) + ") -> " + name2 + " (" + str(changelog_battles[i][3]) + ")\n")
             elif changelog_battles[i][0] == "navi":
                 offset1, hp1, name1 = navi_data[changelog_battles[i][2]]
                 offset2, hp2, name2 = navi_data[changelog_battles[i][3]]
-                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Battle #" + str(changelog_battles[i][1]) + ": " + name1 + " (" + str(changelog_battles[i][2]+168) + ") -> " + name2 + " (" + str(changelog_battles[i][3]+168) + ")\n")
+                f1.write("Battle #" + str(changelog_battles[i][1]) + ": " + name1 + " (" + str(changelog_battles[i][2]+168) + ") -> " + name2 + " (" + str(changelog_battles[i][3]+168) + ")\n")
             elif changelog_battles[i][0] == "obstacle":
                 name1 = obstacles[changelog_battles[i][2]]
                 name2 = obstacles[changelog_battles[i][3]]
-                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Battle #" + str(changelog_battles[i][1]) + ": " + name1 + " -> " + name2 + "\n")
+                f1.write("Battle #" + str(changelog_battles[i][1]) + ": " + name1 + " -> " + name2 + "\n")
         for i in range(0, len(changelog_fields)-1):
             if changelog_fields[i][0] == "data":
-                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Stage #" + str(changelog_fields[i][1]) + ": " + changelog_fields[i][2] + " -> " + changelog_fields[i][3] + "\n")
+                f1.write("Stage #" + str(changelog_fields[i][1]) + ": " + changelog_fields[i][2] + " -> " + changelog_fields[i][3] + "\n")
             elif changelog_fields[i][0] == "id":
-                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Stage ID Offset " + hex(int(changelog_fields[i][1])) + " changed to " + changelog_fields[i][2] + ".\n")
+                f1.write("Stage ID Offset " + hex(int(changelog_fields[i][1])) + " changed to " + changelog_fields[i][2] + ".\n")
         for i in range(len(changelog_virus)):
-            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write(changelog_virus[i][0] + " -> " + changelog_virus[i][1] + ", HP: " + str(changelog_virus[i][2]) + "\n")
+            f1.write(changelog_virus[i][0] + " -> " + changelog_virus[i][1] + ", HP: " + str(changelog_virus[i][2]) + "\n")
         for i in range(len(changelog_gmd)):
             if changelog_gmd[i][0] == "chip":
-                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("GMD #" + str(i) + " Data: " + chip_names[changelog_gmd[i][1]-1] + " (" + str(changelog_gmd[i][1]) + ") -> " + chip_names[changelog_gmd[i][2]-1] + " (" + str(changelog_gmd[i][2]) + ") " + chip_codes[changelog_gmd[i][3]] + "\n")
+                f1.write("GMD #" + str(i) + " Data: " + chip_names[changelog_gmd[i][1]-1] + " (" + str(changelog_gmd[i][1]) + ") -> " + chip_names[changelog_gmd[i][2]-1] + " (" + str(changelog_gmd[i][2]) + ") " + chip_codes[changelog_gmd[i][3]] + "\n")
             elif changelog_gmd[i][0] == "zenny":
-                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("GMD #" + str(i) + " Data: " + str(changelog_gmd[i][1]) + ", " + str(changelog_gmd[i][2]) + ", " + str(changelog_gmd[i][3]) + ", " + str(changelog_gmd[i][4]) + ", " + str(changelog_gmd[i][5]) + ", " + str(changelog_gmd[i][6]) + ", " + str(changelog_gmd[i][7]) + ", " + str(changelog_gmd[i][8]) + ", " + str(changelog_gmd[i][9]) + ", " + str(changelog_gmd[i][10]) + ", " + str(changelog_gmd[i][11]) + ", " + str(changelog_gmd[i][12]) + ", " + str(changelog_gmd[i][13]) + ", " + str(changelog_gmd[i][14]) + ", " + str(changelog_gmd[i][15]) + ", " + str(changelog_gmd[i][16]) + "\n")
+                f1.write("GMD #" + str(i) + " Data: " + str(changelog_gmd[i][1]) + ", " + str(changelog_gmd[i][2]) + ", " + str(changelog_gmd[i][3]) + ", " + str(changelog_gmd[i][4]) + ", " + str(changelog_gmd[i][5]) + ", " + str(changelog_gmd[i][6]) + ", " + str(changelog_gmd[i][7]) + ", " + str(changelog_gmd[i][8]) + ", " + str(changelog_gmd[i][9]) + ", " + str(changelog_gmd[i][10]) + ", " + str(changelog_gmd[i][11]) + ", " + str(changelog_gmd[i][12]) + ", " + str(changelog_gmd[i][13]) + ", " + str(changelog_gmd[i][14]) + ", " + str(changelog_gmd[i][15]) + ", " + str(changelog_gmd[i][16]) + "\n")
         for i in range(len(changelog_bmd)):
             if changelog_bmd[i][0] == "chip":
-                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("BMD #" + str(i) + " Data: " + chip_names[changelog_bmd[i][1]-1] + " (" + str(changelog_bmd[i][1]) + ") " + chip_codes[changelog_bmd[i][2]] + " -> " + chip_names[changelog_bmd[i][3]-1] + " (" + str(changelog_bmd[i][3]) + ") " + chip_codes[changelog_bmd[i][4]] + "\n")
+                f1.write("BMD #" + str(i) + " Data: " + chip_names[changelog_bmd[i][1]-1] + " (" + str(changelog_bmd[i][1]) + ") " + chip_codes[changelog_bmd[i][2]] + " -> " + chip_names[changelog_bmd[i][3]-1] + " (" + str(changelog_bmd[i][3]) + ") " + chip_codes[changelog_bmd[i][4]] + "\n")
             elif changelog_bmd[i][0] == "zenny":
-                open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("BMD #" + str(i) + " Data: " + str(changelog_bmd[i][1]) + " -> " + str(changelog_bmd[i][2]) + "\n")
+                f1.write("BMD #" + str(i) + " Data: " + str(changelog_bmd[i][1]) + " -> " + str(changelog_bmd[i][2]) + "\n")
         for i in range(len(changelog_ncp)):
-            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write(changelog_ncp[i][0] + " Uncompressed: " + str(changelog_ncp[i][1]) + ", Compressed: " + str(changelog_ncp[i][2]) + "\n")
+            f1.write(changelog_ncp[i][0] + " Uncompressed: " + str(changelog_ncp[i][1]) + ", Compressed: " + str(changelog_ncp[i][2]) + "\n")
         for i in range(len(changelog_folders)):
-            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Folder #" + str(changelog_folders[i][0]) + " Chip #" + str(changelog_folders[i][1]) + ": " + chipnames_in_order[changelog_folders[i][2]-1] + " (" + str(changelog_folders[i][2]) + ") " + chip_codes[changelog_folders[i][3]] + " -> " + chipnames_in_order[changelog_folders[i][4]-1] + " (" + str(changelog_folders[i][4]) + ") " + chip_codes[changelog_folders[i][5]] + "\n")
+            f1.write("Folder #" + str(changelog_folders[i][0]) + " Chip #" + str(changelog_folders[i][1]) + ": " + chipnames_in_order[changelog_folders[i][2]-1] + " (" + str(changelog_folders[i][2]) + ") " + chip_codes[changelog_folders[i][3]] + " -> " + chipnames_in_order[changelog_folders[i][4]-1] + " (" + str(changelog_folders[i][4]) + ") " + chip_codes[changelog_folders[i][5]] + "\n")
         for i in range(len(changelog_drops)):
-            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Virus #" + str(changelog_drops[i][0]) + ": " + chip_names[changelog_drops[i][1]-1] + " (" + str(changelog_drops[i][1]) + ") " + chip_codes[changelog_drops[i][2]] + " -> " + chip_names[changelog_drops[i][3]-1] + " (" + str(changelog_drops[i][3]) + ") " + chip_codes[changelog_drops[i][4]] + "\n")
+            f1.write("Virus #" + str(changelog_drops[i][0]) + ": " + chip_names[changelog_drops[i][1]-1] + " (" + str(changelog_drops[i][1]) + ") " + chip_codes[changelog_drops[i][2]] + " -> " + chip_names[changelog_drops[i][3]-1] + " (" + str(changelog_drops[i][3]) + ") " + chip_codes[changelog_drops[i][4]] + "\n")
         for i in range(len(changelog_shops)):
-            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Shop #" + str(changelog_shops[i][0]) + ": " + chip_names[changelog_shops[i][1]-1] + " (" + str(changelog_shops[i][1]) + ") " + chip_codes[changelog_shops[i][2]] + " - " + str(changelog_shops[i][3]) + " Zennys\n")
+            f1.write("Shop #" + str(changelog_shops[i][0]) + ": " + chip_names[changelog_shops[i][1]-1] + " (" + str(changelog_shops[i][1]) + ") " + chip_codes[changelog_shops[i][2]] + " - " + str(changelog_shops[i][3]) + " Zennys\n")
         for i in range(len(changelog_numbertrader)):
-            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("NumberTrader Chip #" + str(i) + ": " + chip_names[changelog_numbertrader[i][0]-1] + " (" + str(changelog_numbertrader[i][0]) + ") " + chip_codes[changelog_numbertrader[i][1]] + "\n")
+            f1.write("NumberTrader Chip #" + str(i) + ": " + chip_names[changelog_numbertrader[i][0]-1] + " (" + str(changelog_numbertrader[i][0]) + ") " + chip_codes[changelog_numbertrader[i][1]] + "\n")
         for i in range(len(changelog_trades)):
-            open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a').write("Trade #" + str(i) + " Requirement: " + chip_names[changelog_trades[i][1]-1] + " (" + str(changelog_trades[i][1]) + ") " + chip_codes[changelog_trades[i][2]] + " -> " + chip_names[changelog_trades[i][3]-1] + " (" + str(changelog_trades[i][3]) + ") " + chip_codes[changelog_trades[i][4]] + "\n")
+            f1.write("Trade #" + str(i) + " Requirement: " + chip_names[changelog_trades[i][1]-1] + " (" + str(changelog_trades[i][1]) + ") " + chip_codes[changelog_trades[i][2]] + " -> " + chip_names[changelog_trades[i][3]-1] + " (" + str(changelog_trades[i][3]) + ") " + chip_codes[changelog_trades[i][4]] + "\n")
         print("Output Log:", "mmbn3" + ROMVERSION + ".log(" + seed_hash + ").txt")
+    f1.close()
     print("### Done! Enjoy your game!")
     if ALLOW_DAILY == 1:
         print("\n!!NOTE!! Be sure to read this daily run's base output info!")
