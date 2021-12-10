@@ -24,7 +24,7 @@ Features
 Known Issues/Caveats
 ============
 - The rom must be a clean US copy of Mega Man Battle Network 3.
-- Messing with the text files in ways you probably shouldn't mess with can lead to errors, crashing, corrupt ROMs, etc. I take no responsibility for any of this. Make sure you read the NOTES.txt!
+- Messing with things in ways you probably shouldn't mess with can lead to errors, crashing, corrupt ROMs, etc. I take no responsibility for any of this.
 
 ROM Checksums
 ============
@@ -69,7 +69,7 @@ Changes from the original
 - Addition of a GUI version of the program using PAGE. (To be honest, I should probably use something else.)
 - Addition of randomized Battle Chip Damage, Program Advance Damage, and Virus/Navi HP Randomization.
 - Addition of Battle Chip Code Modes, to change the Chip Codes throughout the game.
-- Addition of various .txt files that store data, with a NOTES.txt that includes info on how to mess/not mess with them.
+- Addition of various .txt files that store data, with an Instructions.txt that includes info on how to mess/not mess with them.
 - Addition of seed input and an extremely detailed Output Log and hash, for speedrunning/races.
 - Addition of randomizable Chip/PA and Virus/Navi Names.
 - Addition of full support for MMBN3 Blue.
