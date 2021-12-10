@@ -19,7 +19,7 @@ Features
 - Lots of text files. They hold a bunch of data that you can mess around with to some extent. Just be sure to back things up in case something goes wrong.
 - Various modifiers are asked of you right off the bat when opening the script. These include Battle Chip Damage and Enemy HP Multipliers and Variance Values, as well as a Custom Run seed and a "Chip Code Roulette" Mode!
 - If a Run Seed is not supplied, it will generate one based on the current time.
-- More details can be found in the included NOTES.txt.
+- More details can be found in Instructions.txt.
 
 Known Issues/Caveats
 ============
