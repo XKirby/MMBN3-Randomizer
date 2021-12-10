@@ -1,16 +1,16 @@
 Mega Man Battle Network 3 Randomizer
 ============
-This is a Python 3 script with a bunch of text files used for randomizing Mega Man Battle Network 3. I've taken some liberties to make it more interesting to use. Credit goes to Mountebank/Samfin, Dabomstew, Prof.9, Rockman.EXE, and potentially other people I don't know about/forgot for the original MMBN3 Randomizer.
+This is a Python 3 64-bit application with a bunch of text files used for randomizing Mega Man Battle Network 3. I've taken some liberties to make it more interesting to use. Credit goes to Mountebank/Samfin, Dabomstew, Prof.9, Rockman.EXE, and potentially other people I don't know about/forgot for the original MMBN3 Randomizer.
 
 Credit to /u/Zinthonian from Reddit for the executable icon.
 
 Please refer to the Instructions.txt for how to use this program.
 
-Also included is a tool for adding new NaviCustomizer Program Shapes to the list of shapes for the randomizer and various notes for how the game stores information.
+Also included is a tool for adding new NaviCustomizer Program Shapes to the list of shapes for the randomizer and various notes for how the game stores information. This was made in GameMaker Studio.
 
 Compilation
 ============
-To compile, I've included a .bat file to run Python 3.9's version of PyInstaller with a custom icon for the program. It will make 2 executables with their own resources in their own folders. "bn3cl" is a command line version, while "bn3ui" is the graphical user interface version.
+To compile, I've included a .bat file to run Python 3 64-bit's version of PyInstaller with a custom icon for the program. It will make 2 executables in a "dist" folder. "bn3cl" is a command line version, while "bn3ui" is the graphical user interface version.
 
 Features
 ============
@@ -80,5 +80,5 @@ Changes from the original
 - Addition of Randomized Blue Mystery Datas. (It's not perfect, but it's there.)
 - Addition of Randomized NPC Trade Requirements. (Again, not perfect.)
 - Addition of more difficult Hell Mode Settings. Original Hell Mode also included.
-- Compiled the program into an executable for people who don't have Python 2.7.
+- Compiled the program into an executable for people who don't have Python 3.
 - Support for the included Open Mode Patch, even when using the "Ignore HP/Damage Limiters" option. (Patch before randomizing!)
