@@ -13,6 +13,7 @@ This program is used to generate Navi Customizer Program Shapes for the BN3 Rand
  - _LMB/RMB:_ Cycle Square Colors
 
 **Instructions**
+
 In the 5x5 Grid, you may change each square in the grid to one of 4 colors.
  - _Gray:_ Hollow/Disabled. Will not show up.
  - _Green:_ Uncompressed-Enabled: Will show up only if uncompressed.
