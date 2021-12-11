@@ -4,17 +4,22 @@ This randomizer can be used for either version of Mega Man Battle Network 3. Cre
 [Usage Instructions]
 1) Obtain a clean rom of MMBN3 Blue or MMBN3 White.
 
-2) Put the rom inside the same folder as the "MMBN3 Randomizer.exe" (for convenience's sake).
-
 --OPTIONAL: Patch the rom with an IPS patcher, using one of the Open Mode patches. This will allow
 access to most of the game's areas from the get-go.
 
-3) Run "MMBN3 Randomizer.exe".
+2) Run "MMBN3 Randomizer.exe".
 
-4) Give a value to every setting. Once you're done with everything, hit the "Randomize!" button.
+3) Hit the "Open" button and select your rom file. This will fill the input file path textbox. You may optionally type out the path manually.
 
-5) Once the program says it's "Done!", close it. You should now see a file named similarly to the "Output File" setting.
-This is your randomized rom! Open it with an emulator of your choice.
+4) Give a value to every setting you want to change.
+
+5) Type in the name of the rom in the "Output File" textbox.
+
+6) Click the "Randomize!" button.
+
+7) Once the program says it's "Done!", feel free to close it. You should now see a folder named "output" in the same directory as the randomizer. This has your randomized rom in it.
+
+8) Open your randomized rom with an emulator or flash cart of your choice.
 
 [Randomizer Toggles]
 The program allows for many things to be randomized. Here are the list of toggleable randomizer functions.
@@ -30,11 +35,46 @@ NPC Chip Trade Requirement Randomization
 [Randomizer Modifiers]
 The program has a lot of options to further change each run of the game. Here's a short description of each option and what they do.
 
-"Power Multiplier" is for Battle Chip and Program Advance Damage. (0.25 to 3.0)
-"Power Variance" is also for Battle Chip and Program Advance Damage. (0.0 to 0.9)
-"Virus HP Multiplier" is for Virus and Navi HP. (0.25 to 3.0)
-"Virus HP Variance" is also for Virus and Navi HP. (0.0 to 0.9)
-Multiplier is applied first, then Variance. Multiplier obviously multiplies the value. Variance multiplies again, but picks a random number between the negative and positive of the value you chose.
+"Randomize NCP Shapes" can be 0 or 1. Setting this to 1 randomizes Navi Customizer Program Shapes. Some NCPs are ignored, but both the Compressed and Uncompressed shapes are affected. Not recommended for beginners.
+
+"Enable Detailed Output Log" can be 0 or 1. Setting this to 1 generates a HUGE output log and it takes a while. Recommended for testing or casual play.
+
+"Ignore HP/Damage Limiters" can be 0 or 1. Setting this to 1 allows Chip Damage Multiplier and Enemy HP Multiplier upper limits to go above their listed maximum and allows Enemy HP to exceed 4,000.
+
+"Battlefield Stages" can be set to 0-2.
+	0) Default Battle Stages. Randomized Stages are disabled.
+	1) Randomized Stage Data is enabled. Not Recommended for beginners.
+	2) Randomized Stage Data and IDs are enabled. Not Recommended for beginners.
+
+"Hell Mode" can be 0-3.
+	0) Hell Mode is disabled.
+	1) "Hell" disables the ability to increase your Maximum HP with HP Memories.
+	2) "Insane" disables HP Memories completely, adding the disabling of Run Rate increases and gaining of Current HP.
+	3) "Death Wish" Sets your Maximum HP to 5 on top of everything else. Good luck with this one.
+
+"Chip Damage Multiplier" can be between 0.25 to 3.0 and multiplies Battle Chip and Program Advance Damage.
+
+"Chip Damage Variance" can be between 0.0 to 0.9 and adds to or subtracts from Battle Chip and Program Advance Damage by the listed percentage.
+
+"Enemy HP Multiplier" can be between 0.25 to 3.0 and multiplies Virus and Navi HP.
+
+"Enemy HP Variance" can be between 0.0 to 0.9 and adds to or subtracts from Virus and Navi HP by the listed percentage.
+
+NOTE: Multiplier is applied first, then Variance.
+
+"Fill Shops" can be 0 or 1, check the box/set to 1 to fill every shop's contents with new Battle Chips. Recommended.
+
+"Free Chips in Shops" can be 0 or 1, check the box/set to 1 to enable.
+
+"Randomize Navis" can be 0 or 1, check the box/set to 1 to enable.
+
+"Randomize Chip Names" can be 0 or 1, check the box/set to 1 to enable.
+
+"Randomize Virus Names" can be 0 or 1, check the box/set to 1 to enable.
+
+"Normal Tutorial" can be 0 or 1, check the box/set to 1 to prevent the tutorial enemies from being randomized.
+
+"Randomize Battle Objects" can be 0 or 1, check the box/set to 1 to enable.
 
 "Chip Code Roullete Mode" is for the Chip Codes.
 	0) No Randomization.
@@ -42,47 +82,36 @@ Multiplier is applied first, then Variance. Multiplier obviously multiplies the 
 	2) Simplified Codes. All Chips will have A, B, C, D, E, or *.
 	3) Random Codes. PAs should still be useable.
 
-"NaviCust Program Shapes" can be randomized by setting this option to 1. Note that this is not recommended.
-
-"Battlefield Stages" can be set to 0-2. Note that this is not recommended.
-	0) Default Battle Stages. Randomized Stages are disabled.
-	1) Randomized Stage Data is enabled.
-	2) Randomized Stage Data and IDs are enabled.
-
-"Element Mode" can randomize the Elements with the following options:
+"Randomize Elements Mode" can randomize the Elements with the following options:
 	0) No Randomization.
 	1) Randomize Virus/Navi elements.
 	2) Randomize Chip elements.
 	3) Randomize Virus/Navi/Chip elements.
 
-"Randomize Navis" can be 0 or 1, check the box/set to 1 to enable.
+"Set Virus Level Mode" can be 0-7, with 0 being the default level of difficulty. Setting it above 0 forces all fights to be a specific Virus level.
+	0) Omega Mode is disabled. Viruses will not be increased in difficulty.
+	1) Alpha+. Most Viruses and Navis are scaled by 1 step.
+	2) Beta+. Most Viruses and Navis are scaled by 2 steps.
+	3) Omega. Almost Everything is as hard as possible. Not Recommended.
+	4) Chaos Mode. Viruses will not increase in difficulty, but they can potentially be almost any Virus in the game.
+	5) Chaos Alpha+.
+	6) Chaos Beta+.
+	7) Chaos Omega. Not recommended.
 
-"Skip Tutorial" can be 0 or 1, check the box/set to 1 to prevent the tutorial enemies from being randomized.
-
-"Fill Shops" can be 0 or 1, check the box/set to 1 to fill every shop's contents with new Battle Chips.
-
-"Folder Lock Mode" can be 0-2, and each setting had different rules. When enabled, you can't edit your folders.
+"Set Folder Lock Mode" can be 0-4, and each setting had different rules. When enabled, you can't edit your folders.
 	0) Disable Folder Lock Mode and randomize all folders.
 	1) "Preset Single", all folders in the game share the exact same chips and these are taken from the "folders_custom.txt".
 	2) "Preset Multi", similar to the above but instead of one folder, multiple folders are chosen.
 	3) "Random Single", where the folder is randomly generated like normal but each folder is the same.
 	4) "Random Multi", where the folders are randomly generated like normal.
 
-"Omega Mode" can be 0-3, with 0 being the default level of difficulty. Setting it above 0 forces all fights to be a specific Virus level.
-	0) Omega Mode is disabled. Viruses will not be increased in difficulty.
-	1) Alpha+. Most Viruses and Navis are scaled by 1 step.
-	2) Beta+. Most Viruses and Navis are scaled by 2 steps.
-	3) Omega. Almost Everything is as hard as possible.
+"Chip Price Variance" can be between 0.0 to 0.9 and adds to or subjects from the Battle Chip prices in Shops by the listed percentage.
 
 "Regular Memory Values" can be 0-99. To randomize RegMem Values, use a number between the range of 1 to 99.
 
-"Hell Mode" can be 0-3.
-	0) Hell Mode is disabled.
-	1) "Hell" disables the ability to increase your Maximum HP with HP Memories.
-	2) "Insane" disables HP Memories completely, adding the disabling of Run Rate increases and gaining Current HP.
-	3) "Death Wish" Sets your Maximum HP to 5 on top of everything else. Good luck with this one.
+"Seed" can be anything you want, or nothing for the current date and time as a string.
 
-The "Seed" can be anything you want (or nothing for the current time)
+"Daily Run?", if enabled, will ignore all of your settings and generate its own depending on what day it is.
 
 [*_attackpower.txt]
 These files are for Battle chips (chip_attackpower.txt) and Program Advances (pa_attackpower.txt).

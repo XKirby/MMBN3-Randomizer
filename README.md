@@ -1,16 +1,16 @@
 Mega Man Battle Network 3 Randomizer
 ============
-This is a Python 3 script with a bunch of text files used for randomizing Mega Man Battle Network 3. I've taken some liberties to make it more interesting to use. Credit goes to Mountebank/Samfin, Dabomstew, Prof.9, Rockman.EXE, and potentially other people I don't know about/forgot for the original MMBN3 Randomizer.
+This is a Python 3 64-bit application with a bunch of text files used for randomizing Mega Man Battle Network 3. I've taken some liberties to make it more interesting to use. Credit goes to Mountebank/Samfin, Dabomstew, Prof.9, Rockman.EXE, and potentially other people I don't know about/forgot for the original MMBN3 Randomizer.
 
 Credit to /u/Zinthonian from Reddit for the executable icon.
 
 Please refer to the Instructions.txt for how to use this program.
 
-Also included is a tool for adding new NaviCustomizer Program Shapes to the list of shapes for the randomizer and various notes for how the game stores information.
+Also included is a tool for adding new NaviCustomizer Program Shapes to the list of shapes for the randomizer and various notes for how the game stores information. This was made in GameMaker Studio.
 
 Compilation
 ============
-To compile, I've included a .bat file to run Python 3.9's version of PyInstaller with a custom icon for the program. It will make 2 executables with their own resources in their own folders. "bn3cl" is a command line version, while "bn3ui" is the graphical user interface version.
+To compile, I've included a .bat file to run Python 3 64-bit's version of PyInstaller with a custom icon for the program. It will make 2 executables in a "dist" folder. "bn3cl" is a command line version, while "bn3ui" is the graphical user interface version.
 
 Features
 ============
@@ -19,12 +19,12 @@ Features
 - Lots of text files. They hold a bunch of data that you can mess around with to some extent. Just be sure to back things up in case something goes wrong.
 - Various modifiers are asked of you right off the bat when opening the script. These include Battle Chip Damage and Enemy HP Multipliers and Variance Values, as well as a Custom Run seed and a "Chip Code Roulette" Mode!
 - If a Run Seed is not supplied, it will generate one based on the current time.
-- More details can be found in the included NOTES.txt.
+- More details can be found in Instructions.txt.
 
 Known Issues/Caveats
 ============
 - The rom must be a clean US copy of Mega Man Battle Network 3.
-- Messing with the text files in ways you probably shouldn't mess with can lead to errors, crashing, corrupt ROMs, etc. I take no responsibility for any of this. Make sure you read the NOTES.txt!
+- Messing with things in ways you probably shouldn't mess with can lead to errors, crashing, corrupt ROMs, etc. I take no responsibility for any of this.
 
 ROM Checksums
 ============
@@ -69,7 +69,7 @@ Changes from the original
 - Addition of a GUI version of the program using PAGE. (To be honest, I should probably use something else.)
 - Addition of randomized Battle Chip Damage, Program Advance Damage, and Virus/Navi HP Randomization.
 - Addition of Battle Chip Code Modes, to change the Chip Codes throughout the game.
-- Addition of various .txt files that store data, with a NOTES.txt that includes info on how to mess/not mess with them.
+- Addition of various .txt files that store data, with an Instructions.txt that includes info on how to mess/not mess with them.
 - Addition of seed input and an extremely detailed Output Log and hash, for speedrunning/races.
 - Addition of randomizable Chip/PA and Virus/Navi Names.
 - Addition of full support for MMBN3 Blue.
@@ -80,5 +80,5 @@ Changes from the original
 - Addition of Randomized Blue Mystery Datas. (It's not perfect, but it's there.)
 - Addition of Randomized NPC Trade Requirements. (Again, not perfect.)
 - Addition of more difficult Hell Mode Settings. Original Hell Mode also included.
-- Compiled the program into an executable for people who don't have Python 2.7.
+- Compiled the program into an executable for people who don't have Python 3.
 - Support for the included Open Mode Patch, even when using the "Ignore HP/Damage Limiters" option. (Patch before randomizing!)
