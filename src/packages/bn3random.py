@@ -2241,7 +2241,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
             if not i % 4 == 3:
                 seed_hash = seed_hash + ","
             finalhash = finalhash + chr(hashchar)
-    setintro = "\x02\x00\xED\x01\xF1\x00"
+    setintro = "\x02\x00\xF2\x00\x05\x01\xF2\x00\x09\x01\xF2\x00\x0D\x01\xF2\x00\x11\x01\xF2\x00\x15\x01\xF2\x00\x19\x01\xF2\x00\x1D\x01\xF2\x00\x63\x01\xF2\x00\x64\x01\xF2\x00\x65\x01\xF2\x00\x66\x01\xED\x01\xF1\x00"
     if FOLDER_MODE > 0:
         write_data(struct.pack("H", 0x42A4), 0x198C)
         write_data(struct.pack("H", 0x42A4), 0x199E)
@@ -2251,7 +2251,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         else:
             write_data(chr(5), 0x2DC62)
     setintro = setintro + finalhash + "\xEB\xE9"
-    setintro = setintro + "\xF2\x00\x05\x01\xF2\x00\x09\x01\xF2\x00\x0D\x01\xF2\x00\x11\x01\xF2\x00\x15\x01\xF2\x00\x19\x01\xF2\x00\x1D\x01\xF2\x00\x63\x01\xF2\x00\x64\x01\xF2\x00\x65\x01\xF2\x00\x66\x01\xF1\x01\xE7\x00"
+    setintro = setintro + "\xF1\x01\xE7\x00"
     for i in range(0, len(setintro)-1):
         write_data(setintro[i], 0x778A40 + i)
     if ROMVERSION == "b":
