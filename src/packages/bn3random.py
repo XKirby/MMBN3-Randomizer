@@ -2243,13 +2243,21 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
             finalhash = finalhash + chr(hashchar)
     setintro = "\x02\x00\xF2\x00\x05\x01\xF2\x00\x09\x01\xF2\x00\x0D\x01\xF2\x00\x11\x01\xF2\x00\x15\x01\xF2\x00\x19\x01\xF2\x00\x1D\x01\xF2\x00\x63\x01\xF2\x00\x64\x01\xF2\x00\x65\x01\xF2\x00\x66\x01\xED\x01\xF1\x00"
     if FOLDER_MODE > 0:
-        write_data(struct.pack("H", 0x42A4), 0x198C)
-        write_data(struct.pack("H", 0x42A4), 0x199E)
-        setintro = setintro + "\xFB\x34\x01\xFB\x34\x0A\x10\x33\x30\x28\x29\x36\x00\x16\x33\x27\x2F\x00\x0B\x27\x38\x2D\x3A\x29\x4D\xE8"
+        if not FOLDER_MODE == 5:
+            write_data(struct.pack("H", 0x42A4), 0x198C) # Removes Giga restriction
+            write_data(struct.pack("H", 0x42A4), 0x199E) # Removes Mega restriction
+        if FOLDER_MODE < 5:
+            setintro = setintro + "\xFB\x34\x01\xFB\x34\x0A\x10\x33\x30\x28\x29\x36\x00\x16\x33\x27\x2F\x00\x0B\x27\x38\x2D\x3A\x29\x4D\xE8"
         if ROMVERSION == "b":
-            write_data(chr(5), 0x2DC4A)
+            if FOLDER_MODE < 5:
+                write_data(chr(5), 0x2DC4A) # Locks all Folders
+            else:
+                write_data(struct.pack("H", 0x28FF), 0x345A8) # Unlocks all Folders
         else:
-            write_data(chr(5), 0x2DC62)
+            if FOLDER_MODE < 5:
+                write_data(chr(5), 0x2DC62) # Locks all Folders
+            else:
+                write_data(struct.pack("H", 0x28FF), 0x345C0) # Unlocks all Folders
     setintro = setintro + finalhash + "\xEB\xE9"
     setintro = setintro + "\xF1\x01\xE7\x00"
     for i in range(0, len(setintro)-1):

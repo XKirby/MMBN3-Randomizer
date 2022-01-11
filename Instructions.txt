@@ -104,6 +104,8 @@ NOTE: Multiplier is applied first, then Variance.
 	2) "Preset Multi", similar to the above but instead of one folder, multiple folders are chosen.
 	3) "Random Single", where the folder is randomly generated like normal but each folder is the same.
 	4) "Random Multi", where the folders are randomly generated like normal.
+	5) "Unlocked", all folders are permanently unlocked and are randomly generated like normal. This includes Extra Folders. Be careful when you change them out!
+	6) "Unlocked Unlimited", similar to the above but all folders are no longer restricted to how many Mega Chips or Giga Chips they can hold.
 
 "Chip Price Variance" can be between 0.0 to 0.9 and adds to or subjects from the Battle Chip prices in Shops by the listed percentage.
 

@@ -128,7 +128,7 @@ def set_Tk_var():
 def buttonRandomize():
     import bn3random
     print('Randomizing...')
-    optionlists = [['Normal','All-Stars','Simplified','Chaos'],['None','Enemies','Chips','Both'],['Normal','Alpha+','Beta+','Omega',"Chaos","Chaos Alpha+","Chaos Beta+","Chaos Omega"],['Normal','Semi-random','Super-random'],['Normal','Hell','Insane','Death Wish'],['None','Preset Single','Preset Multiple','Random Single','Random Multiple']]
+    optionlists = [['Normal','All-Stars','Simplified','Chaos'],['None','Enemies','Chips','Both'],['Normal','Alpha+','Beta+','Omega',"Chaos","Chaos Alpha+","Chaos Beta+","Chaos Omega"],['Normal','Semi-random','Super-random'],['Normal','Hell','Insane','Death Wish'],['None','Preset Single','Preset Multiple','Random Single','Random Multiple','Unlocked','Unlocked Unlimited']]
     codes = 0
     elems = 0
     omega = 0
