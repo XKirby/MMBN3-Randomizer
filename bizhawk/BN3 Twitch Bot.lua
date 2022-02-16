@@ -895,42 +895,54 @@ function twitchbot_commands()
 			m, l = string.find(msg:lower(), ":!queuevirus "..TwitchBotVars.MultiUser:lower())
 		end
 		if m and not battleCheck() and ((type(user) == "string" and Difficulty >= 4) or type(mod) == "string") then
-			local ID = string.sub(msg:lower(), l+2, string.find(msg, ",")-1)
-			local X = string.sub(msg:lower(), string.find(msg, ",")+1, string.len(msg))
-			local Y = string.sub(X, string.find(X, ",")+1, string.len(X))
-			X = string.sub(X, 0, string.find(X, ",")-1)
-			
-			-- Find Enemy
-			for i = 0,#viruslist do
-				if viruslist[i] then
-					if string.lower(viruslist[i]) == ID:lower() then
-						ID = i
-						break
+			local newmsg = string.sub(msg, l+2, string.len(msg))
+			local _, spacecount = string.gsub(newmsg, " ", " ")
+			for i=0,spacecount do
+				local ID = string.sub(newmsg:lower(), 0, string.find(newmsg:lower(), ",")-1)
+				local X = string.sub(newmsg:lower(), string.find(newmsg:lower(), ",")+1, string.len(newmsg))
+				if string.find(newmsg:lower(), " ") ~= nil then
+					Y = string.sub(X, string.find(X, ",")+1, string.find(X:lower(), " ")-1)
+					newmsg = string.sub(newmsg, string.find(newmsg:lower(), " ")+1, string.len(newmsg))
+				else
+					Y = string.sub(X, string.find(X, ",")+1, string.len(newmsg:lower()))
+					newmsg = ""
+					i=spacecount
+				end
+				X = string.sub(X, 0, string.find(X, ",")-1)
+				
+				-- Find Enemy
+				for i = 0,#viruslist do
+					if viruslist[i] then
+						if string.lower(viruslist[i]) == ID:lower() then
+							ID = i
+							break
+						end
 					end
 				end
-			end
-			
-			-- Adjust values
-			if type(tonumber(ID)) == "number" then
-				ID = tonumber(ID)
-				ID = math.floor(ID)
-			end
-			if type(tonumber(X)) == "number" then
-				X = tonumber(X)
-				X = math.floor(X)
-				if X < 4 or X > 6 then X = nil end
-			end
-			if type(tonumber(Y)) == "number" then
-				Y = tonumber(Y)
-				Y = math.floor(Y)
-				if Y < 1 or Y > 3 then Y = nil end
-			end
-			
-			-- Queue Enemy
-			if type(X) == "number" and type(Y) == "number" and type(ID) == "number" and (ID >= 0 and ID <= #viruslist) then
-				if not table.find(compareValue(ID), BanList.viruses) and #QueuedEncounter < 3 then
-					table.insert(QueuedEncounter, {v_id = ID, v_x = X, v_y = Y})
-					TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :"..viruslist[ID].." Queued up! \r\n")
+				
+				-- Adjust values
+				if type(tonumber(ID)) == "number" then
+					ID = tonumber(ID)
+					ID = math.floor(ID)
+				end
+				if type(tonumber(X)) == "number" then
+					X = tonumber(X)
+					X = math.floor(X)
+					if X < 4 or X > 6 then X = nil end
+				end
+				if type(tonumber(Y)) == "number" then
+					Y = tonumber(Y)
+					Y = math.floor(Y)
+					if Y < 1 or Y > 3 then Y = nil end
+				end
+				
+				-- Queue Enemy
+				if type(X) == "number" and type(Y) == "number" and type(ID) == "number" and (ID >= 0 and ID <= #viruslist) then
+					if not table.find(compareValue(ID), BanList.viruses) and #QueuedEncounter < 3 then
+						table.insert(QueuedEncounter, {v_id = ID, v_x = X, v_y = Y})
+						print(viruslist[ID].." Queued up!")
+						TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :"..viruslist[ID].." Queued up! \r\n")
+					end
 				end
 			end
 		end
