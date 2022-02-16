@@ -1,0 +1,62 @@
+-- Twitch Bot-related Vartiables
+TwitchBotVars = {
+	Channel = "", -- The channel you're connecting to.
+	Name = "", -- The channel you're connecting with.
+	OAuth = "", -- The connecting channel's OAuth Token.
+	WhiteList = nil, -- A table full of whitelisted users who are allowed to use the bot.
+	Moderators = nil, -- A table full of whitelisted users who can use all commands regardless of difficulty, INCLUDING the diffuclty command.
+	MultiUser = nil -- A string denoting who's who in a Multiuser Bot Race in one stream chat.
+}
+
+-- Difficulty Options
+AllowPAs = true -- Whether or not normal Chat Users can use Program Advances.
+AllowCustomScreen = true -- Whether or not Battle Chips show up on the Custom Screen.
+AllowEscape = true -- Whether or not you can escape from battle.
+Difficulty = 1 -- 1 = Easy, 2 = Normal, 3 = Hard, 4 = Extreme
+
+-- Delay Options
+ChipCooldownDelay[0] = 0 -- Normal Chips Cooldown in Frames
+ChipCooldownDelay[1] = 10*60 -- Mega Chips Cooldown in Frames
+ChipCooldownDelay[2] = 20*60 -- Giga Chips Cooldown in Frames
+ChipCooldownDelay[3] = 40*60 -- Program Advances Cooldown in Frames
+RouletteDelays = {
+	30*60, -- !roulettehand Timer in Frames
+	30*60  -- !roulettestage Timer in Frames
+	}
+CommandTimerDelays = {
+	2*60, -- !slotin Cooldown in Frames
+	5*60, -- !cmdlist, !chiplist, !stylelist, and !fightlist Cooldown in Frames
+	5*60, -- !zennyplz Cooldown in Frames
+	5*60, -- !fragsplz Cooldown in Frames
+	8*60, -- !maxhealthplz Cooldown in Frames
+	5*60, -- !healthplz Cooldown in Frames
+	10*60, -- !stylechange Cooldown in Frames
+	60*60, -- !fightme Cooldown in Frames
+	30*60, -- !scramble Cooldown in Frames
+	10*60, -- !setstage Cooldown in Frames
+	150*60, -- !roulettehand Cooldown in Frames
+	150*60, -- !roulettestage Cooldown in Frames
+	10*60 -- !chipplz Cooldown in Frames
+	}
+
+-- Resource Randomness Tables
+-- Add or remove options from these tables at your leisure. Just always keep them with at least one listing.
+RandomValues.zennys = {1000,500,200,200,100,100,50,50,50,0,0,-50,-50,-50,-100,-100,-200,-200,-500,-1000}
+RandomValues.frags = {10,5,5,3,3,2,2,1,1,0,0,-1,-1,-2,-2,-3,-3,-5,-5,-10}
+RandomValues.hp = {50,50,40,40,30,30,20,20,10,10,-10,-10,-20,-20,-30,-30,-40,-40,-50,-50}
+
+-- Banlists
+-- Insert Battlechip IDs here to ban !slotin choices. Some choices may be hard-coded.
+BanList.chips = {41,179,214,215,216,217,218,273,274,275,276}
+
+-- Insert Panel IDs here to ban !setstage choices. By Default 0 (Hole Stage), 1 (Pitfall Stage), and 8 (Lava Stage) are banned.  
+BanList.stages = {0,1,8}
+
+-- Insert Encounter IDs here to ban !fightme choices. Some choices are hard-coded.
+BanList.fights = {}
+
+-- Insert Encounter IDs here to ban !stylechange choices. Nothing is banned by default.
+BanList.styles = {}
+
+-- Insert Virus/Navi IDs here to ban !queuevirus choices. Invincible Bass and some broken enemies are banned by default.
+BanList.viruses = {0, 198, 199, 240}
