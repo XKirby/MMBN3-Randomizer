@@ -928,7 +928,7 @@ function twitchbot_commands()
 				if type(tonumber(X)) == "number" then
 					X = tonumber(X)
 					X = math.floor(X)
-					if X < 4 or X > 6 then X = nil end
+					if X < 1 or X > 3 then X = nil end
 				end
 				if type(tonumber(Y)) == "number" then
 					Y = tonumber(Y)
@@ -938,8 +938,8 @@ function twitchbot_commands()
 				
 				-- Queue Enemy
 				if type(X) == "number" and type(Y) == "number" and type(ID) == "number" and (ID >= 0 and ID <= #viruslist) then
-					if not table.find(compareValue(ID), BanList.viruses) and #QueuedEncounter < 3 then
-						table.insert(QueuedEncounter, {v_id = ID, v_x = X, v_y = Y})
+					if not table.find(compareValue(ID), BanList.viruses) and #QueuedEncounter < 4 then
+						table.insert(QueuedEncounter, {v_id = ID, v_x = X+3, v_y = Y})
 						print(viruslist[ID].." Queued up!")
 						TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :"..viruslist[ID].." Queued up! \r\n")
 					end
