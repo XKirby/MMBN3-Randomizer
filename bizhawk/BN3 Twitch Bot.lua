@@ -938,7 +938,7 @@ function twitchbot_commands()
 				
 				-- Queue Enemy
 				if type(X) == "number" and type(Y) == "number" and type(ID) == "number" and (ID >= 0 and ID <= #viruslist) then
-					if not table.find(compareValue(ID), BanList.viruses) and #QueuedEncounter < 4 then
+					if not table.find(compareValue(ID), BanList.viruses) and #QueuedEncounter < 3 then
 						table.insert(QueuedEncounter, {v_id = ID, v_x = X+3, v_y = Y})
 						print(viruslist[ID].." Queued up!")
 						TwitchBotVars.Client:send("PRIVMSG #"..TwitchBotVars.Channel.." :"..viruslist[ID].." Queued up! \r\n")
