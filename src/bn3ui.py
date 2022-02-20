@@ -68,68 +68,39 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.style.map('.',background=
             [('selected', _compcolor), ('active',_ana2color)])
 
-        top.geometry("600x600+572+267")
+        top.geometry("600x660+572+267")
         top.title("Mega Man Battle Network 3 Randomizer")
         top.configure(background="#d9d9d9")
         top.configure(highlightbackground="#d9d9d9")
         top.configure(highlightcolor="black")
 
-
-        # Game ver. label
         self.Labelframe1 = LabelFrame(top)
-        self.Labelframe1.place(relx=0.02, rely=0.23, relheight=0.13
-                , relwidth=0.13)
+        self.Labelframe1.place(relx=0.02, rely=0.84, relheight=0.15
+                , relwidth=0.97)
         self.Labelframe1.configure(relief=GROOVE)
         self.Labelframe1.configure(foreground="black")
-        self.Labelframe1.configure(text='''Version''')
+        self.Labelframe1.configure(text='''Output Console''')
         self.Labelframe1.configure(background="#d9d9d9")
         self.Labelframe1.configure(highlightbackground="#d9d9d9")
         self.Labelframe1.configure(highlightcolor="black")
-        self.Labelframe1.configure(width=80)
-        Tooltip(self.Labelframe1, "Select Input ROM version")
-
-        # White ver. radio button
-        self.Radiobutton1 = Radiobutton(self.Labelframe1)
-        self.Radiobutton1.place(relx=0.13, rely=0.24, relheight=0.33
-                , relwidth=0.74, y=-12, h=6)
-        self.Radiobutton1.configure(activebackground="#d9d9d9")
-        self.Radiobutton1.configure(activeforeground="#000000")
-        self.Radiobutton1.configure(background="#d9d9d9")
-        self.Radiobutton1.configure(disabledforeground="#a3a3a3")
-        self.Radiobutton1.configure(foreground="#000000")
-        self.Radiobutton1.configure(highlightbackground="#d9d9d9")
-        self.Radiobutton1.configure(highlightcolor="black")
-        self.Radiobutton1.configure(justify=LEFT)
-        self.Radiobutton1.configure(state=ACTIVE)
-        self.Radiobutton1.configure(takefocus="0")
-        self.Radiobutton1.configure(text='''White''')
-        self.Radiobutton1.configure(value="w")
-        self.Radiobutton1.configure(variable=bn3ui_support.versionValue)
-
-        # Blue ver. radio button
-        self.Radiobutton2 = Radiobutton(self.Labelframe1)
-        self.Radiobutton2.place(relx=0.13, rely=0.64, relheight=0.33
-                , relwidth=0.64, y=-12, h=6)
-        self.Radiobutton2.configure(activebackground="#d9d9d9")
-        self.Radiobutton2.configure(activeforeground="#000000")
-        self.Radiobutton2.configure(background="#d9d9d9")
-        self.Radiobutton2.configure(disabledforeground="#a3a3a3")
-        self.Radiobutton2.configure(foreground="#000000")
-        self.Radiobutton2.configure(highlightbackground="#d9d9d9")
-        self.Radiobutton2.configure(highlightcolor="black")
-        self.Radiobutton2.configure(justify=LEFT)
-        self.Radiobutton2.configure(takefocus="0")
-        self.Radiobutton2.configure(text='''Blue''')
-        self.Radiobutton2.configure(value="b")
-        self.Radiobutton2.configure(variable=bn3ui_support.versionValue)
-
-        self.menubar = Menu(top,font="TkMenuFont",bg=_bgcolor,fg=_fgcolor)
-        top.configure(menu = self.menubar)
-
+        self.Labelframe1.configure(width=580)
+        
+        # Console Output Label
+        self.Label12 = Label(self.Labelframe1)
+        self.Label12.place(relwidth=0.96, relheight=0.90)
+        self.Label12.configure(activebackground="#f9f9f9")
+        self.Label12.configure(activeforeground="black")
+        self.Label12.configure(background="#d9d9d9")
+        self.Label12.configure(disabledforeground="#a3a3a3")
+        self.Label12.configure(foreground="#000000")
+        self.Label12.configure(highlightbackground="#d9d9d9")
+        self.Label12.configure(highlightcolor="black")
+        self.Label12.configure(justify=LEFT)
+        self.Label12.configure(textvariable=bn3ui_support.ConsoleOutput)
 
         # Seed label
         self.Labelframe2 = LabelFrame(top)
-        self.Labelframe2.place(relx=0.02, rely=0.9, relheight=0.09
+        self.Labelframe2.place(relx=0.02, rely=0.76, relheight=0.08
                 , relwidth=0.97)
         self.Labelframe2.configure(relief=GROOVE)
         self.Labelframe2.configure(foreground="black")
@@ -189,7 +160,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         Tooltip(self.Checkbutton3_1, "Perform Daily Run?")
 
         self.Labelframe3 = LabelFrame(top)
-        self.Labelframe3.place(relx=0.02, rely=0.37, relheight=0.53
+        self.Labelframe3.place(relx=0.02, rely=0.28, relheight=0.48
                 , relwidth=0.97)
         self.Labelframe3.configure(relief=GROOVE)
         self.Labelframe3.configure(foreground="black")
@@ -240,7 +211,6 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label1.configure(justify=RIGHT)
         self.Label1.configure(text='''Chip Damage Multiplier''')
         Tooltip(self.Label1, "Multiply battle chip damage to specified. Set to 1.0 for unmodified damage values")
-        
 
         self.Label2 = Label(self.Labelframe3)
         self.Label2.place(relx=0.02, rely=0.17, height=21, width=134, y=-12, h=20)
@@ -698,8 +668,8 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.TCombobox3_2.configure(takefocus="")
 
         self.Labelframe4 = LabelFrame(top)
-        self.Labelframe4.place(relx=0.17, rely=0.23, relheight=0.13
-                , relwidth=0.82)
+        self.Labelframe4.place(relx=0.02, rely=0.16, relheight=0.12
+                , relwidth=0.97)
         self.Labelframe4.configure(relief=GROOVE)
         self.Labelframe4.configure(foreground="black")
         self.Labelframe4.configure(text='''Other Options''')
@@ -737,7 +707,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton5.configure(variable=bn3ui_support.randomOutputLog)
         
         self.Checkbutton6 = Checkbutton(self.Labelframe4)
-        self.Checkbutton6.place(relx=0.02, rely=0.78, relheight=0.32
+        self.Checkbutton6.place(relx=0.02, rely=0.78, relheight=0.30
                 , relwidth=0.35, y=-12, h=6)
         self.Checkbutton6.configure(activebackground="#d9d9d9")
         self.Checkbutton6.configure(activeforeground="#000000")
@@ -800,11 +770,11 @@ class Mega_Man_Battle_Network_3_Randomizer:
         "Death Wish - HP Memories do nothing and your Maximum HP is 5.")
 
         self.Labelframe5 = LabelFrame(top)
-        self.Labelframe5.place(relx=0.02, rely=0.08, relheight=0.14
+        self.Labelframe5.place(relx=0.02, rely=0.08, relheight=0.08
                 , relwidth=0.97)
         self.Labelframe5.configure(relief=GROOVE)
         self.Labelframe5.configure(foreground="black")
-        self.Labelframe5.configure(text='''Filepaths''')
+        self.Labelframe5.configure(text='''File Path''')
         self.Labelframe5.configure(background="#d9d9d9")
         self.Labelframe5.configure(highlightbackground="#d9d9d9")
         self.Labelframe5.configure(highlightcolor="black")
@@ -837,21 +807,8 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Button1.configure(text='''Open''')
         Tooltip(self.Button1, "Opens a Mega Man Battle Network 3 ROM file.")
 
-        self.Entry7 = Entry(self.Labelframe5)
-        self.Entry7.place(relx=0.14, rely=0.55,height=20, relwidth=0.85)
-        self.Entry7.configure(background="white")
-        self.Entry7.configure(disabledforeground="#a3a3a3")
-        self.Entry7.configure(font="TkFixedFont")
-        self.Entry7.configure(foreground="#000000")
-        self.Entry7.configure(highlightbackground="#d9d9d9")
-        self.Entry7.configure(highlightcolor="black")
-        self.Entry7.configure(insertbackground="black")
-        self.Entry7.configure(selectbackground="#c4c4c4")
-        self.Entry7.configure(selectforeground="black")
-        self.Entry7.configure(textvariable=bn3ui_support.fOutputPath)
-
         self.Label11 = Label(self.Labelframe5)
-        self.Label11.place(relx=0.02, rely=0.27, height=21, width=64, y=-10, h=21)
+        self.Label11.place(relx=0.02, rely=0.27, height=21, width=64, y=-4, h=21)
         self.Label11.configure(activebackground="#f9f9f9")
         self.Label11.configure(activeforeground="black")
         self.Label11.configure(background="#d9d9d9")
@@ -860,17 +817,6 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label11.configure(highlightbackground="#d9d9d9")
         self.Label11.configure(highlightcolor="black")
         self.Label11.configure(text='''Input File''')
-
-        self.Label12 = Label(self.Labelframe5)
-        self.Label12.place(relx=0.02, rely=0.68, height=21, width=64, y=-10, h=21)
-        self.Label12.configure(activebackground="#f9f9f9")
-        self.Label12.configure(activeforeground="black")
-        self.Label12.configure(background="#d9d9d9")
-        self.Label12.configure(disabledforeground="#a3a3a3")
-        self.Label12.configure(foreground="#000000")
-        self.Label12.configure(highlightbackground="#d9d9d9")
-        self.Label12.configure(highlightcolor="black")
-        self.Label12.configure(text='''Output File''')
 
         self.Message1 = Message(top)
         self.Message1.place(relx=0.02, rely=0.02, relheight=0.06, relwidth=0.97)

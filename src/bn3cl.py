@@ -41,8 +41,6 @@ def main():
         parser = argparse.ArgumentParser()
         parser.add_argument("-i", "--input", help="Type in values manually.", action="count", default=0)
         parser.add_argument("-in", "--infile", help="The input filepath for your clean rom.", default="")
-        parser.add_argument("-out", "--outfile", help="The output filepath for your randomized rom.", default="")
-        parser.add_argument("-v", "--version", help="Rom Version, character.", choices=["w", "b", "W", "B"], default="w")
         parser.add_argument("-cdm", "--chipdamagemult", help="Chip/PA Damage Multiplier, float.", type=float, default=1.0)
         parser.add_argument("-cdv", "--chipdamagevar", help="Chip/PA Damage Variance, float.", type=float, default=0.0)
         parser.add_argument("-cpv", "--chippricevar", help="Chip Price Variance, float.", type=float, default=0.0)
@@ -78,8 +76,6 @@ def main():
         
         #Variable Defaults based on Arguments
         INPUT_FILE = args.infile
-        OUTPUT_FILE = args.outfile
-        ROMVERSION = args.version
         P_MULTIPLIER = args.chipdamagemult
         P_VARIANCE = args.chipdamagevar
         V_MULTIPLIER = args.enemydamagemult
@@ -115,8 +111,6 @@ def main():
         #Variable Input
         if args.input >= 1:
                 INPUT_FILE = str(input("The input filepath to your clean rom.> "))
-                OUTPUT_FILE = str(input("The output filepath of the randomized rom.> "))
-                ROMVERSION = str(input("Which Version? [W/B]> "))
                 P_MULTIPLIER = float(input("Input Damage Multiplier Float> "))
                 P_VARIANCE = float(input("Input Damage Variance Float> "))
                 CPRICE_VARIANCE = float(input("Input Chip Price Variance Float> "))
@@ -148,15 +142,8 @@ def main():
                 SEED = str(input("Input Seed?> "))
                 OUTPUTLOG = int(input("Enable Output Log? [0-1]> ")) % 2
                 IGNORE_LIMIT = int(input("Ignore HP/Damage Multiplier Limits? [0-1]> ")) % 2
-        if len(ROMVERSION) != 1:
-                return
-        ROMVERSION = ROMVERSION.lower()
-        if ROMVERSION != "b" and ROMVERSION != "w":
-                return
-        if len(INPUT_FILE) < 1 or len(OUTPUT_FILE) < 1:
-                return
         import bn3random
-        bn3random.randomizerom(INPUT_FILE, OUTPUT_FILE, ROMVERSION, SEED, P_MULTIPLIER, P_VARIANCE, V_MULTIPLIER, VH_VARIANCE, C_ALLSTARMODE, CP_NAMERANDOMIZER, VN_NAMERANDOMIZER, RANDOM_NAVIS, ELEMENT_MODE, REGMEM_MODE, NC_SHAPERANDOMIZER, OMEGA_MODE, HELL_MODE, BF_PANELRANDOMIZER, FOLDER_MODE, OUTPUTLOG, RANDOM_OBSTACLES, FILL_SHOPS, FREE_SHOPS, ALLOW_FOLDERS, ALLOW_GMD, ALLOW_BMD, ALLOW_SHOPS, ALLOW_CHIPS, ALLOW_VIRUSES, ALLOW_TRADES, ALLOW_DAILY, TUTORIAL_SKIP, IGNORE_LIMITS, CPRICE_VARIANCE)
+        bn3random.randomizerom(INPUT_FILE, SEED, P_MULTIPLIER, P_VARIANCE, V_MULTIPLIER, VH_VARIANCE, C_ALLSTARMODE, CP_NAMERANDOMIZER, VN_NAMERANDOMIZER, RANDOM_NAVIS, ELEMENT_MODE, REGMEM_MODE, NC_SHAPERANDOMIZER, OMEGA_MODE, HELL_MODE, BF_PANELRANDOMIZER, FOLDER_MODE, OUTPUTLOG, RANDOM_OBSTACLES, FILL_SHOPS, FREE_SHOPS, ALLOW_FOLDERS, ALLOW_GMD, ALLOW_BMD, ALLOW_SHOPS, ALLOW_CHIPS, ALLOW_VIRUSES, ALLOW_TRADES, ALLOW_DAILY, TUTORIAL_SKIP, IGNORE_LIMITS, CPRICE_VARIANCE)
 
 if __name__ == '__main__':
         main()

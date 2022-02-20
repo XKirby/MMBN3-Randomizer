@@ -13,13 +13,11 @@ access to most of the game's areas from the get-go.
 
 4) Give a value to every setting you want to change.
 
-5) Type in the name of the rom in the "Output File" textbox.
+5) Click the "Randomize!" button.
 
-6) Click the "Randomize!" button.
+6) Once the program says it's "Done!", feel free to close it. You should now see a folder named "output" in the same directory as the randomizer. This has your randomized rom in it.
 
-7) Once the program says it's "Done!", feel free to close it. You should now see a folder named "output" in the same directory as the randomizer. This has your randomized rom in it.
-
-8) Open your randomized rom with an emulator or flash cart of your choice.
+7) Open your randomized rom with an emulator or flash cart of your choice.
 
 [Randomizer Toggles]
 The program allows for many things to be randomized. Here are the list of toggleable randomizer functions.
@@ -107,7 +105,7 @@ NOTE: Multiplier is applied first, then Variance.
 	5) "Unlocked", all folders are permanently unlocked and are randomly generated like normal. This includes Extra Folders. Be careful when you change them out!
 	6) "Unlocked Unlimited", similar to the above but all folders are no longer restricted to how many Mega Chips or Giga Chips they can hold.
 
-"Chip Price Variance" can be between 0.0 to 0.9 and adds to or subjects from the Battle Chip prices in Shops by the listed percentage.
+"Chip Price Variance" can be between 0.0 to 0.9 and adds to or subtracts from the Battle Chip prices in Shops by the listed percentage.
 
 "Regular Memory Values" can be 0-99. To randomize RegMem Values, use a number between the range of 1 to 99.
 

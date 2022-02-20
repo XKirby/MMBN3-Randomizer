@@ -1,3 +1,4 @@
+import os
 import re
 import random
 import struct
@@ -1962,7 +1963,7 @@ def randomize_battlefields():
                 changelog_fields.append(["id", str(stage_offset + i), str(character)])
         print("randomized stage ids")
 
-def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fVirusMult = 1.0, fVirusVar = 0.0, iChipCode = 0, bChipNames = 0, bVirusNames = 0, bRandomBosses = 0, iRandomElements = 0, iRegularMemory = 0, bNCP = 0, iOmegaMode = 0, iHellMode = 0, iBattlefields = 0, iFolderMode = 0, bLog = 0, bRandomObjects = 0, bFillShops = 1, bFreeShops = 0, allowFolder = 1, allowGMD = 1, allowBMD = 1, allowShop = 1, allowChip = 1, allowVirus = 1, allowTrade = 1, allowDaily = 0, allowEasyTutorial = 1, ignoreLimits = 0, fPriceVariance = 0.0):
+def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fVirusMult = 1.0, fVirusVar = 0.0, iChipCode = 0, bChipNames = 0, bVirusNames = 0, bRandomBosses = 0, iRandomElements = 0, iRegularMemory = 0, bNCP = 0, iOmegaMode = 0, iHellMode = 0, iBattlefields = 0, iFolderMode = 0, bLog = 0, bRandomObjects = 0, bFillShops = 1, bFreeShops = 0, allowFolder = 1, allowGMD = 1, allowBMD = 1, allowShop = 1, allowChip = 1, allowVirus = 1, allowTrade = 1, allowDaily = 0, allowEasyTutorial = 1, ignoreLimits = 0, fPriceVariance = 0.0):
     global weak_navis
     weak_navis = [0,4,32,40]
     global mid_navis
@@ -2057,6 +2058,14 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     changelog_trades = []
     changelog_pas = []
     
+    x = init_rom_data(rom_path)
+    rom_data = x[0]
+    randomized_data = x[1]
+    versionValue = None;
+    if read_word(0xAC) == 0x45583341:
+        versionValue = "b"
+    elif read_word(0xAC) == 0x45423641:
+        versionValue = "w"
     ROMVERSION = versionValue;
     P_MULTIPLIER = fChipMult
     P_VARIANCE = fChipVar
@@ -2153,10 +2162,6 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     if CPRICE_VARIANCE > 0.9:
         CPRICE_VARIANCE = 0.9
     
-    x = init_rom_data(rom_path)
-    rom_data = x[0]
-    randomized_data = x[1]
-    
     init_custom_folders()
     init_chip_data()
     init_pa_data()
@@ -2233,15 +2238,14 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     finalhash = finalhash + chr(0xe8)
     for i in range(1,20):
         if i % 4 == 0:
-            seed_hash = seed_hash + "-"
+            seed_hash = seed_hash + " "
             finalhash = finalhash + chr(0)
         else:
-            hashchar = random.randint(0,len(mmchars)-1)
-            seed_hash = seed_hash + format(hashchar, "x")
-            if not i % 4 == 3:
-                seed_hash = seed_hash + ","
+            hashchar = random.randint(1,mmchars.index("z"))
+            seed_hash = seed_hash + mmchars[hashchar]
             finalhash = finalhash + chr(hashchar)
     setintro = "\x02\x00\xF2\x00\x05\x01\xF2\x00\x09\x01\xF2\x00\x0D\x01\xF2\x00\x11\x01\xF2\x00\x15\x01\xF2\x00\x19\x01\xF2\x00\x1D\x01\xF2\x00\x63\x01\xF2\x00\x64\x01\xF2\x00\x65\x01\xF2\x00\x66\x01\xED\x01\xF1\x00"
+    # Folder Lock Mode
     if FOLDER_MODE > 0:
         if not FOLDER_MODE == 5:
             write_data(struct.pack("H", 0x42A4), 0x198C) # Removes Giga restriction
@@ -2278,6 +2282,7 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
         write_data(setenableomega[i], len(randomized_data))
     
     # Output Rom
+    output_path = '.'.join(os.path.basename(rom_path).split('.')[:-1])+"_randomized"
     new_output_path = "output\\" + output_path
     from pathlib import Path
     Path("output\\").mkdir(parents=True, exist_ok=True)
@@ -2290,9 +2295,10 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
             raise
     f1.write(bytes(''.join((chr(checkval(x)) for x in randomized_data)), encoding="raw_unicode_escape"))
     f1.close()
-    print("Seed: " + str(SEED))
-    print("Hash: " + seed_hash)
-    print("ROM Output: \"" + output_path + ".gba" + "\".")
+    eraselabel()
+    print2label("ROM Output: \"" + output_path + ".gba" + "\".")
+    print2label("Seed: " + str(SEED))
+    print2label("Hash: " + seed_hash)
     
     #Spoiler Info
     try:
@@ -2311,10 +2317,9 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
     f1.write("Seed: " + str(SEED) + "\nHash: " + seed_hash + "\n\nChip Damage Multiplier: " + str(P_MULTIPLIER) + "\nChip Damage Variance: " + str(P_VARIANCE) + "\nChip Price Variance: " + str(CPRICE_VARIANCE) + "\nEnemy HP Multiplier: " + str(V_MULTIPLIER) + "\nEnemy HP Variance: " + str(VH_VARIANCE) + "\nChip Codes Mode: " + str(C_ALLSTARMODE) + "\nRandomized Chip Names?: " + str(bool(CP_NAMERANDOMIZER)) + "\nRandomized Enemy Names?: " + str(bool(VN_NAMERANDOMIZER)) + "\nRandomized NaviCust Shapes?: " + str(bool(NC_SHAPERANDOMIZER)) + "\nRandom Battlefield Mode: " + str(int(BF_PANELRANDOMIZER)) + "\nRandom Element Mode: " + str(int(ELEMENT_MODE))+ "\nRandomize Navis?: " + str(bool(RANDOM_NAVIS))+ "\nFolder Lock Mode: " + str(FOLDER_MODE)+ "\nOMEGA Mode: " + str(OMEGA_MODE)+ "\nRegMem Max Range: " + str(int(REGMEM_MODE))+ "\nHELL Mode: " + str(HELL_MODE))
     f1.write("\n\nAllow Folders?: "+str(bool(ALLOW_FOLDERS))+"\nAllow Blue Mystery Data?: "+str(bool(ALLOW_BMD))+"\nAllow Green Mystery Data?: "+str(bool(ALLOW_GMD))+"\nAllow Shops?: "+str(bool(ALLOW_SHOPS))+"\nAllow Battle Chips?: "+str(bool(ALLOW_CHIPS))+"\nAllow Viruses?: "+str(bool(ALLOW_VIRUSES))+"\nAllow NPC Trades?: "+str(bool(ALLOW_TRADES)))
     f1.write("\n\nAllow Easy Tutorial?: "+str(bool(TUTORIAL_SKIP))+"\nRandomize Battle Objects?: "+str(bool(RANDOM_OBSTACLES))+"\nFree BattleChips in Shops?: "+str(bool(FREE_SHOPS))+"\nFill Shops?: "+str(bool(FILL_SHOPS))+"\nIgnore HP/Damage Limiters?: "+str(bool(IGNORE_LIMITS)))
-    print("Log Output: \"" +output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt"+ "\".")
     if OUTPUTLOG == 1:
         f1.write("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n!!!!!!!!!!!!!!\n!!!SPOILERS!!!\n!!!!!!!!!!!!!!\n\n")
-        print("!!NOTE!! Writing detailed log to seedinfo.txt, this will take a few...")
+        print2label("!!NOTE!! Writing detailed log to seedinfo.txt, this will take a few...")
         for i in range(len(changelog_chip)):
             f1.write(changelog_chip[i][0] + " -> " + changelog_chip[i][1] + ", Power: " + str(changelog_chip[i][2]) + " -> " + str(changelog_chip[i][3]) + ", Codes: " + changelog_chip[i][4] + ", RegMem: " + str(changelog_chip[i][5]) + "\n")
         for i in range(0, len(changelog_pas)-1):
@@ -2363,9 +2368,32 @@ def randomizerom(rom_path, output_path, versionValue = "w", versionSeed = "", fC
             f1.write("NumberTrader Chip #" + str(i) + ": " + chip_names[changelog_numbertrader[i][0]-1] + " (" + str(changelog_numbertrader[i][0]) + ") " + chip_codes[changelog_numbertrader[i][1]] + "\n")
         for i in range(len(changelog_trades)):
             f1.write("Trade #" + str(i) + " Requirement: " + chip_names[changelog_trades[i][1]-1] + " (" + str(changelog_trades[i][1]) + ") " + chip_codes[changelog_trades[i][2]] + " -> " + chip_names[changelog_trades[i][3]-1] + " (" + str(changelog_trades[i][3]) + ") " + chip_codes[changelog_trades[i][4]] + "\n")
-        print("Output Log:", "mmbn3" + ROMVERSION + ".log(" + seed_hash + ").txt")
     f1.close()
-    print("### Done! Enjoy your game!")
+    print2label("### Done! Enjoy your game!")
     if ALLOW_DAILY == 1:
-        print("\n!!NOTE!! Be sure to read this daily run's base output info!")
+        print2label("\n!!NOTE!! Be sure to read this daily run's base output info!")
     #raw_input("Done! Press Enter to exit.")
+
+def print2label(txt):
+    import importlib
+    try:
+        import bn3ui
+    except ModuleNotFoundError as err:
+        return txt
+    try:
+        import bn3ui_support
+    except ModuleNotFoundError as err:
+        return txt
+    bn3ui_support.ConsoleOutput.set(bn3ui_support.ConsoleOutput.get()+"\n"+txt)
+
+def eraselabel():
+    import importlib
+    try:
+        import bn3ui
+    except ModuleNotFoundError as err:
+        return txt
+    try:
+        import bn3ui_support
+    except ModuleNotFoundError as err:
+        return txt
+    bn3ui_support.ConsoleOutput.set("")
