@@ -2379,11 +2379,11 @@ def print2label(txt):
     try:
         import bn3ui
     except ModuleNotFoundError as err:
-        return txt
+        return print(txt)
     try:
         import bn3ui_support
     except ModuleNotFoundError as err:
-        return txt
+        return print(txt)
     bn3ui_support.ConsoleOutput.set(bn3ui_support.ConsoleOutput.get()+"\n"+txt)
 
 def eraselabel():
@@ -2391,9 +2391,9 @@ def eraselabel():
     try:
         import bn3ui
     except ModuleNotFoundError as err:
-        return txt
+        return
     try:
         import bn3ui_support
     except ModuleNotFoundError as err:
-        return txt
+        return
     bn3ui_support.ConsoleOutput.set("")
