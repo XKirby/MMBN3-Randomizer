@@ -567,7 +567,10 @@ def init_chip_data():
         if ALLOW_CHIPS == 1:
             #Element Randomizer
             if ELEMENT_MODE >= 2:
-                element = random.randint(0,4)
+                if element > 0:
+                    element = random.randint(1,4)
+                else:
+                    element = random.choice(0,0,1,2,3,4)
                 write_data(chr(element),s+6)
             
             #RegMem Randomizer
@@ -758,9 +761,9 @@ def init_pa_data():
             #Element Randomizer
             if ELEMENT_MODE >= 2:
                 if element > 0:
-                    element = random.randint(0,4)
-                else:
                     element = random.randint(1,4)
+                else:
+                    element = random.choice(0,0,1,2,3,4)
                 write_data(chr(element),s+6)
             
             #print 'Old Power: ', power
