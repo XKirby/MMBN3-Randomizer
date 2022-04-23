@@ -1995,7 +1995,6 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
     banned_viruses = [61,62,63,64, 69,70,71,72,73,74, 151,152,153,154, 159,160,161, 162,163,164, 165,166,167]
     global allviruses
     allviruses = [1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,16, 29,30,31,32, 33,34,35,36, 37,38,39,40, 75,76,77,78, 123,124,125,126, 131,132,133,134, 17,18,19,20, 21,22,23,24, 41,42,43,44, 79,80,81,82, 91,92,93,94, 103,104,105,106, 111,112,113,114, 139,140,141,142, 147,148,149,150, 155,156,157,158, 45,46,47,48, 49,50,51,52, 83,84,85,86, 99,100,101,102, 119,120,121,122, 143,144,145,146, 25,26,27,28, 57,58,59,60, 65,66,67,68, 87,88,89,90, 107,108,109,110, 53,54,55,56, 95,96,97,98, 115,116,117,118, 127,128,129,130, 135,136,137,138]
-    #allviruses = [1,5,9,13,29,33,37,75,123,131,17,21,41,79,91,103,111,139,147,155,45,49,83,99,119,143,25,57,65,87,107,53,95,115,127,135]
     
     global P_MULTIPLIER
     global P_VARIANCE
@@ -2200,8 +2199,25 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
         randomize_folders()
     if ALLOW_GMD == 1:
         randomize_gmds()
+    # Attempted Fix for specific doors in Secret Area to work without needing their Battle Chip requirements
     if ALLOW_BMD == 1 or ALLOW_TRADES == 1:
         randomize_bmds_trades()
+        randomized_data[0x8471B7] = chr(0x0) # 100 Standard
+        randomized_data[0x84751E] = chr(0x0) # 140 Standard
+        randomized_data[0x84813D] = chr(0x0) # 200 Standard
+        randomized_data[0x847AEA] = chr(0x0) # 1 Giga
+    else:
+        if ROMVERSION == "b":
+            randomized_data[0x67D1CF] = chr(0x0) # 100 Standard
+            randomized_data[0x7705DA] = chr(0x0) # 140 Standard
+            randomized_data[0x771205] = chr(0x0) # 200 Standard
+            randomized_data[0x777A72] = chr(0x0) # 1 Giga
+        else:
+            randomized_data[0x67D1CF] = chr(0x0) # 100 Standard
+            randomized_data[0x770BEE] = chr(0x0) # 140 Standard
+            randomized_data[0x771819] = chr(0x0) # 200 Standard
+            randomized_data[0x778086] = chr(0x0) # 1 Giga
+            pass
     randomize_shops()
     if ALLOW_SHOPS == 1:
         randomize_number_trader()
@@ -2247,7 +2263,7 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
             hashchar = random.randint(1,mmchars.index("z"))
             seed_hash = seed_hash + mmchars[hashchar]
             finalhash = finalhash + chr(hashchar)
-    setintro = "\x02\x00\xF2\x00\x05\x01\xF2\x00\x09\x01\xF2\x00\x0D\x01\xF2\x00\x11\x01\xF2\x00\x15\x01\xF2\x00\x19\x01\xF2\x00\x1D\x01\xF2\x00\x63\x01\xF2\x00\x64\x01\xF2\x00\x65\x01\xF2\x00\x66\x01\xED\x01\xF1\x00"
+    setintro = "\x02\x00\xF2\x00\x05\x01\xF2\x00\x09\x01\xF2\x00\x0D\x01\xF2\x00\x11\x01\xF2\x00\x15\x01\xF2\x00\x19\x01\xF2\x00\x1D\x01\xF2\x00\x63\x01\xF2\x00\x63\x01\xF2\x00\x65\x01\xED\x01\xF1\x00"
     # Folder Lock Mode
     if FOLDER_MODE > 0:
         if not FOLDER_MODE == 5:

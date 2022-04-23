@@ -307,7 +307,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label13.configure(highlightcolor="black")
         self.Label13.configure(justify=RIGHT)
         self.Label13.configure(text='''Chip Price Variance''')
-        Tooltip(self.Label13, "Variable which will randomize the shop prices between a multiplier range based on this value either positively or negatively..  Set to 0.0 to remain constant")
+        Tooltip(self.Label13, "Variable which will randomize the shop prices between a multiplier range based on this value either positively or negatively. Set to 0.0 to remain constant")
 
         self.TCombobox1 = ttk.Combobox(self.Labelframe3)
         self.TCombobox1.place(relx=0.64, rely=0.07, relheight=0.07, relwidth=0.33
