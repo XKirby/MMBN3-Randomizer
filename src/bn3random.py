@@ -2191,6 +2191,20 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
             write_data(chr(0), 0x19618 + (enemy*8) + 1)
             write_data(chr(element),0x680020 + (enemy))
     
+    # Attempted Fix for specific doors in Secret Area to work without needing their Battle Chip requirements
+    new_data = list(ord(x) for x in rom_data)
+    if ROMVERSION == "b":
+        new_data[0x777147] = 0x0 # 100 Standard
+        new_data[0x7774AA] = 0x0 # 140 Standard
+        new_data[0x77809D] = 0x0 # 200 Standard
+        new_data[0x777A72] = 0x0 # 1 Giga
+    else:
+        new_data[0x77775B] = 0x0 # 100 Standard
+        new_data[0x777ABE] = 0x0 # 140 Standard
+        new_data[0x7786B1] = 0x0 # 200 Standard
+        new_data[0x778086] = 0x0 # 1 Giga
+    rom_data = ''.join(chr(x) for x in new_data)
+    
     if ALLOW_VIRUSES == 1:
         init_virus_data()
         randomize_viruses()
@@ -2199,25 +2213,8 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
         randomize_folders()
     if ALLOW_GMD == 1:
         randomize_gmds()
-    # Attempted Fix for specific doors in Secret Area to work without needing their Battle Chip requirements
     if ALLOW_BMD == 1 or ALLOW_TRADES == 1:
         randomize_bmds_trades()
-        randomized_data[0x8471B7] = chr(0x0) # 100 Standard
-        randomized_data[0x84751E] = chr(0x0) # 140 Standard
-        randomized_data[0x84813D] = chr(0x0) # 200 Standard
-        randomized_data[0x847AEA] = chr(0x0) # 1 Giga
-    else:
-        if ROMVERSION == "b":
-            randomized_data[0x67D1CF] = chr(0x0) # 100 Standard
-            randomized_data[0x7705DA] = chr(0x0) # 140 Standard
-            randomized_data[0x771205] = chr(0x0) # 200 Standard
-            randomized_data[0x777A72] = chr(0x0) # 1 Giga
-        else:
-            randomized_data[0x67D1CF] = chr(0x0) # 100 Standard
-            randomized_data[0x770BEE] = chr(0x0) # 140 Standard
-            randomized_data[0x771819] = chr(0x0) # 200 Standard
-            randomized_data[0x778086] = chr(0x0) # 1 Giga
-            pass
     randomize_shops()
     if ALLOW_SHOPS == 1:
         randomize_number_trader()
@@ -2403,7 +2400,7 @@ def print2label(txt):
         import bn3ui_support
     except ModuleNotFoundError as err:
         return print(txt)
-    bn3ui_support.ConsoleOutput.set(bn3ui_support.ConsoleOutput.get()+"\n"+txt)
+    bn3ui_support.ConsoleOutput.set(bn3ui_support.ConsoleOutput.get()+txt+"\n")
 
 def eraselabel():
     import importlib
