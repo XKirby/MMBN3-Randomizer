@@ -4,7 +4,7 @@ Here's some tools to use alongside the Randomizer.
 
 NCP Shape Editor
 ============
-This program is used to generate Navi Customizer Program Shapes for the BN3 Randomizer to select from.
+This program is used to generate Navi Customizer Program Shapes for the BN3 Randomizer to select from. This was made in GameMaker Studio.
 
 **Controls**
  - _I:_ Import Pattern Code
