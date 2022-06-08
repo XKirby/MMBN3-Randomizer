@@ -6,8 +6,6 @@ Credit to /u/Zinthonian from Reddit for the executable icon.
 
 Please refer to the Instructions.txt for how to use this program.
 
-Also included is a tool for adding new NaviCustomizer Program Shapes to the list of shapes for the randomizer and various notes for how the game stores information. This was made in GameMaker Studio.
-
 Compilation
 ============
 To compile, I've included a .bat file to run Python 3 64-bit's version of PyInstaller with a custom icon for the program. It will make 2 executables in a "dist" folder. "bn3cl" is a command line version, while "bn3ui" is the graphical user interface version.
