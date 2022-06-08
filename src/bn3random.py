@@ -2197,12 +2197,10 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
         new_data[0x777147] = 0x0 # 100 Standard
         new_data[0x7774AA] = 0x0 # 140 Standard
         new_data[0x77809D] = 0x0 # 200 Standard
-        new_data[0x777A72] = 0x0 # 1 Giga
     else:
         new_data[0x77775B] = 0x0 # 100 Standard
         new_data[0x777ABE] = 0x0 # 140 Standard
         new_data[0x7786B1] = 0x0 # 200 Standard
-        new_data[0x778086] = 0x0 # 1 Giga
     rom_data = ''.join(chr(x) for x in new_data)
     
     if ALLOW_VIRUSES == 1:
