@@ -43,7 +43,6 @@ These patches can be used if you want to experience the game in a different way.
 - Every area of the game should be open to the player right off the bat.
 - You start the game with every email, access to the NaviCust and StyleChange menus, as well as some NCP programs and Key Items for access to various areas.
 - Style Changes happen more frequently.
-- You have 4 out of the 7 Savefile Stars unlocked right off the bat! No need to fight Serenade, the Omega Navis, or do the Time Trials unless you want to.
 - Code for most of this new version of the Open Mode patch provided by NMarkro, a member of TeamBN. Thanks again!
 
 The Open Mode patches, either in combination with the Randomizer or not, can be used for various types of play. Here are a few ideas:
@@ -77,8 +76,8 @@ Changes from the original
 - Addition of Element Randomization.
 - Addition of Battlefield Randomization.
 - Addition of Virus Difficulty Levels.
-- Addition of Randomized Blue Mystery Datas. (It's not perfect, but it's there.)
-- Addition of Randomized NPC Trade Requirements. (Again, not perfect.)
+- Addition of Randomized Blue Mystery Datas.
+- Addition of Randomized NPC Trade Requirements.
 - Addition of more difficult Hell Mode Settings. Original Hell Mode also included.
 - Compiled the program into an executable for people who don't have Python 3.
 - Support for the included Open Mode Patch, even when using the "Ignore HP/Damage Limiters" option. (Patch before randomizing!)
