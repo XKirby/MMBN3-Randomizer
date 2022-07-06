@@ -122,6 +122,12 @@ def set_Tk_var():
     global allowTrades
     allowTrades = StringVar()
     allowTrades.set("1")
+    global multMysteryZenny
+    multMysteryZenny = StringVar()
+    multMysteryZenny.set("1.5")
+    global iRankCheck
+    iRankCheck = StringVar()
+    iRankCheck.set("5")
 
 def buttonRandomize():
     import bn3random
@@ -146,7 +152,7 @@ def buttonRandomize():
         hell = optionlists[4].index(comboHellMode.get())
     if comboFolderMode.get() in optionlists[5]:
         foldermode = optionlists[5].index(comboFolderMode.get())
-    bn3random.randomizerom(fInputPath.get(), versionSeed.get(), float(multChipDamage.get()), float(multChipVar.get()), float(multVirusHP.get()), float(multVirusVar.get()), int(codes), int(randomChipNames.get()), int(randomVirusNames.get()), int(randomNavis.get()), int(elems), int(randomRegMemory.get()), int(randomNCPShapes.get()), int(omega), int(hell), int(fields), int(foldermode), int(randomOutputLog.get()), int(allowRandomObjects.get()), int(bFillShops.get()), int(bFreeShops.get()), int(allowFolder.get()), int(allowGMD.get()), int(allowBMD.get()), int(allowShop.get()), int(allowChip.get()), int(allowVirus.get()), int(allowTrades.get()), int(allowDaily.get()), int(allowEasyTutorial.get()), int(bIgnoreLimits.get()), float(multPriceVar.get()))
+    bn3random.randomizerom(fInputPath.get(), versionSeed.get(), float(multChipDamage.get()), float(multChipVar.get()), float(multVirusHP.get()), float(multVirusVar.get()), int(codes), int(randomChipNames.get()), int(randomVirusNames.get()), int(randomNavis.get()), int(elems), int(randomRegMemory.get()), int(randomNCPShapes.get()), int(omega), int(hell), int(fields), int(foldermode), int(randomOutputLog.get()), int(allowRandomObjects.get()), int(bFillShops.get()), int(bFreeShops.get()), int(allowFolder.get()), int(allowGMD.get()), int(allowBMD.get()), int(allowShop.get()), int(allowChip.get()), int(allowVirus.get()), int(allowTrades.get()), int(allowDaily.get()), int(allowEasyTutorial.get()), int(bIgnoreLimits.get()), float(multPriceVar.get()), float(multMysteryZenny.get()), int(iRankCheck.get()))
 
 def print2label(txt):
     import bn3ui

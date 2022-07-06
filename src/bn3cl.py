@@ -33,6 +33,8 @@ def main():
         global FILL_SHOPS
         global FREE_SHOPS
         global IGNORE_LIMITS
+        global ZENNY_MULTIPLIER
+        global RANKCHECK
         
         global INPUT_FILE
         global OUTPUT_FILE
@@ -61,6 +63,8 @@ def main():
         parser.add_argument("-fs", "--fillshops", help="Fill Shops, boolean.", type=int, choices=[0,1], default=1)
         parser.add_argument("-fc", "--freechips", help="Free Chips in Shops, boolean.", type=int, choices=[0,1], default=1)
         parser.add_argument("-bo", "--battleobjects", help="Randomize Battle Objects, boolean.", type=int, choices=[0,1], default=0)
+        parser.add_argument("-zen", "--zennymult", help="Zenny Multiplier, float.", type=float, default=1.5)
+        parser.add_argument("-rank", "--droprank", help="Chip Drop Ranks, int.", type=float, default=5)
         parser.add_argument("--allowfolder", help="Allow Folder Randomization, boolean.", type=int, choices=[0,1], default=1)
         parser.add_argument("--allowgmd", help="Allow Green Mystery Data Randomization, boolean.", type=int, choices=[0,1], default=1)
         parser.add_argument("--allowbmd", help="Allow Blue Mystery Data Randomization, boolean.", type=int, choices=[0,1], default=1)
@@ -106,11 +110,15 @@ def main():
         SEED = args.seed
         OUTPUTLOG = args.log
         IGNORE_LIMITS = args.limitbreak
+        ZENNY_MULTIPLIER = args.zennymult
+        RANKCHECK = args.droprank
         CPRICE_VARIANCE = args.chippricevar
         
         #Variable Input
         if args.input >= 1:
                 INPUT_FILE = str(input("The input filepath to your clean rom.> "))
+                ZENNY_MULTIPLIER = float(input("Input Zenny Multiplier Float> "))
+                RANKCHECK = int(input("Input Chip Drop Rank> ")) % 11
                 P_MULTIPLIER = float(input("Input Damage Multiplier Float> "))
                 P_VARIANCE = float(input("Input Damage Variance Float> "))
                 CPRICE_VARIANCE = float(input("Input Chip Price Variance Float> "))
@@ -143,7 +151,7 @@ def main():
                 OUTPUTLOG = int(input("Enable Output Log? [0-1]> ")) % 2
                 IGNORE_LIMIT = int(input("Ignore HP/Damage Multiplier Limits? [0-1]> ")) % 2
         import bn3random
-        bn3random.randomizerom(INPUT_FILE, SEED, P_MULTIPLIER, P_VARIANCE, V_MULTIPLIER, VH_VARIANCE, C_ALLSTARMODE, CP_NAMERANDOMIZER, VN_NAMERANDOMIZER, RANDOM_NAVIS, ELEMENT_MODE, REGMEM_MODE, NC_SHAPERANDOMIZER, OMEGA_MODE, HELL_MODE, BF_PANELRANDOMIZER, FOLDER_MODE, OUTPUTLOG, RANDOM_OBSTACLES, FILL_SHOPS, FREE_SHOPS, ALLOW_FOLDERS, ALLOW_GMD, ALLOW_BMD, ALLOW_SHOPS, ALLOW_CHIPS, ALLOW_VIRUSES, ALLOW_TRADES, ALLOW_DAILY, TUTORIAL_SKIP, IGNORE_LIMITS, CPRICE_VARIANCE)
+        bn3random.randomizerom(INPUT_FILE, SEED, P_MULTIPLIER, P_VARIANCE, V_MULTIPLIER, VH_VARIANCE, C_ALLSTARMODE, CP_NAMERANDOMIZER, VN_NAMERANDOMIZER, RANDOM_NAVIS, ELEMENT_MODE, REGMEM_MODE, NC_SHAPERANDOMIZER, OMEGA_MODE, HELL_MODE, BF_PANELRANDOMIZER, FOLDER_MODE, OUTPUTLOG, RANDOM_OBSTACLES, FILL_SHOPS, FREE_SHOPS, ALLOW_FOLDERS, ALLOW_GMD, ALLOW_BMD, ALLOW_SHOPS, ALLOW_CHIPS, ALLOW_VIRUSES, ALLOW_TRADES, ALLOW_DAILY, TUTORIAL_SKIP, IGNORE_LIMITS, CPRICE_VARIANCE, ZENNY_MULTIPLIER, RANKCHECK)
 
 if __name__ == '__main__':
         main()

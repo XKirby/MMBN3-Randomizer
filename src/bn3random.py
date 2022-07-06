@@ -963,7 +963,7 @@ def randomize_gmds():
                 match_offset = match.start() + 5
                 zennys = list(struct.unpack('<IIIIIIIIIIIIIIII', bytes(match.groups()[0], encoding="raw_unicode_escape")))
                 for i in range(16):
-                    zennys[i] = (zennys[i] * 3) / 2
+                    zennys[i] = int(zennys[i] * ZENNY_MULTIPLIER)
                 zenny_str = struct.pack('<IIIIIIIIIIIIIIII', *(int(x) for x in zennys))
                 for i in range(len(zenny_str)):
                     new_data[match_offset + i] = zenny_str[i]
@@ -1121,7 +1121,7 @@ def randomize_bmds_trades():
                     match_offset = match.start() + 2
                     zennys = list(struct.unpack('<I', bytes(match.groups()[0], encoding="raw_unicode_escape")))
                     text_offset = match.start(10) - match_offset
-                    zennys[0] = int(zennys[0] * 3 / 2)
+                    zennys[0] = int(zennys[0] * ZENNY_MULTIPLIER)
                     if len(str(match.group(10))) < len(str(zennys[0])):
                         zennys[0] = 9 * pow(10, len(str(match.group(10)))-1)
                     zenny_str = struct.pack('<I', *(int(x) for x in zennys))
@@ -1592,8 +1592,8 @@ def randomize_virus_drops():
             reward = struct.unpack('<H', bytes(rom_data[offset:offset+2], encoding="raw_unicode_escape"))[0]
             # 0 = chip, 1 = zenny, 2 = health, 3 = should not happen (terminator)
             reward_type = reward >> 14;
-            # Number from 0-6
-            buster_rank = (i % 14) / 2
+            # Number from 0-13
+            buster_rank = i % 14
             if reward_type == 0:
                 # Read the chip data
                 old_code = (reward >> 9) & 0x1f;
@@ -1618,7 +1618,7 @@ def randomize_virus_drops():
 
             elif reward_type == 1:
                 # Only turn lvl 5+ drops to chips
-                if buster_rank >= 2:
+                if buster_rank >= RANKCHECK:
                     if last_chip is None:
                         # No chip yet, queue it for later
                         zenny_queue.append( (offset) )
@@ -1966,7 +1966,7 @@ def randomize_battlefields():
                 changelog_fields.append(["id", str(stage_offset + i), str(character)])
         print("randomized stage ids")
 
-def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fVirusMult = 1.0, fVirusVar = 0.0, iChipCode = 0, bChipNames = 0, bVirusNames = 0, bRandomBosses = 0, iRandomElements = 0, iRegularMemory = 0, bNCP = 0, iOmegaMode = 0, iHellMode = 0, iBattlefields = 0, iFolderMode = 0, bLog = 0, bRandomObjects = 0, bFillShops = 1, bFreeShops = 0, allowFolder = 1, allowGMD = 1, allowBMD = 1, allowShop = 1, allowChip = 1, allowVirus = 1, allowTrade = 1, allowDaily = 0, allowEasyTutorial = 1, ignoreLimits = 0, fPriceVariance = 0.0):
+def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fVirusMult = 1.0, fVirusVar = 0.0, iChipCode = 0, bChipNames = 0, bVirusNames = 0, bRandomBosses = 0, iRandomElements = 0, iRegularMemory = 0, bNCP = 0, iOmegaMode = 0, iHellMode = 0, iBattlefields = 0, iFolderMode = 0, bLog = 0, bRandomObjects = 0, bFillShops = 1, bFreeShops = 0, allowFolder = 1, allowGMD = 1, allowBMD = 1, allowShop = 1, allowChip = 1, allowVirus = 1, allowTrade = 1, allowDaily = 0, allowEasyTutorial = 1, ignoreLimits = 0, fPriceVariance = 0.0, fZennyMultiplier = 1.5, iRankCheck = 5):
     global weak_navis
     weak_navis = [0,4,32,40]
     global mid_navis
@@ -2026,6 +2026,8 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
     global OUTPUTLOG
     global IGNORE_LIMITS
     global CPRICE_VARIANCE
+    global ZENNY_MULTIPLIER
+    global RANKCHECK
     
     # Changelog variables
     global changelog_bmd
@@ -2100,6 +2102,8 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
     OUTPUTLOG = bLog
     IGNORE_LIMITS = ignoreLimits
     CPRICE_VARIANCE = fPriceVariance
+    ZENNY_MULTIPLIER = fZennyMultiplier
+    RANKCHECK = iRankCheck
     
     # Seed Info
     if len(SEED) < 1 and ALLOW_DAILY == 0:
@@ -2135,6 +2139,8 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
         RANDOM_NAVIS = random.choice([0,0,0,1])
         RANDOM_OBSTACLES = random.choice([0,0,0,0,0,0,1])
         FOLDER_MODE = random.choice([0,0,0,0,1,1,2,3,3,4])
+        ZENNY_MULTIPLIER = 1.5
+        RANKCHECK = 5
         IGNORE_LIMITS = 0
     random.seed(SEED)
     
@@ -2163,6 +2169,14 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
         CPRICE_VARIANCE = 0
     if CPRICE_VARIANCE > 0.9:
         CPRICE_VARIANCE = 0.9
+    if ZENNY_MULTIPLIER > 3.0 and IGNORE_LIMITS == 0:
+        ZENNY_MULTIPLIER = 3.0
+    if ZENNY_MULTIPLIER < 0.25:
+        ZENNY_MULTIPLIER = 0.25
+    if RANKCHECK > 11:
+        RANKCHECK = 11
+    if RANKCHECK < 0:
+        RANKCHECK = 0
     
     init_custom_folders()
     init_chip_data()
@@ -2240,7 +2254,7 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
             write_data(struct.pack("<I", 0x2201), hpmem2)
             
     # Write hash at specific offset based on ROM version
-    random.seed(SEED + "_" + str(ALLOW_DAILY) + str(ALLOW_GMD) + str(ALLOW_BMD) + str(ALLOW_CHIPS) + str(ALLOW_FOLDERS) + str(ALLOW_SHOPS) + str(ALLOW_TRADES) + str(ALLOW_VIRUSES) + str(RANDOM_OBSTACLES) + str(FILL_SHOPS) + str(FREE_SHOPS) + str(TUTORIAL_SKIP) + str(P_MULTIPLIER) + str(P_VARIANCE) + str(V_MULTIPLIER) + str(VH_VARIANCE) + str(RANDOM_NAVIS) + str(CP_NAMERANDOMIZER) + str(VN_NAMERANDOMIZER) + str(C_ALLSTARMODE) + str(NC_SHAPERANDOMIZER) + str(BF_PANELRANDOMIZER) + str(ELEMENT_MODE) + str(REGMEM_MODE) + str(OMEGA_MODE) + str(HELL_MODE) + str(FOLDER_MODE) + str(IGNORE_LIMITS) + str(CPRICE_VARIANCE))
+    random.seed(SEED + "_" + str(ALLOW_DAILY) + str(ALLOW_GMD) + str(ALLOW_BMD) + str(ALLOW_CHIPS) + str(ALLOW_FOLDERS) + str(ALLOW_SHOPS) + str(ALLOW_TRADES) + str(ALLOW_VIRUSES) + str(RANDOM_OBSTACLES) + str(FILL_SHOPS) + str(FREE_SHOPS) + str(TUTORIAL_SKIP) + str(P_MULTIPLIER) + str(P_VARIANCE) + str(V_MULTIPLIER) + str(VH_VARIANCE) + str(RANDOM_NAVIS) + str(CP_NAMERANDOMIZER) + str(VN_NAMERANDOMIZER) + str(C_ALLSTARMODE) + str(NC_SHAPERANDOMIZER) + str(BF_PANELRANDOMIZER) + str(ELEMENT_MODE) + str(REGMEM_MODE) + str(OMEGA_MODE) + str(HELL_MODE) + str(FOLDER_MODE) + str(IGNORE_LIMITS) + str(CPRICE_VARIANCE) + str(ZENNY_MULTIPLIER) + str(RANKCHECK))
     finalhash = ""
     seed_hash = ""
     i = 0
@@ -2328,7 +2342,7 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
             f1 = open(output_path + ".gba.mmbn3." + ROMVERSION + ".log(" + seed_hash + ").txt", 'a')
         else:
             raise
-    f1.write("Seed: " + str(SEED) + "\nHash: " + seed_hash + "\n\nChip Damage Multiplier: " + str(P_MULTIPLIER) + "\nChip Damage Variance: " + str(P_VARIANCE) + "\nChip Price Variance: " + str(CPRICE_VARIANCE) + "\nEnemy HP Multiplier: " + str(V_MULTIPLIER) + "\nEnemy HP Variance: " + str(VH_VARIANCE) + "\nChip Codes Mode: " + str(C_ALLSTARMODE) + "\nRandomized Chip Names?: " + str(bool(CP_NAMERANDOMIZER)) + "\nRandomized Enemy Names?: " + str(bool(VN_NAMERANDOMIZER)) + "\nRandomized NaviCust Shapes?: " + str(bool(NC_SHAPERANDOMIZER)) + "\nRandom Battlefield Mode: " + str(int(BF_PANELRANDOMIZER)) + "\nRandom Element Mode: " + str(int(ELEMENT_MODE))+ "\nRandomize Navis?: " + str(bool(RANDOM_NAVIS))+ "\nFolder Lock Mode: " + str(FOLDER_MODE)+ "\nOMEGA Mode: " + str(OMEGA_MODE)+ "\nRegMem Max Range: " + str(int(REGMEM_MODE))+ "\nHELL Mode: " + str(HELL_MODE))
+    f1.write("Seed: " + str(SEED) + "\nHash: " + seed_hash + "\n\nChip Damage Multiplier: " + str(P_MULTIPLIER) + "\nChip Damage Variance: " + str(P_VARIANCE) + "\nChip Price Variance: " + str(CPRICE_VARIANCE) + "\nEnemy HP Multiplier: " + str(V_MULTIPLIER) + "\nEnemy HP Variance: " + str(VH_VARIANCE) + "\nChip Codes Mode: " + str(C_ALLSTARMODE) + "\nRandomized Chip Names?: " + str(bool(CP_NAMERANDOMIZER)) + "\nRandomized Enemy Names?: " + str(bool(VN_NAMERANDOMIZER)) + "\nRandomized NaviCust Shapes?: " + str(bool(NC_SHAPERANDOMIZER)) + "\nRandom Battlefield Mode: " + str(int(BF_PANELRANDOMIZER)) + "\nRandom Element Mode: " + str(int(ELEMENT_MODE))+ "\nRandomize Navis?: " + str(bool(RANDOM_NAVIS))+ "\nFolder Lock Mode: " + str(FOLDER_MODE)+ "\nOMEGA Mode: " + str(OMEGA_MODE)+ "\nRegMem Max Range: " + str(int(REGMEM_MODE))+ "\nHELL Mode: " + str(HELL_MODE)+ "\nMystery Data Zenny Multiplier: " + str(ZENNY_MULTIPLIER)+ "\nGuaranteed Chip Drop Rank: " + str(RANKCHECK))
     f1.write("\n\nAllow Folders?: "+str(bool(ALLOW_FOLDERS))+"\nAllow Blue Mystery Data?: "+str(bool(ALLOW_BMD))+"\nAllow Green Mystery Data?: "+str(bool(ALLOW_GMD))+"\nAllow Shops?: "+str(bool(ALLOW_SHOPS))+"\nAllow Battle Chips?: "+str(bool(ALLOW_CHIPS))+"\nAllow Viruses?: "+str(bool(ALLOW_VIRUSES))+"\nAllow NPC Trades?: "+str(bool(ALLOW_TRADES)))
     f1.write("\n\nAllow Easy Tutorial?: "+str(bool(TUTORIAL_SKIP))+"\nRandomize Battle Objects?: "+str(bool(RANDOM_OBSTACLES))+"\nFree BattleChips in Shops?: "+str(bool(FREE_SHOPS))+"\nFill Shops?: "+str(bool(FILL_SHOPS))+"\nIgnore HP/Damage Limiters?: "+str(bool(IGNORE_LIMITS)))
     if OUTPUTLOG == 1:

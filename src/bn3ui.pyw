@@ -282,18 +282,18 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label4.configure(text='''Enemy HP Variance''')
         Tooltip(self.Label4, "Variable which will randomize the enemy HP between a multiplier range based on this value either positively or negatively. Set to 0.0 to remain constant")
         
-        self.Entry8 = Entry(self.Labelframe3)
-        self.Entry8.place(relx=0.64, rely=0.43, height=20, relwidth=0.08)
-        self.Entry8.configure(background="white")
-        self.Entry8.configure(disabledforeground="#a3a3a3")
-        self.Entry8.configure(font="TkFixedFont")
-        self.Entry8.configure(foreground="#000000")
-        self.Entry8.configure(highlightbackground="#d9d9d9")
-        self.Entry8.configure(highlightcolor="black")
-        self.Entry8.configure(insertbackground="black")
-        self.Entry8.configure(selectbackground="#c4c4c4")
-        self.Entry8.configure(selectforeground="black")
-        self.Entry8.configure(textvariable=bn3ui_support.multPriceVar)
+        self.Entry7 = Entry(self.Labelframe3)
+        self.Entry7.place(relx=0.64, rely=0.43, height=20, relwidth=0.08)
+        self.Entry7.configure(background="white")
+        self.Entry7.configure(disabledforeground="#a3a3a3")
+        self.Entry7.configure(font="TkFixedFont")
+        self.Entry7.configure(foreground="#000000")
+        self.Entry7.configure(highlightbackground="#d9d9d9")
+        self.Entry7.configure(highlightcolor="black")
+        self.Entry7.configure(insertbackground="black")
+        self.Entry7.configure(selectbackground="#c4c4c4")
+        self.Entry7.configure(selectforeground="black")
+        self.Entry7.configure(textvariable=bn3ui_support.multPriceVar)
 
         self.Label13 = Label(self.Labelframe3)
         self.Label13.place(relx=0.42, rely=0.46, height=21, width=105, y=-12, h=20)
@@ -679,8 +679,8 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Labelframe4.configure(width=490)
 
         self.Checkbutton4 = Checkbutton(self.Labelframe4)
-        self.Checkbutton4.place(relx=0.000, rely=0.14, relheight=0.32
-                , relwidth=0.35, y=-12, h=6)
+        self.Checkbutton4.place(relx=0, rely=0.14, relheight=0.32
+                , relwidth=0.265, y=-12, h=6)
         self.Checkbutton4.configure(activebackground="#d9d9d9")
         self.Checkbutton4.configure(activeforeground="#000000")
         self.Checkbutton4.configure(background="#d9d9d9")
@@ -693,8 +693,8 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton4.configure(variable=bn3ui_support.randomNCPShapes)
 
         self.Checkbutton5 = Checkbutton(self.Labelframe4)
-        self.Checkbutton5.place(relx=0.019, rely=0.46, relheight=0.32
-                , relwidth=0.35, y=-12, h=6)
+        self.Checkbutton5.place(relx=0.002, rely=0.46, relheight=0.32
+                , relwidth=0.29, y=-12, h=6)
         self.Checkbutton5.configure(activebackground="#d9d9d9")
         self.Checkbutton5.configure(activeforeground="#000000")
         self.Checkbutton5.configure(background="#d9d9d9")
@@ -707,8 +707,8 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton5.configure(variable=bn3ui_support.randomOutputLog)
         
         self.Checkbutton6 = Checkbutton(self.Labelframe4)
-        self.Checkbutton6.place(relx=0.02, rely=0.78, relheight=0.30
-                , relwidth=0.35, y=-12, h=6)
+        self.Checkbutton6.place(relx=0, rely=0.80, relheight=0.30
+                , relwidth=0.18, y=-12, h=6)
         self.Checkbutton6.configure(activebackground="#d9d9d9")
         self.Checkbutton6.configure(activeforeground="#000000")
         self.Checkbutton6.configure(background="#d9d9d9")
@@ -717,11 +717,11 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton6.configure(highlightbackground="#d9d9d9")
         self.Checkbutton6.configure(highlightcolor="black")
         self.Checkbutton6.configure(justify=LEFT)
-        self.Checkbutton6.configure(text='''Ignore HP/Damage Limiters''')
+        self.Checkbutton6.configure(text='''Ignore Limiters''')
         self.Checkbutton6.configure(variable=bn3ui_support.bIgnoreLimits)
 
         self.TCombobox4 = ttk.Combobox(self.Labelframe4)
-        self.TCombobox4.place(relx=0.78, rely=0.20, relheight=0.27, relwidth=0.19
+        self.TCombobox4.place(relx=0.48, rely=0.14, relheight=0.24, relwidth=0.12
                 , y=-12, h=6)
         self.value_list = ['Normal','Semi-random','Super-random',]
         self.TCombobox4.configure(values=self.value_list)
@@ -729,7 +729,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.TCombobox4.configure(takefocus="")
 
         self.Label9 = Label(self.Labelframe4)
-        self.Label9.place(relx=0.51, rely=0.24, height=21, width=124, y=-12, h=20)
+        self.Label9.place(relx=0.30, rely=0.18, height=20, width=90, y=-12, h=20)
 
         self.Label9.configure(activebackground="#f9f9f9")
         self.Label9.configure(activeforeground="black")
@@ -738,22 +738,22 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label9.configure(foreground="#000000")
         self.Label9.configure(highlightbackground="#d9d9d9")
         self.Label9.configure(highlightcolor="black")
-        self.Label9.configure(text='''Randomize Battlefields''')
+        self.Label9.configure(text='''Battlefield Mode''')
         Tooltip(self.Label9, \
         "Normal - Battlefields remain unmodified.\n\n"
         "Semi-random - Battlefields are randomized per area.\n\n"
         "Super-random - Battlefields are randomized per area and per encounter.")
 
         self.TCombobox4_1 = ttk.Combobox(self.Labelframe4)
-        self.TCombobox4_1.place(relx=0.78, rely=0.64, relheight=0.27
-                , relwidth=0.19, y=-12, h=6)
+        self.TCombobox4_1.place(relx=0.48, rely=0.46, relheight=0.24
+                , relwidth=0.12, y=-12, h=6)
         self.value_list = ['Normal','Hell','Insane','Death Wish',]
         self.TCombobox4_1.configure(values=self.value_list)
         self.TCombobox4_1.configure(textvariable=bn3ui_support.comboHellMode)
         self.TCombobox4_1.configure(takefocus="")
 
         self.Label10 = Label(self.Labelframe4)
-        self.Label10.place(relx=0.51, rely=0.68, height=21, width=124, y=-12
+        self.Label10.place(relx=0.30, rely=0.50, height=20, width=90, y=-12
                 , h=20)
         self.Label10.configure(activebackground="#f9f9f9")
         self.Label10.configure(activeforeground="black")
@@ -762,12 +762,66 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label10.configure(foreground="#000000")
         self.Label10.configure(highlightbackground="#d9d9d9")
         self.Label10.configure(highlightcolor="black")
-        self.Label10.configure(text='''Enable Hell Mode''')
+        self.Label10.configure(text='''Difficulty Mode''')
         Tooltip(self.Label10, \
         "Normal - No Difficulty changes.\n\n"
         "Hell - HP Memories no longer apply to your Maximum HP. You still gain HP and Run Rate increases.\n\n"
         "Insane - HP Memories no longer apply at all. Run Rate increases and bonus HP gained are disabled.\n\n"
         "Death Wish - HP Memories do nothing and your Maximum HP is 5.")
+        
+        self.Entry8 = Entry(self.Labelframe4)
+        self.Entry8.place(relx=0.48, rely=0.62, height=18, relwidth=0.08)
+        self.Entry8.configure(background="white")
+        self.Entry8.configure(disabledforeground="#a3a3a3")
+        self.Entry8.configure(font="TkFixedFont")
+        self.Entry8.configure(foreground="#000000")
+        self.Entry8.configure(highlightbackground="#d9d9d9")
+        self.Entry8.configure(highlightcolor="black")
+        self.Entry8.configure(insertbackground="black")
+        self.Entry8.configure(selectbackground="#c4c4c4")
+        self.Entry8.configure(selectforeground="black")
+        self.Entry8.configure(textvariable=bn3ui_support.multMysteryZenny)
+
+        self.Label14 = Label(self.Labelframe4)
+        self.Label14.place(relx=0.30, rely=0.84, height=21, width=100, y=-12, h=20)
+
+        self.Label14.configure(activebackground="#f9f9f9")
+        self.Label14.configure(activeforeground="black")
+        self.Label14.configure(background="#d9d9d9")
+        self.Label14.configure(disabledforeground="#a3a3a3")
+        self.Label14.configure(foreground="#000000")
+        self.Label14.configure(highlightbackground="#d9d9d9")
+        self.Label14.configure(highlightcolor="black")
+        self.Label14.configure(justify=RIGHT)
+        self.Label14.configure(text='''Zenny Multiplier''')
+        Tooltip(self.Label14, "Multiplies the amount of Zenny granted by Mystery Data, if Mystery Data is randomized.")
+        
+        self.Entry9 = Entry(self.Labelframe4)
+        self.Entry9.place(relx=0.775, rely=0.02, height=18, relwidth=0.08)
+        self.Entry9.configure(background="white")
+        self.Entry9.configure(disabledforeground="#a3a3a3")
+        self.Entry9.configure(font="TkFixedFont")
+        self.Entry9.configure(foreground="#000000")
+        self.Entry9.configure(highlightbackground="#d9d9d9")
+        self.Entry9.configure(highlightcolor="black")
+        self.Entry9.configure(insertbackground="black")
+        self.Entry9.configure(selectbackground="#c4c4c4")
+        self.Entry9.configure(selectforeground="black")
+        self.Entry9.configure(textvariable=bn3ui_support.iRankCheck)
+
+        self.Label15 = Label(self.Labelframe4)
+        self.Label15.place(relx=0.61, rely=0.18, height=21, width=84, y=-12, h=20)
+
+        self.Label15.configure(activebackground="#f9f9f9")
+        self.Label15.configure(activeforeground="black")
+        self.Label15.configure(background="#d9d9d9")
+        self.Label15.configure(disabledforeground="#a3a3a3")
+        self.Label15.configure(foreground="#000000")
+        self.Label15.configure(highlightbackground="#d9d9d9")
+        self.Label15.configure(highlightcolor="black")
+        self.Label15.configure(justify=RIGHT)
+        self.Label15.configure(text='''Chip Drop Rank''')
+        Tooltip(self.Label15, "Battle Chips will be gauranteed to drop from Virus encounters at this rank or higher.")
 
         self.Labelframe5 = LabelFrame(top)
         self.Labelframe5.place(relx=0.02, rely=0.08, relheight=0.08
