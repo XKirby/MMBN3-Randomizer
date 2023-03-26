@@ -82,81 +82,83 @@ function controls()
 	end
 	local chip = memory.read_u16_le(chipslot)
 	local code = memory.read_u16_le(chipslot + 2)
-	gui.text(4*client.getwindowsize(),150*client.getwindowsize(),"Chip: "..chiplist.names[chip].." "..chiplist.codes[code].." ("..chip..")")
-	if edit == true then
-		gui.text(4*client.getwindowsize(),10*client.getwindowsize(),"Edit Mode Active!")
-		
-		-- Set Chip ID
-		if joypad.get().R then
-			RHeld = RHeld + 1
-			if RHeld >= 31 then RHeld = 31 end
-			if RHeld == 1 or RHeld > 30 then
-				if chip + 1 > 301 then chip = 301 else chip = chip + 1 end
-				memory.write_u16_le(chipslot, chip)
-				code = memory.readbyte(0x08011510 + chip*0x20)
-				memory.write_u16_le(chipslot + 2, code)
-			end
-		else
-			RHeld = 0
-		end
-		if joypad.get().L then
-			LHeld = LHeld + 1
-			if LHeld >= 31 then LHeld = 31 end
-			if LHeld == 1 or LHeld > 30 then
-				if chip - 1 < 1 then chip = 1 else chip = chip - 1 end
-				memory.write_u16_le(chipslot, chip)
-				code = memory.readbyte(0x08011510 + chip*0x20)
-				memory.write_u16_le(chipslot + 2, code)
-			end
-		else
-			LHeld = 0
-		end
-		
-		-- Set Code ID
-		if joypad.get().Right and not RightHeld then
-			RightHeld = true
-			for i=0,5 do
-				local newcode = memory.readbyte(0x08011510 + chip*32 + i)
-				if newcode == 0xFF then
-					break
-				elseif newcode > code then
-					memory.write_u16_le(chipslot + 2, newcode)
-					break
+	if chipslot > -1 then
+		gui.pixelText(0,0,"Chip: "..chiplist.names[chip].." "..chiplist.codes[code].." ("..chip..")")
+		if edit == true then
+			gui.pixelText(0,7,"Edit Mode Active!")
+			
+			-- Set Chip ID
+			if joypad.get().R then
+				RHeld = RHeld + 1
+				if RHeld >= 31 then RHeld = 31 end
+				if RHeld == 1 or RHeld > 30 then
+					if chip + 1 > 301 then chip = 301 else chip = chip + 1 end
+					memory.write_u16_le(chipslot, chip)
+					code = memory.readbyte(0x08011510 + chip*0x20)
+					memory.write_u16_le(chipslot + 2, code)
 				end
+			else
+				RHeld = 0
 			end
-		elseif not joypad.get().Right then
-			RightHeld = false
-		end
-		if joypad.get().Left and not LeftHeld then
-			LeftHeld = true
-			for i=0,5 do
-				local newcode = memory.readbyte(0x08011510 + chip*32 + 5 - i)
-				if newcode < code then
-					memory.write_u16_le(chipslot + 2, newcode)
-					break
+			if joypad.get().L then
+				LHeld = LHeld + 1
+				if LHeld >= 31 then LHeld = 31 end
+				if LHeld == 1 or LHeld > 30 then
+					if chip - 1 < 0 then chip = 0 else chip = chip - 1 end
+					memory.write_u16_le(chipslot, chip)
+					code = memory.readbyte(0x08011510 + chip*0x20)
+					memory.write_u16_le(chipslot + 2, code)
 				end
+			else
+				LHeld = 0
 			end
-		elseif not joypad.get().Left then
-			LeftHeld = false
-		end
-		
-		-- Save to File
-		if joypad.get().Select and not SelHeld then
-			SelHeld = true
-			local folder = memory.read_u32_le(0x02009418)
-			file = io.open("folders.txt", "a")
-			for i = 0,29 do
-				local endchip = memory.read_u16_le(folder + i*4)
-				local endcode = memory.read_u16_le(folder + i*4 + 2)
-				file:write(endchip.." "..endcode)
-				if i < 29 then
-					file:write(",")
+			
+			-- Set Code ID
+			if joypad.get().Right and not RightHeld then
+				RightHeld = true
+				for i=0,5 do
+					local newcode = memory.readbyte(0x08011510 + chip*32 + i)
+					if newcode == 0xFF then
+						break
+					elseif newcode > code then
+						memory.write_u16_le(chipslot + 2, newcode)
+						break
+					end
 				end
+			elseif not joypad.get().Right then
+				RightHeld = false
 			end
-			file:write("\n")
-			io.close(file)
-		elseif not joypad.get().Select then
-			SelHeld = false
+			if joypad.get().Left and not LeftHeld then
+				LeftHeld = true
+				for i=0,5 do
+					local newcode = memory.readbyte(0x08011510 + chip*32 + 5 - i)
+					if newcode < code then
+						memory.write_u16_le(chipslot + 2, newcode)
+						break
+					end
+				end
+			elseif not joypad.get().Left then
+				LeftHeld = false
+			end
+			
+			-- Save to File
+			if joypad.get().Select and not SelHeld then
+				SelHeld = true
+				local folder = memory.read_u32_le(0x02009418)
+				file = io.open("folders.txt", "a")
+				for i = 0,29 do
+					local endchip = memory.read_u16_le(folder + i*4)
+					local endcode = memory.read_u16_le(folder + i*4 + 2)
+					file:write(endchip.." "..endcode)
+					if i < 29 then
+						file:write(",")
+					end
+				end
+				file:write("\n")
+				io.close(file)
+			elseif not joypad.get().Select then
+				SelHeld = false
+			end
 		end
 	end
 end
@@ -173,10 +175,10 @@ while true do
 	end
 	
 	if not inBattle then
-		gui.cleartext()
 		controls()
 	end
 	
 	emu.frameadvance()
+	gui.clearGraphics()
 end
 
