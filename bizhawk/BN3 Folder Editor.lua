@@ -83,8 +83,8 @@ function controls()
 	local chip = memory.read_u16_le(chipslot)
 	local code = memory.read_u16_le(chipslot + 2)
 	if chipslot > -1 then
-		gui.pixelText(0,0,"Chip: "..chiplist.names[chip].." "..chiplist.codes[code].." ("..chip..")")
 		if edit == true then
+			gui.pixelText(0,0,"Chip: "..chiplist.names[chip].." "..chiplist.codes[code].." ("..chip..")")
 			gui.pixelText(0,7,"Edit Mode Active!")
 			
 			-- Set Chip ID
@@ -158,6 +158,22 @@ function controls()
 				io.close(file)
 			elseif not joypad.get().Select then
 				SelHeld = false
+			end
+		else
+			-- Display Folder
+			if joypad.get().Select and not SelHeld then
+				SelHeld = true
+			elseif not joypad.get().Select then
+				SelHeld = false
+			end
+			
+			if SelHeld then
+				local folder = memory.read_u32_le(0x02009418)
+				for i = 0,29 do
+					local endchip = memory.read_u16_le(folder + i*4)
+					local endcode = memory.read_u16_le(folder + i*4 + 2)
+					gui.pixelText(0 + math.floor(i/15)*120,8+(i%15)*8, "Slot #"..(i+1)..": "..chiplist.names[endchip].." "..chiplist.codes[endcode].." ("..endchip..")", "#FFFFFFFF", "#FF000000")
+				end
 			end
 		end
 	end

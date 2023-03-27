@@ -34,6 +34,7 @@ Go into the in-game Folder Editing screen. From there, these buttons can be used
 - A: Highlight Chip
 - B: Cancel
 - Start: If you have a Chip highlighted, enter Edit Mode
+- Select: If you have a Chip highlighted while *not* in Edit Mode, display Folder info
 
 While in Edit Mode, you can use the following buttons:
 - B: Cancel
