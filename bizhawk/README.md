@@ -28,13 +28,16 @@ Once you've done all of that, you'll need to edit "twitchsettings.txt". It's tec
 
 Feel free to configure the rest of the file however you want.
 
-Folder Editor Script Setup
+Folder Editor Script Controls
 ============
 Go into the in-game Folder Editing screen. From there, these buttons can be used on chips that are in your folder:
 - A: Highlight Chip
 - B: Cancel
-- Start: If you have a Chip highlighted, enter Edit Mode
-- Select: If you have a Chip highlighted while *not* in Edit Mode, display Folder info
+- Start:
+  - While highlighting a chip, Enter Edit Mode
+  - While not highlighting a chip, load/unload folders.txt into memory
+- Select: Display Folder info
+- L/R: While folders.txt is loaded, cycle import folders from it
 
 While in Edit Mode, you can use the following buttons:
 - B: Cancel
