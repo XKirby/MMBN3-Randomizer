@@ -2134,16 +2134,16 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
         VH_VARIANCE = float(random.randint(0,15)*5)/100
         C_ALLSTARMODE = random.randint(0,3)
         NC_SHAPERANDOMIZER = random.choice([0,0,0,0,0,1])
-        BF_PANELRANDOMIZER = random.choice([0,0,0,0,0,0,1,2])
+        BF_PANELRANDOMIZER = random.choice([0,0,0,0,0,2,2,1])
         ELEMENT_MODE = random.choice([0,0,0,0,1,1,2,2,3])
-        REGMEM_MODE = random.choice([0,0,0,random.randint(1,20),random.randint(1,20),random.randint(1,35),random.randint(1,55)])
+        REGMEM_MODE = random.choice([0,0,0,20,30,30,30,40,40,50,60])
         HELL_MODE = 0
-        OMEGA_MODE = random.choice([0,0,0,0,0,1,4])
+        OMEGA_MODE = random.choice([0,0,0,0,0,1,1,4,4,4,5])
         RANDOM_NAVIS = random.choice([0,0,0,1])
-        RANDOM_OBSTACLES = random.choice([0,0,0,0,0,0,1])
-        FOLDER_MODE = random.choice([0,0,0,0,1,1,2,3,3,4])
-        ZENNY_MULTIPLIER = 1.5
-        RANKCHECK = 5
+        RANDOM_OBSTACLES = random.choice([0,0,0,0,0,1,1])
+        FOLDER_MODE = random.choice([0,0,0,0,1,1,2,3,3,4,5,5])
+        ZENNY_MULTIPLIER = random.choice([2.0,2.0,1.5,1.5,1.5,1.0,1.0])
+        RANKCHECK = random.choice([3,4,4,5,5,5,5,6,6,7])
         IGNORE_LIMITS = 0
     random.seed(SEED)
     
@@ -2279,7 +2279,7 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
     setintro = "\x02\x00\xF2\x00\x05\x01\xF2\x00\x09\x01\xF2\x00\x0D\x01\xF2\x00\x11\x01\xF2\x00\x15\x01\xF2\x00\x19\x01\xF2\x00\x1D\x01\xF2\x00\x63\x01\xF2\x00\x63\x01\xF2\x00\x65\x01\xED\x01\xF1\x00"
     # Folder Lock Mode
     if FOLDER_MODE > 0:
-        if FOLDER_MODE == 6:
+        if not FOLDER_MODE == 5:
             write_data(struct.pack("H", 0x42A4), 0x198C) # Removes Giga restriction
             write_data(struct.pack("H", 0x42A4), 0x199E) # Removes Mega restriction
         if FOLDER_MODE < 5:
@@ -2295,8 +2295,8 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
             else:
                 write_data(struct.pack("H", 0x28FF), 0x345C0) # Unlocks all Folders
     setintro = setintro + finalhash + "\xEB\xE9"
-    setintro = setintro + "\xF1\x01\xE7\x00"
-    for i in range(0, len(setintro)-1):
+    setintro = setintro + "\xF1\x01\xE7"
+    for i in range(0, len(setintro)):
         write_data(setintro[i], 0x778A40 + i)
     if ROMVERSION == "b":
         write_data(struct.pack("<I", 0x8778A40), 0xFECA4)
@@ -2305,13 +2305,13 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
     
     # Enable Omega fights after the final boss
     # More textbox shenanigans mostly, just don't mess with it.
-    setenableomega = open("./data/binpatches/enableomegapostgame.bin","rb").read()
+    setenableomega = compress_data(''.join(chr(x) for x in open("./data/binpatches/enableomega.bin","rb").read()))
     if ROMVERSION == "b":
-        write_data(struct.pack("<I", len(randomized_data)+0x08000000),0x28860)
+        write_data(struct.pack("<I", len(randomized_data)+0x08000000),0x288CC)
     else:
-        write_data(struct.pack("<I", len(randomized_data)+0x08000000),0x2887C)
-    for i in range(0, len(setenableomega)-1):
-        write_data(setenableomega, len(randomized_data))
+        write_data(struct.pack("<I", len(randomized_data)+0x08000000),0x288E4)
+    for i in range(0, len(setenableomega)):
+        write_data(setenableomega[i], len(randomized_data))
     
     # Output Rom
     output_path = '.'.join(os.path.basename(rom_path).split('.')[:-1])+"_randomized"

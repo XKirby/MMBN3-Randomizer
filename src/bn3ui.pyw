@@ -656,13 +656,12 @@ class Mega_Man_Battle_Network_3_Randomizer:
         "Preset Multiple - Your folders are set to multiple predetermined setups from the Custom Folders text file and can't be edited.\n\n"
         "Random Single - Your folders are set to a single, randomized setup and can't be edited.\n\n"
         "Random Multiple - Your folders are randomized and can't be edited.\n\n"
-        "Unlocked - All Folders can be edited, including the Extra Folders.\n\n"
-        "Unlocked Unlimited - All Folders can be edited freely, ignoring Mega and Giga Chip restrictions.\n\n")
+        "Unlocked - All Folders can be edited, including the Extra Folders.")
 
         self.TCombobox3_2 = ttk.Combobox(self.Labelframe3)
         self.TCombobox3_2.place(relx=0.64, rely=0.36, relheight=0.07
                 , relwidth=0.33, y=-12, h=6)
-        self.value_list = ['None','Preset Single','Preset Multiple','Random Single','Random Multiple','Unlocked','Unlocked Unlimited']
+        self.value_list = ['None','Preset Single','Preset Multiple','Random Single','Random Multiple','Unlocked']
         self.TCombobox3_2.configure(values=self.value_list)
         self.TCombobox3_2.configure(textvariable=bn3ui_support.comboFolderMode)
         self.TCombobox3_2.configure(takefocus="")
@@ -821,7 +820,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Label15.configure(highlightcolor="black")
         self.Label15.configure(justify=RIGHT)
         self.Label15.configure(text='''Chip Drop Rank''')
-        Tooltip(self.Label15, "Battle Chips will be gauranteed to drop from Virus encounters at this rank or higher.")
+        Tooltip(self.Label15, "Battle Chips will be more likely to drop from Virus encounters at this rank or higher.")
 
         self.Labelframe5 = LabelFrame(top)
         self.Labelframe5.place(relx=0.02, rely=0.08, relheight=0.08
