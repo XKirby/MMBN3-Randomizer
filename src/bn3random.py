@@ -935,7 +935,6 @@ def randomize_gmds():
     zenny_regex = re.compile(r'(?s)\xf1\x00\xfb\x00\x0f(.{64})')
     earliest_script = 999999999
     end_addr = -1
-    chip_map = generate_chip_permutation()
     
     for (area, subareas) in list(map_data.items()):
         for subarea in subareas:
@@ -1045,7 +1044,6 @@ def randomize_bmds_trades():
     tradechiptext_regex = re.compile(r'(?s)\xF9[\x00-\xFF]([\s\S][\x01-\x02])\x00\xF9[\x00-\xFF]([\x00-\x1A])\x03')
     earliest_script = 0x10000000
     end_addr = -1
-    chip_map = generate_chip_permutation(True)
     
     while ptr <= 0x24C:
         pattern_list.append([ptr, base_offset + ptr])
@@ -1515,6 +1513,7 @@ def randomize_folders():
     s = 0xcbdc
     
     n_folders = 0
+    chips = chip_map
     permutations = []
     f = 0
     first = 0
@@ -1535,13 +1534,13 @@ def randomize_folders():
         n_folders += 1
         is_tutorial = (n_folders >= 12 and n_folders <= 14)
         if is_tutorial or ((FOLDER_MODE == 1 or FOLDER_MODE == 3) and n_folders > 1):
-            chip_map = permutations[0]
+            chips = permutations[0]
         else:
-            chip_map = generate_chip_permutation()
+            chips = chip_map
         permutations.append(chip_map)
         for i in range(30):
             old_chip, old_code = struct.unpack('<HH', bytes(rom_data[s:s+4], encoding="raw_unicode_escape"))
-            new_chip = chip_map[old_chip]
+            new_chip = chips[old_chip]
             new_code = get_new_code(old_chip, old_code, new_chip)
                         
             # Folder Mode Setup
@@ -1582,7 +1581,6 @@ def randomize_folders():
 
 def randomize_virus_drops():
     offset = 0x160a8
-    chip_map = generate_chip_permutation(allow_conditional_attacks = True)
     for virus_ind in range(244):
         zenny_queue = []
         last_chip = None
@@ -1650,7 +1648,6 @@ def randomize_shops():
         chip_order_offset = 0x45130
     
     global tradechiplist
-    chip_map = generate_chip_permutation()
     
     available_chips = []
     for i in range(1,302):
@@ -1793,7 +1790,7 @@ def randomize_number_trader():
     if ROMVERSION == "b":
         reward_offset = 0x478f8
     n_rewards = 0
-    chip_map = generate_chip_permutation()
+    global chip_map
     while True:
         reward_type, old_code, old_chip, encrypted_number = struct.unpack('<BBH8s', bytes(rom_data[reward_offset : reward_offset + 12], encoding="raw_unicode_escape"))
         if reward_type == 0xff:
@@ -2032,6 +2029,7 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
     global CPRICE_VARIANCE
     global ZENNY_MULTIPLIER
     global RANKCHECK
+    # global ENABLEOPENLOGIC
     
     # Changelog variables
     global changelog_bmd
@@ -2051,6 +2049,7 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
     # Data variables
     global rom_data
     global randomized_data
+    global chip_map
     
     changelog_bmd = []
     changelog_gmd = []
@@ -2185,6 +2184,7 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
     init_custom_folders()
     init_chip_data()
     init_pa_data()
+    chip_map = generate_chip_permutation(True)
     if ALLOW_CHIPS == 1 and C_ALLSTARMODE > 1:
         fix_pas()
     # Ignore Limits code
@@ -2279,7 +2279,7 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
     setintro = "\x02\x00\xF2\x00\x05\x01\xF2\x00\x09\x01\xF2\x00\x0D\x01\xF2\x00\x11\x01\xF2\x00\x15\x01\xF2\x00\x19\x01\xF2\x00\x1D\x01\xF2\x00\x63\x01\xF2\x00\x63\x01\xF2\x00\x65\x01\xED\x01\xF1\x00"
     # Folder Lock Mode
     if FOLDER_MODE > 0:
-        if not FOLDER_MODE == 6:
+        if FOLDER_MODE == 6:
             write_data(struct.pack("H", 0x42A4), 0x198C) # Removes Giga restriction
             write_data(struct.pack("H", 0x42A4), 0x199E) # Removes Mega restriction
         if FOLDER_MODE < 5:
@@ -2305,13 +2305,13 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
     
     # Enable Omega fights after the final boss
     # More textbox shenanigans mostly, just don't mess with it.
-    setenableomega = "\x0E\x00\x38\x00\x4D\x00\x74\x00\x8F\x00\x12\x01\xB4\x01\xF2\x00\x92\x01\xED\x01\xF1\x00\x11\x25\x2C\x4C\x11\x25\x2C\x4C\x11\x25\x25\x25\x2C\x2C\x2C\x4C\xE8\x11\x36\x36\x25\x25\x25\x2C\x2C\x2C\x4C\x47\x47\xEB\xE9\xF5\x00\x01\xED\x00\x42\xF1\x00\x21\x2C\x29\x3B\x4C\xEB\xE9\x16\x25\x32\x4C\xEB\xE9\xF5\x00\x02\xED\x00\x00\xF1\x00\x21\x29\x00\x28\x2D\x28\x00\x2D\x38\x4C\xE8\x21\x29\x4C\xE8\x21\x29\x00\x26\x29\x25\x38\x00\x0B\x30\x34\x2C\x25\x4C\xEB\xE9\xF5\x00\x03\xED\x01\xF1\x00\x11\x36\x36\x25\x25\x25\x2C\x2C\x2C\x47\x47\xE8\x17\x31\x3B\x25\x25\x25\x25\x47\x47\xEB\xE7\xED\x00\x42\xF1\x00\x16\x25\x32\x4B\x37\x33\x31\x29\x38\x2C\x2D\x32\x2B\x00\x27\x25\x31\x29\xE8\x33\x39\x38\x00\x33\x2A\x00\x0B\x30\x34\x2C\x25\x47\xEB\xE9\x13\x38\x00\x30\x33\x33\x2F\x37\x00\x30\x2D\x2F\x29\x00\x25\xE8\x28\x33\x33\x36\x4B\x26\x39\x38\x00\x13\x00\x3B\x33\x32\x28\x29\x36\xE8\x3B\x2C\x29\x36\x29\x00\x2D\x38\x00\x30\x29\x25\x28\x37\x48\xEB\xE9\x18\x33\x38\x00\x38\x33\x00\x25\x32\x33\x38\x2C\x29\x36\x00\x34\x25\x36\x38\xE8\x33\x2A\x00\x0B\x30\x34\x2C\x25\x4B\x13\x00\x2C\x33\x34\x29\x47\xEB\xE9\xF5\x00\x05\xED\x00\x00\xF1\x00\x4C\x4C\x4C\xE8\x17\x29\x2B\x25\x17\x25\x32\x4B\x30\x29\x38\x50\x37\xE8\x27\x2C\x29\x27\x2F\x00\x2D\x38\x00\x33\x39\x38\x47\xEB\xE9\x21\x29\x50\x3A\x29\x00\x27\x33\x31\x29\x00\x38\x2C\x2D\x37\x00\x2A\x25\x36\x4B\xE8\x37\x33\x00\x3B\x29\x00\x31\x2D\x2B\x2C\x38\x00\x25\x37\x00\x3B\x29\x30\x30\xE8\x37\x29\x29\x00\x38\x2C\x2D\x37\x00\x38\x33\x00\x38\x2C\x29\x00\x29\x32\x28\x47\xEB\xE9\x21\x29\x00\x2C\x25\x3A\x29\x00\x38\x33\x00\x37\x29\x29\x00\x3B\x2C\x25\x38\xE8\x30\x2D\x29\x37\x00\x33\x32\x00\x38\x2C\x29\x00\x33\x38\x2C\x29\x36\xE8\x37\x2D\x28\x29\x00\x33\x2A\x00\x38\x2C\x25\x38\x00\x28\x33\x33\x36\x47\xEB\xE9\xF5\x00\x06\xED\x00\x42\xF1\x00\x19\x15\x4C\xEB\xE7"
+    setenableomega = open("./data/binpatches/enableomegapostgame.bin","rb").read()
     if ROMVERSION == "b":
-        write_data(struct.pack("<I", len(randomized_data)+0x08000000),0x127030)
+        write_data(struct.pack("<I", len(randomized_data)+0x08000000),0x28860)
     else:
-        write_data(struct.pack("<I", len(randomized_data)+0x08000000),0x126F30)
+        write_data(struct.pack("<I", len(randomized_data)+0x08000000),0x2887C)
     for i in range(0, len(setenableomega)-1):
-        write_data(setenableomega[i], len(randomized_data))
+        write_data(setenableomega, len(randomized_data))
     
     # Output Rom
     output_path = '.'.join(os.path.basename(rom_path).split('.')[:-1])+"_randomized"
