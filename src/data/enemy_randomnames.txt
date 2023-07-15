@@ -5,7 +5,7 @@ Mettaur[omega]
 Canodumb 
 Canodumb2 
 Canodumb3 
-Canodum[omega] 
+Canodumb[omega] 
 Fishy 
 Fishy2 
 Fishy3 
@@ -282,7 +282,7 @@ RealMan[alpha]
 RealMan[beta] 
 RealMan[omega] 
 Zombie 
-Zomber 
+Zombeer 
 Zombore 
 Zombie[omega] 
 Ghost 
@@ -311,7 +311,7 @@ JohnCena[beta]
 JohnCena[omega] 
 Plank 
 TwoByFour 
-GangPlank 
+PlankGang 
 Plank[omega] 
 Puzzley 
 Puzzler 
@@ -371,7 +371,7 @@ OldMan[beta]
 OldMan[omega] 
 Bro 
 Broseph 
-Brochacho 
+Bruh 
 Bro[omega] 
 MegaMan 
 MegaEXE 
@@ -381,6 +381,7 @@ MegaZ
 MegaZX 
 MegaLgnd 
 MegaMan[omega] 
+DarkMega 
 Shanghai 
 Shanghai[alpha] 
 Shanghai[beta] 
@@ -404,14 +405,14 @@ Bread
 Toast 
 PwdrToast 
 Bread[omega] 
-EdgeMan
+EdgeMan 
 EdgeMan[alpha] 
 EdgeMan[beta] 
 EdgeMan[omega] 
 Flop 
 Floppy 
 Floppiest 
-Flop[omega]
+Flop[omega] 
 Math 
 Trig 
 Calc 
@@ -445,6 +446,8 @@ AOL
 SkyNet 
 BugFrag 
 ButtFrag 
+BupFrag 
+BugFrag[omega] 
 Giver336 
 TheKing 
 GmeTheory 
@@ -489,13 +492,13 @@ TimAllen[alpha]
 TimAllen[beta] 
 TimAllen[omega] 
 Goofy 
-Sonichu
+Sonichu 
 Oingo 
 Boingo 
 Wingull 
 Kyu 
 DeVito 
-Jim Guy 
+JimGuy 
 Octodad 
 Bargo 
 Bargo[alpha] 
@@ -503,7 +506,6 @@ Bargo[beta]
 Bargo[omega] 
 Jerry 
 Sephiroth 
-Shadow 
 GrnMario 
 Kappa 
 PogChamp 
@@ -515,40 +517,32 @@ Ed[omega]
 Edd[beta] 
 Eddy[alpha] 
 Boozer 
-BIG PAL 
+BIGPAL 
 Skrub 
 Katamari 
-Mr Krabs 
+Mr.Krabs 
 Lysandre 
 Sonic 
-ChrisChan 
 Daikatana 
 144 eggs 
 Trogdor 
 billwurtz 
-John Cena 
-Guy Fieri 
-Miror B 
+GuyFieri 
 Guzma 
 DSP 
 RobRottn 
 RobRottn[alpha] 
 RobRottn[beta] 
 RobRottn[omega] 
-King Dog 
+KingDog 
 Caillou 
 XJ-0461 
-The Frog 
-Karate Joe 
 JetGoFast 
 JetGoFst[alpha] 
 JetGoFst[beta] 
 JetGoFst[omega] 
 SpikyGuy 
 Spndngle 
-BathToys 
-BathToys2
-BathToys3
 ThndrDrgn 
 Ridley 
 Ridley[alpha] 
@@ -636,15 +630,13 @@ MoguMogu
 MoguMogu[omega] 
 SmogBN 
 xKilios 
-Tterraj42
-Risch  
-Risch1997 
+Tterraj42 
+Risch 
 lilfatkid 
 chez+cerl 
 GrayKtsne 
 Silver 
 NMarkro 
-fatkid 
 Kerreb17 
 Prof9 
 Sphyrwa 
@@ -660,6 +652,7 @@ PhntomMat
 Powerflar 
 RatFunk 
 LastAaoa 
+Yukki 
 ChaoticMK 
 ultrubrns 
 ZELLLOOO 
@@ -691,7 +684,7 @@ Junpei
 RadJunpei 
 PressA 
 Co-opRun 
-MssedSwrd 
+MissdSwrd 
 PawnChamp 
 MegaDab 
 LanKickR 
@@ -706,8 +699,6 @@ ProgChamp
 SoniaKnws 
 BoneZone 
 WhtMemHuh 
-Impostor 
-Crewmate 
 Sora 
 Roboco 
 Suisei 
@@ -1137,7 +1128,7 @@ Rmndr2Sav
 BathSplit 
 TehUrn 
 RunSucks 
-PP Up 
+PPUp 
 Takis 
 FlaminHot 
 WiiSports 
@@ -1150,7 +1141,7 @@ SJH[ModTools1]UEKA
 KTEIUE[ModTools2]D 
 L[ModTools3]KJGUEO 
 SK[ModTools1][ModTools3]EO[ModTools1]M 
-Spaghett 
+Spaghetti 
 Tim+Eric 
 Luffy 
 Zoro 
@@ -1182,7 +1173,7 @@ Gooda
 TacoBell 
 TacoBell[omega] 
 MickeyD 
-MickeyD[omega]
+MickeyD[omega] 
 RonaldMcD 
 YeeHaw 
 Elite 
@@ -1208,7 +1199,7 @@ UberElder
 Diablo[omega] 
 Wally 
 Welly 
-Whiny 
+Willy 
 Wally[omega] 
 Wendy 
 Wendy[omega] 
@@ -1216,3 +1207,50 @@ BurgKing
 BurgKing[alpha] 
 BurgKing[beta] 
 BurgKing[omega] 
+spungus 
+spugongus 
+spinglbuh 
+spungus[omega] 
+flijiggle 
+Thinking 
+Thonking 
+Thunking 
+Thinking[omega] 
+BobsUncle 
+DadsCousn 
+FifthRmvd 
+BobsUncl[omega]  
+IRS 
+FBI 
+CIA 
+IRS[omega] 
+VirusName 
+NaviName 
+ChipName 
+VirusName[omega] 
+SugoiDesu 
+BakaDesu 
+SussyBaka 
+SugoiDsu[omega] 
+Impostor 
+Crewmate 
+Emergency 
+Impostor[omega] 
+Lonk 
+Agumon 
+Greymon 
+Bakemon 
+Biyomon 
+Gatomon 
+Veemon 
+Digmon 
+Gabumon 
+Lopmon 
+Palmon 
+Patamon 
+Wormmon 
+KingBoo 
+Wiggler 
+Loyd 
+Yor 
+Bondo 
