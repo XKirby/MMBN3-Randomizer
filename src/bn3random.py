@@ -1229,7 +1229,7 @@ def virus_replace(ind):
     if ind >= 168:
         # Randomize Navi Battles
         if RANDOM_NAVIS == 1:
-            if ind not in [196, 197, 198, 199, 220, 221, 222, 223, 224, 225, 226, 227, 236, 237, 238, 239, 240, 241, 242, 243]:
+            if ind not in [196, 197, 198, 199, 236, 237, 238, 239, 240, 241, 242, 243]:
                 # Shuffle Mode
                 if OMEGA_MODE < 4:
                     # Easy Navis
@@ -1241,7 +1241,7 @@ def virus_replace(ind):
                         weak_navis.remove(chosen_navis[ind-168])
                     
                     # Middle Navis
-                    if ind-168 in [8, 20, 48, 52, 56] and chosen_navis[ind-168] < 0:
+                    if ind-168 in [8, 12, 16, 20, 48] and chosen_navis[ind-168] < 0:
                         chosen_navis[ind-168] = random.choice(mid_navis)
                         chosen_navis[ind-168+1] = chosen_navis[ind-168]
                         chosen_navis[ind-168+2] = chosen_navis[ind-168]
@@ -1249,7 +1249,7 @@ def virus_replace(ind):
                         mid_navis.remove(chosen_navis[ind-168])
                     
                     # Strong Navis
-                    if ind-168 in [12, 16, 24] and chosen_navis[ind-168] < 0:
+                    if ind-168 in [24, 44, 52, 56] and chosen_navis[ind-168] < 0:
                         chosen_navis[ind-168] = random.choice(strong_navis)
                         chosen_navis[ind-168+1] = chosen_navis[ind-168]
                         chosen_navis[ind-168+2] = chosen_navis[ind-168]
