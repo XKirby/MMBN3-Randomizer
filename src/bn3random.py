@@ -43,7 +43,7 @@ tradechiplist = []
 # Navi Lists for Navi Randomizations
 weak_navis = [0,4,32,40]
 mid_navis = [8,12,16,20,48]
-strong_navis = [44,24,52,56]
+strong_navis = [24,44,52,56]
 post_navis = [36,60,64]
 allnavis = [0,4,8,12,16,20,24,32,36,40,44,48,52,56,60,64]
 chosen_navis = list()
@@ -1108,11 +1108,14 @@ def randomize_bmds_trades():
                     zennys = list(struct.unpack('<I', bytes(match.groups()[0], encoding="raw_unicode_escape")))
                     text_offset = match.start(10) - match_offset
                     zennys[0] = int(zennys[0] * ZENNY_MULTIPLIER)
-                    if len(str(match.group(10))) < len(str(zennys[0])):
-                        zennys[0] = 9 * pow(10, len(str(match.group(10)))-1)
-                    zenny_str = struct.pack('<I', *(int(x) for x in zennys))
-                    for i in range(len(zenny_str)):
-                        new_data[match_offset + i] = zenny_str[i]
+                    #if len(str(match.group(10))) < len(str(zennys[0])):
+                    #    for i in range(0,len(str(zennys[0]))-len(str(match.group(10)))):
+                    #       new_data.append(0x0)
+                    #       cropped = ''.join(chr(x) for x in new_data[match_offset+i:len(new_data)-1])
+                    #       new_data[match_offset+i:] = list(map(ord, chr(0) + cropped))
+                    #zenny_str = struct.pack('<I', *(int(x) for x in zennys))
+                    #for i in range(0,len(zenny_str)):
+                    #    new_data[match_offset + i] = zenny_str[i]
                     for i in range(len(str(match.group(10)))):
                         #print i, int(zennys[0] / pow(10,len(str(match.group(3)))-(i+1)) % 10) + 1
                         new_data[match_offset + text_offset + i] = int(zennys[0] / pow(10,len(str(match.group(10)))-(i+1)) % 10) + 1
@@ -1198,7 +1201,7 @@ def randomize_bmds_trades():
                             new_data[match.start(2)] = new_code
                             break
                             
-            new_script = ''.join(list(map(chr, new_data)))
+            new_script = ''.join(chr(x) for x in new_data)
             if len(new_scripts) >= p:
                 new_scripts[p-1] = [block[1], new_script]
             else:
@@ -1263,12 +1266,6 @@ def virus_replace(ind):
                         chosen_navis[ind-168+2] = chosen_navis[ind-168]
                         chosen_navis[ind-168+3] = chosen_navis[ind-168]
                         post_navis.remove(chosen_navis[ind-168])
-                    # Punk
-                    if ind-168 == 44 and chosen_navis[ind-168] < 0:
-                        chosen_navis[ind-168] = 44
-                        chosen_navis[ind-168+1] = chosen_navis[ind-168]
-                        chosen_navis[ind-168+2] = chosen_navis[ind-168]
-                        chosen_navis[ind-168+3] = chosen_navis[ind-168]
                 # Chaos Mode
                 else:
                     if ind-168 in [0,4,8,12,16,20,24,32,36,40,44,48,52,56,60,64] and chosen_navis[ind-168] < 0:
@@ -1955,14 +1952,14 @@ def randomize_battlefields():
 
 def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fVirusMult = 1.0, fVirusVar = 0.0, iChipCode = 0, bChipNames = 0, bVirusNames = 0, bRandomBosses = 0, iRandomElements = 0, iRegularMemory = 0, bNCP = 0, iOmegaMode = 0, iHellMode = 0, iBattlefields = 0, iFolderMode = 0, bLog = 0, bRandomObjects = 0, bFillShops = 1, bFreeShops = 0, allowFolder = 1, allowGMD = 1, allowBMD = 1, allowShop = 1, allowChip = 1, allowVirus = 1, allowTrade = 1, allowDaily = 0, allowEasyTutorial = 1, ignoreLimits = 0, fPriceVariance = 0.0, fZennyMultiplier = 1.5, iRankCheck = 5, bEnableOpenLogic = 0):
     global weak_navis
-    weak_navis = [0,4,32,40]
     global mid_navis
-    mid_navis = [8,20,48]
     global strong_navis
-    strong_navis = [12,16,24]
     global post_navis
-    post_navis = [36,60,64]
     global allnavis
+    weak_navis = [0,4,32,40]
+    mid_navis = [8,12,16,20,48]
+    strong_navis = [24,44,52,56]
+    post_navis = [36,60,64]
     allnavis = [0,4,8,12,16,20,24,32,36,40,44,48,52,56,60,64]
     chosen_navis = list()
     for i in range(0, 76):
@@ -2158,7 +2155,7 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
         CPRICE_VARIANCE = 0
     if CPRICE_VARIANCE > 0.9:
         CPRICE_VARIANCE = 0.9
-    if ZENNY_MULTIPLIER > 3.0 and IGNORE_LIMITS == 0:
+    if ZENNY_MULTIPLIER > 3.0:
         ZENNY_MULTIPLIER = 3.0
     if ZENNY_MULTIPLIER < 0.25:
         ZENNY_MULTIPLIER = 0.25
@@ -2196,7 +2193,7 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
             write_data(chr(element),0x680020 + (enemy))
     
     # Attempted Fix for specific doors in Secret Area to work without needing their Battle Chip requirements
-    new_data = list(ord(x) for x in rom_data)
+    new_data = randomized_data
     if ROMVERSION == "b":
         new_data[0x777147] = 0x0 # 100 Standard
         new_data[0x7774AA] = 0x0 # 140 Standard
@@ -2205,7 +2202,12 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
         new_data[0x77775B] = 0x0 # 100 Standard
         new_data[0x777ABE] = 0x0 # 140 Standard
         new_data[0x7786B1] = 0x0 # 200 Standard
-    rom_data = ''.join(chr(x) for x in new_data)
+    # Attempt at forcing the Library-related Title Screen Stars to be active
+    new_data[0x1AF6] = 0x0 # Standard Library
+    new_data[0x1B04] = 0x0 # Mega Library
+    new_data[0x1B34] = 0x0 # Program Advance Library
+    randomized_data = new_data
+    
     
     # Difficulty Modes
     # I don't suggest doing this if you're new.
