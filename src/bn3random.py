@@ -1106,19 +1106,19 @@ def randomize_bmds_trades():
                     #match_found.append(match.start() + script_addr)
                     match_offset = match.start() + 2
                     zennys = list(struct.unpack('<I', bytes(match.groups()[0], encoding="raw_unicode_escape")))
-                    text_offset = match.start(10) - match_offset
+                    #text_offset = match.start(10) - match_offset
                     zennys[0] = int(zennys[0] * ZENNY_MULTIPLIER)
                     #if len(str(match.group(10))) < len(str(zennys[0])):
                     #    for i in range(0,len(str(zennys[0]))-len(str(match.group(10)))):
                     #       new_data.append(0x0)
                     #       cropped = ''.join(chr(x) for x in new_data[match_offset+i:len(new_data)-1])
                     #       new_data[match_offset+i:] = list(map(ord, chr(0) + cropped))
-                    #zenny_str = struct.pack('<I', *(int(x) for x in zennys))
-                    #for i in range(0,len(zenny_str)):
-                    #    new_data[match_offset + i] = zenny_str[i]
-                    for i in range(len(str(match.group(10)))):
+                    zenny_str = struct.pack('<I', *(int(x) for x in zennys))
+                    for i in range(0,len(zenny_str)):
+                        new_data[match_offset + i] = zenny_str[i]
+                    #for i in range(len(str(match.group(10)))):
                         #print i, int(zennys[0] / pow(10,len(str(match.group(3)))-(i+1)) % 10) + 1
-                        new_data[match_offset + text_offset + i] = int(zennys[0] / pow(10,len(str(match.group(10)))-(i+1)) % 10) + 1
+                    #    new_data[match_offset + text_offset + i] = int(zennys[0] / pow(10,len(str(match.group(10)))-(i+1)) % 10) + 1
                     #print "Zenny found at", hex(script_addr), "!"
                     changelog_bmd.append(["zenny", list(struct.unpack('<I', bytes(match.groups()[0], encoding="raw_unicode_escape")))[0], zennys[0]])
                     
