@@ -494,25 +494,25 @@ def init_rom_data(rom_path):
     return [rom_data, randomized_data]
 
 def read_byte(offset):
-    global rom_data
-    return checkval(rom_data[offset])
+    global randomized_data
+    return checkval(randomized_data[offset])
 def read_halfword(offset):
-    global rom_data
-    s = list(map(checkval, rom_data[offset:offset+2]))
+    global randomized_data
+    s = list(map(checkval, randomized_data[offset:offset+2]))
     result = 0
     for i in range(len(s)):
         result += s[i] << (i*8)
     return result
 def read_word(offset):
-    global rom_data
-    s = list(map(checkval, rom_data[offset:offset+4]))
+    global randomized_data
+    s = list(map(checkval, randomized_data[offset:offset+4]))
     result = 0
     for i in range(len(s)):
         result += s[i] << (i*8)
     return result
 def read_dblword(offset):
-    global rom_data
-    s = list(map(checkval, rom_data[offset:offset+8]))
+    global randomized_data
+    s = list(map(checkval, randomized_data[offset:offset+8]))
     result = 0
     for i in range(len(s)):
         result += s[i] << (i*8)
@@ -1950,7 +1950,7 @@ def randomize_battlefields():
                 changelog_fields.append(["id", str(stage_offset + i), str(character)])
         print("randomized stage ids")
 
-def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fVirusMult = 1.0, fVirusVar = 0.0, iChipCode = 0, bChipNames = 0, bVirusNames = 0, bRandomBosses = 0, iRandomElements = 0, iRegularMemory = 0, bNCP = 0, iOmegaMode = 0, iHellMode = 0, iBattlefields = 0, iFolderMode = 0, bLog = 0, bRandomObjects = 0, bFillShops = 1, bFreeShops = 0, allowFolder = 1, allowGMD = 1, allowBMD = 1, allowShop = 1, allowChip = 1, allowVirus = 1, allowTrade = 1, allowDaily = 0, allowEasyTutorial = 1, ignoreLimits = 0, fPriceVariance = 0.0, fZennyMultiplier = 1.5, iRankCheck = 5, bEnableOpenLogic = 0):
+def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fVirusMult = 1.0, fVirusVar = 0.0, iChipCode = 0, bChipNames = 0, bVirusNames = 0, bRandomBosses = 0, iRandomElements = 0, iRegularMemory = 0, bNCP = 0, iOmegaMode = 0, iHellMode = 0, iBattlefields = 0, iFolderMode = 0, bLog = 0, bRandomObjects = 0, bFillShops = 1, bFreeShops = 0, allowFolder = 1, allowGMD = 1, allowBMD = 1, allowShop = 1, allowChip = 1, allowVirus = 1, allowTrade = 1, allowDaily = 0, allowEasyTutorial = 1, ignoreLimits = 0, fPriceVariance = 0.0, fZennyMultiplier = 1.5, iRankCheck = 5):
     global weak_navis
     global mid_navis
     global strong_navis
@@ -2090,7 +2090,6 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
     CPRICE_VARIANCE = fPriceVariance
     ZENNY_MULTIPLIER = fZennyMultiplier
     RANKCHECK = iRankCheck
-    ENABLEOPENLOGIC = bEnableOpenLogic
     
     # Seed Info
     if len(SEED) < 1 and ALLOW_DAILY == 0:
@@ -2193,7 +2192,7 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
             write_data(chr(element),0x680020 + (enemy))
     
     # Attempted Fix for specific doors in Secret Area to work without needing their Battle Chip requirements
-    new_data = randomized_data
+    new_data = list(x for x in randomized_data)
     if ROMVERSION == "b":
         new_data[0x777147] = 0x0 # 100 Standard
         new_data[0x7774AA] = 0x0 # 140 Standard
@@ -2206,7 +2205,7 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
     new_data[0x1AF6] = 0x0 # Standard Library
     new_data[0x1B04] = 0x0 # Mega Library
     new_data[0x1B34] = 0x0 # Program Advance Library
-    randomized_data = new_data
+    randomized_data = list(x for x in new_data)
     
     
     # Difficulty Modes
@@ -2304,13 +2303,13 @@ def randomizerom(rom_path, versionSeed = "", fChipMult = 1.0, fChipVar = 0.0, fV
     
     # Enable Omega fights after the final boss
     # More textbox shenanigans mostly, just don't mess with it.
-    setenableomega = ''.join(chr(x) for x in open("./data/binpatches/enableomega.bin","rb").read())
+    setenableomega = compress_data(''.join(chr(x) for x in open("./data/binpatches/enableomega.bin","rb").read()))
     ofs = len(randomized_data)+0x8000000
     if ROMVERSION == "b":
         write_data(struct.pack("<I", ofs), 0x288CC)
     else:
         write_data(struct.pack("<I", ofs), 0x288E4)
-    for i in range(len(setenableomega)):
+    for i in range(0,len(setenableomega)):
         write_data(setenableomega[i], len(randomized_data))
     
     # Output Rom

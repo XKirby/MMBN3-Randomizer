@@ -366,38 +366,41 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton3.configure(text='''Fill Shops''')
         self.Checkbutton3.configure(variable=bn3ui_support.bFillShops)
         self.Checkbutton3.configure(width=155)
+        Tooltip(self.Checkbutton3, "When enabled, Shops are filled completely with extra Battle Chips at random.")
         
-        self.Checkbutton3 = Checkbutton(self.Labelframe3)
-        self.Checkbutton3.place(relx=0.0, rely=0.52, relheight=0.08
+        self.Checkbutton31 = Checkbutton(self.Labelframe3)
+        self.Checkbutton31.place(relx=0.0, rely=0.52, relheight=0.08
                 , relwidth=0.35, y=-12, h=6)
-        self.Checkbutton3.configure(activebackground="#d9d9d9")
-        self.Checkbutton3.configure(activeforeground="#000000")
-        self.Checkbutton3.configure(anchor=W)
-        self.Checkbutton3.configure(background="#d9d9d9")
-        self.Checkbutton3.configure(disabledforeground="#a3a3a3")
-        self.Checkbutton3.configure(foreground="#000000")
-        self.Checkbutton3.configure(highlightbackground="#d9d9d9")
-        self.Checkbutton3.configure(highlightcolor="black")
-        self.Checkbutton3.configure(justify=LEFT)
-        self.Checkbutton3.configure(text='''Free Chips in Shops''')
-        self.Checkbutton3.configure(variable=bn3ui_support.bFreeShops)
-        self.Checkbutton3.configure(width=155)
+        self.Checkbutton31.configure(activebackground="#d9d9d9")
+        self.Checkbutton31.configure(activeforeground="#000000")
+        self.Checkbutton31.configure(anchor=W)
+        self.Checkbutton31.configure(background="#d9d9d9")
+        self.Checkbutton31.configure(disabledforeground="#a3a3a3")
+        self.Checkbutton31.configure(foreground="#000000")
+        self.Checkbutton31.configure(highlightbackground="#d9d9d9")
+        self.Checkbutton31.configure(highlightcolor="black")
+        self.Checkbutton31.configure(justify=LEFT)
+        self.Checkbutton31.configure(text='''Free Chips in Shops''')
+        self.Checkbutton31.configure(variable=bn3ui_support.bFreeShops)
+        self.Checkbutton31.configure(width=155)
+        Tooltip(self.Checkbutton31, "When enabled, Chips cost 0 Zenny in every shop. Feel free to take them!")
 
-        self.Checkbutton3 = Checkbutton(self.Labelframe3)
-        self.Checkbutton3.place(relx=0.0, rely=0.60, relheight=0.08
+        self.Checkbutton32 = Checkbutton(self.Labelframe3)
+        self.Checkbutton32.place(relx=0.0, rely=0.60, relheight=0.08
                 , relwidth=0.35, y=-12, h=6)
-        self.Checkbutton3.configure(activebackground="#d9d9d9")
-        self.Checkbutton3.configure(activeforeground="#000000")
-        self.Checkbutton3.configure(anchor=W)
-        self.Checkbutton3.configure(background="#d9d9d9")
-        self.Checkbutton3.configure(disabledforeground="#a3a3a3")
-        self.Checkbutton3.configure(foreground="#000000")
-        self.Checkbutton3.configure(highlightbackground="#d9d9d9")
-        self.Checkbutton3.configure(highlightcolor="black")
-        self.Checkbutton3.configure(justify=LEFT)
-        self.Checkbutton3.configure(text='''Randomize Navis''')
-        self.Checkbutton3.configure(variable=bn3ui_support.randomNavis)
-        self.Checkbutton3.configure(width=155)
+        self.Checkbutton32.configure(activebackground="#d9d9d9")
+        self.Checkbutton32.configure(activeforeground="#000000")
+        self.Checkbutton32.configure(anchor=W)
+        self.Checkbutton32.configure(background="#d9d9d9")
+        self.Checkbutton32.configure(disabledforeground="#a3a3a3")
+        self.Checkbutton32.configure(foreground="#000000")
+        self.Checkbutton32.configure(highlightbackground="#d9d9d9")
+        self.Checkbutton32.configure(highlightcolor="black")
+        self.Checkbutton32.configure(justify=LEFT)
+        self.Checkbutton32.configure(text='''Randomize Navis''')
+        self.Checkbutton32.configure(variable=bn3ui_support.randomNavis)
+        self.Checkbutton32.configure(width=155)
+        Tooltip(self.Checkbutton32, "When enabled, Bosses are randomized, with some exceptions.\nNot recommended for beginners.\n\nWhenever Chaos Virus Levels are selected, Bosses are also affected, so be prepared for that.")
 
         self.Checkbutton1 = Checkbutton(self.Labelframe3)
         self.Checkbutton1.place(relx=0.0, rely=0.68, relheight=0.08
@@ -414,6 +417,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton1.configure(text='''Randomize Chip Names''')
         self.Checkbutton1.configure(variable=bn3ui_support.randomChipNames)
         self.Checkbutton1.configure(width=155)
+        Tooltip(self.Checkbutton1, "When enabled, randomizes Battle Chip names for obfuscation and comedic effect.")
 
         self.Checkbutton2 = Checkbutton(self.Labelframe3)
         self.Checkbutton2.place(relx=0.0, rely=0.76, relheight=0.08
@@ -430,6 +434,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton2.configure(text='''Randomize Virus Names''')
         self.Checkbutton2.configure(variable=bn3ui_support.randomVirusNames)
         self.Checkbutton2.configure(width=155)
+        Tooltip(self.Checkbutton2, "When enabled, randomizes enemy names for comedic effect. Also works on bosses.")
         
         self.Checkbutton3 = Checkbutton(self.Labelframe3)
         self.Checkbutton3.place(relx=0.0, rely=0.84, relheight=0.08
@@ -446,6 +451,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton3.configure(text='''Normal Tutorial''')
         self.Checkbutton3.configure(variable=bn3ui_support.allowEasyTutorial)
         self.Checkbutton3.configure(width=155)
+        Tooltip(self.Checkbutton3, "When enabled, the Tutorial encounters are NOT randomized.\n\nDon't disable this unless you want to have a bad time.")
         
         self.Checkbutton3 = Checkbutton(self.Labelframe3)
         self.Checkbutton3.place(relx=0.0, rely=0.92, relheight=0.08
@@ -462,6 +468,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton3.configure(text='''Randomize Battle Objects''')
         self.Checkbutton3.configure(variable=bn3ui_support.allowRandomObjects)
         self.Checkbutton3.configure(width=155)
+        Tooltip(self.Checkbutton3, "When enabled, randomizes objects that are naturally on the field during the start of certain encounters.\nNot recommended for beginners, as this can add BlackBombs, Guardians, and Metal Cubes to difficult encounters.")
 
         self.TCombobox2 = ttk.Combobox(self.Labelframe3)
         self.TCombobox2.place(relx=0.64, rely=0.17, relheight=0.07, relwidth=0.33
@@ -554,6 +561,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton7.configure(justify=LEFT)
         self.Checkbutton7.configure(text='''Green Mystery Data''')
         self.Checkbutton7.configure(variable=bn3ui_support.allowGMD)
+        Tooltip(self.Checkbutton7, "When enabled, Green Mystery Data on the internet will be randomized.")
 
         self.Checkbutton8 = Checkbutton(self.Labelframe6)
         self.Checkbutton8.place(relx=0.03, rely=0.6, relheight=0.2
@@ -568,6 +576,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton8.configure(justify=LEFT)
         self.Checkbutton8.configure(text='''Blue/Purple Mystery Data''')
         self.Checkbutton8.configure(variable=bn3ui_support.allowBMD)
+        Tooltip(self.Checkbutton8, "When enabled, All fixed Items including those on the overworld will be randomized.")
 
         self.Checkbutton6 = Checkbutton(self.Labelframe6)
         self.Checkbutton6.place(relx=0.03, rely=0.10, relheight=0.2
@@ -582,6 +591,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton6.configure(justify=LEFT)
         self.Checkbutton6.configure(text='''Starting/Extra Folders''')
         self.Checkbutton6.configure(variable=bn3ui_support.allowFolder)
+        Tooltip(self.Checkbutton6, "When enabled, all Folders can be altered.")
 
         self.Checkbutton9 = Checkbutton(self.Labelframe6)
         self.Checkbutton9.place(relx=0.54, rely=0.10, relheight=0.2
@@ -596,6 +606,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton9.configure(justify=LEFT)
         self.Checkbutton9.configure(text='''Shops/Number Trader''')
         self.Checkbutton9.configure(variable=bn3ui_support.allowShop)
+        Tooltip(self.Checkbutton9, "When enabled, the Shops and Number Trader are randomized.\n\nEven when not enabled, Cyber ACDC 2 will contain some story progression chips to make the game possible with other settings enabled.")
 
         self.Checkbutton10 = Checkbutton(self.Labelframe6)
         self.Checkbutton10.place(relx=0.54, rely=0.35, relheight=0.2
@@ -610,6 +621,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton10.configure(justify=LEFT)
         self.Checkbutton10.configure(text='''Battle Chip Data''')
         self.Checkbutton10.configure(variable=bn3ui_support.allowChip)
+        Tooltip(self.Checkbutton10, "When enabled, Battle Chip data is randomized, which includes their damage, element, and name.")
 
         self.Checkbutton11 = Checkbutton(self.Labelframe6)
         self.Checkbutton11.place(relx=0.54, rely=0.6, relheight=0.2
@@ -624,6 +636,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton11.configure(justify=LEFT)
         self.Checkbutton11.configure(text='''Navis/Viruses/Battle Drops''')
         self.Checkbutton11.configure(variable=bn3ui_support.allowVirus)
+        Tooltip(self.Checkbutton11, "When enabled, Battles are randomized, as well as what each enemy drops. Also includes enemy names.")
         
         self.Checkbutton12 = Checkbutton(self.Labelframe6)
         self.Checkbutton12.place(relx=0.03, rely=0.85, relheight=0.2
@@ -638,6 +651,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton12.configure(justify=LEFT)
         self.Checkbutton12.configure(text='''NPC Chip Trades''')
         self.Checkbutton12.configure(variable=bn3ui_support.allowTrades)
+        Tooltip(self.Checkbutton12, "When enabled, Trade requirements are randomized. They stay linked to their related BMDs if BMDs are also randomized.")
 
         self.Label7_1 = Label(self.Labelframe3)
         self.Label7_1.place(relx=0.36, rely=0.36, height=21, width=154, y=-12
@@ -690,6 +704,10 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton4.configure(justify=LEFT)
         self.Checkbutton4.configure(text='''Randomize NCP Shapes''')
         self.Checkbutton4.configure(variable=bn3ui_support.randomNCPShapes)
+        Tooltip(self.Checkbutton4, \
+        "When enabled, randomizes the Navi Customizer Program shapes.\n"
+        "Not recommended for newer players as they can become unusable.\n"
+        "Some programs are excluded from randomization.")
 
         self.Checkbutton5 = Checkbutton(self.Labelframe4)
         self.Checkbutton5.place(relx=0.002, rely=0.46, relheight=0.32
@@ -704,6 +722,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton5.configure(justify=LEFT)
         self.Checkbutton5.configure(text='''Enable Detailed Output Log''')
         self.Checkbutton5.configure(variable=bn3ui_support.randomOutputLog)
+        Tooltip(self.Checkbutton5, "When enabled, writes a ton of detail about your randomized rom to your settings output log file.")
         
         self.Checkbutton6 = Checkbutton(self.Labelframe4)
         self.Checkbutton6.place(relx=0, rely=0.80, relheight=0.30
@@ -718,6 +737,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Checkbutton6.configure(justify=LEFT)
         self.Checkbutton6.configure(text='''Ignore Limiters''')
         self.Checkbutton6.configure(variable=bn3ui_support.bIgnoreLimits)
+        Tooltip(self.Checkbutton6, "When enabled, this allows you to ignore the hardcaps of the Chip Damage and Virus HP Multipliers.")
 
         self.TCombobox4 = ttk.Combobox(self.Labelframe4)
         self.TCombobox4.place(relx=0.48, rely=0.14, relheight=0.24, relwidth=0.12
@@ -877,7 +897,7 @@ class Mega_Man_Battle_Network_3_Randomizer:
         self.Message1.configure(foreground="#000000")
         self.Message1.configure(highlightbackground="#d9d9d9")
         self.Message1.configure(highlightcolor="black")
-        self.Message1.configure(text='''Originally created by Samfin/Mountebank, with features added by X Kirby. Created using Python, PAGE, and PyInstaller. Executable icon found posted on the /r/BattleNetwork subreddit.''')
+        self.Message1.configure(text='''Originally created by Samfin/Mountebank, with features added by X Kirby. Created using Python, PAGE, and PyInstaller. Executable icon found posted on the /r/BattleNetwork subreddit. Version 5.3 Hotfix 2''')
         self.Message1.configure(width=580)
 
 
